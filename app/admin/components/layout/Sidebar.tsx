@@ -13,6 +13,7 @@ export const Sidebar = () => {
           />
           <h1 className="text-xl font-semibold">ProfaConnect</h1>
         </div>
+        <div></div>
       </div>
     </div>
   );
