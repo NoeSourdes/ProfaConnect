@@ -18,6 +18,9 @@ const config = {
       },
     },
     extend: {
+      width: {
+        sideBar: "270px",
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",

@@ -1,5 +1,7 @@
 import { ThemeProvider } from "@/components/theme-provider";
+import { GeistSans } from "geist/font/sans";
 import type { Metadata } from "next";
+import { SessionProvider } from "next-auth/react";
 import { Inter } from "next/font/google";
 import "./globals.css";
 
@@ -20,15 +22,17 @@ export default function RootLayout({
     <>
       <html lang="fr" suppressHydrationWarning>
         <head />
-        <body>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="light"
-            enableSystem
-            disableTransitionOnChange
-          >
-            {children}
-          </ThemeProvider>
+        <body className={GeistSans.className}>
+          <SessionProvider>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="light"
+              enableSystem
+              disableTransitionOnChange
+            >
+              {children}
+            </ThemeProvider>
+          </SessionProvider>
         </body>
       </html>
     </>
