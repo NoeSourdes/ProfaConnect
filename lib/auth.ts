@@ -9,9 +9,9 @@ export const { auth, handlers } = NextAuth({
   session: {
     strategy: "jwt",
   },
-  pages: {
-    signIn: "/sign-in",
-    error: "/sign-in",
-  },
+  // pages: {
+  //   signIn: "/sign-in",
+  //   error: "/sign-in",
+  // },
   providers: [GithubProvider, GoogleProvider],
 });
