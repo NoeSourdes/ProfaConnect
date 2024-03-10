@@ -2,32 +2,94 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+    --background: 240, 1%, 99%;
+    --foreground: 0, 0%, 15%;
+
+    --card: 240, 1%, 99%;
+    --card-foreground: 0, 0%, 15%;
+    --popover: 240, 1%, 99%;
+    --popover-foreground: 0, 0%, 15%;
+
+    --primary: 216, 84%, 55%;
+    --primary-foreground: 0, 0%, 85%;
+
+    --secondary: 203, 71%, 56%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+
+    --muted: 240, 1%, 90%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --accent: 240, 1%, 90%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+
+    --destructive: 245, 94%, 13%;
+    --destructive-foreground: 0, 0%, 85%;
+
+    --border: 240, 1%, 90%;
+    --input: 240, 1%, 90%;
+    --ring: 0, 0%, 15%;
+
+    --success-border: 146, 17%, 91%;
+    --warning-border: 48, 16%, 91%;
+    --error-border: 358, 12%, 94%;
+    --info-border: 221, 17%, 91%;
+
+    --success: 139, 6%, 96%;
+    --warning: 49, 6%, 97%;
+    --error: 356, 6%, 97%;
+    --info: 206, 6%, 97%;
+
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 0, 0%, 15%;
+    --foreground: 0, 0%, 85%;
+
+    --card: 0, 0%, 15%;
+    --card-foreground: 0, 0%, 85%;
+
+    --popover: 0, 0%, 15%;
+    --popover-foreground: 0, 0%, 85%;
+
+    --primary: 216, 94%, 45%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+
+    --secondary: 203, 82%, 44%;
+    --secondary-foreground: 0, 0%, 85%;
+
+    --muted: 255, 6%, 24%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 255, 6%, 24%;
+    --accent-foreground: 0, 0%, 85%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0, 0%, 85%;
+
+    --success-border: 146, 17%, 91%;
+    --warning-border: 48, 16%, 91%;
+    --error-border: 358, 12%, 94%;
+    --info-border: 221, 17%, 91%;
+
+    --success: 139, 6%, 96%;
+    --warning: 49, 6%, 97%;
+    --error: 356, 6%, 97%;
+    --info: 206, 6%, 97%;
+
+    --border: 255, 6%, 24%;
+    --input: 255, 6%, 24%;
+    --ring: 0, 0%, 85%;
   }
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
-}
-
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
   }
 }
