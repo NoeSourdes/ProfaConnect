@@ -1,6 +1,5 @@
 "use client";
 
-import { ModeToggle } from "@/components/ToogleTheme";
 import { useSession } from "next-auth/react";
 
 export default function Page() {
@@ -14,7 +13,6 @@ export default function Page() {
           apprenons quelque chose de nouveau aujourd&apos;hui!
         </p>
       </div>
-      <ModeToggle />
     </div>
   );
 }
