@@ -26,14 +26,27 @@ import {
   CommandShortcut,
 } from "@/components/ui/command";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export function CommandDialogSideBar() {
   const [open, setOpen] = React.useState(false);
+  const [firstLink, setFirstLink] = React.useState("");
+  const firstLinkRef = React.useRef(firstLink);
+  firstLinkRef.current = firstLink;
+  console.log(firstLink);
+  const router = useRouter();
 
   React.useEffect(() => {
     const down = (e: KeyboardEvent) => {
+      if (e.key === "Enter") {
+        setOpen(false);
+        console.log("firstLink");
+        console.log(firstLinkRef.current);
+        router.push(firstLinkRef.current || "/admin");
+      }
       if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
+        setFirstLink("");
         setOpen((open) => !open);
       }
     };
@@ -65,12 +78,21 @@ export function CommandDialogSideBar() {
     },
   };
 
+  const Links = [
+    "/admin",
+    "/admin/cours",
+    "/admin/emplois-du-temps",
+    "/admin/communication",
+    "/admin/mini-jeux",
+  ];
+
   return (
     <>
       <Button
         size="lg_sideBar"
         variant={"outline"}
         className="flex justify-between items-center w-full border"
+        onClick={() => setOpen(true)}
       >
         <div className="flex items-center gap-3 text-muted-foreground">
           <Search />
@@ -86,13 +108,36 @@ export function CommandDialogSideBar() {
         </div>
       </Button>
       <CommandDialog open={open} onOpenChange={setOpen}>
-        <CommandInput placeholder="Rechercher..." />
+        <CommandInput
+          placeholder="Rechercher..."
+          onChangeCapture={(event: React.ChangeEvent<HTMLInputElement>) => {
+            const inputValue = event.target.value;
+            const link = Links.find((link) => {
+              const parts = link.split("/");
+              const searchPart = parts.slice(2).join("/");
+              let index = 0;
+              for (let char of inputValue) {
+                index = searchPart.indexOf(char, index);
+                if (index === -1) return false;
+                index++;
+              }
+              return true;
+            });
+            setFirstLink(link || "");
+          }}
+        />
         <CommandList>
           <CommandEmpty>Aucun résultat pour la recherche</CommandEmpty>
           <CommandGroup heading="Liens">
             {Object.entries(CommandGroupLinks).map(
               ([label, { icon: Icon, href }]) => (
-                <Link key={label + href} href={href}>
+                <Link
+                  key={label + href}
+                  href={href}
+                  onClick={() => {
+                    setOpen(false);
+                  }}
+                >
                   <CommandItem>
                     <Icon className="mr-2 h-4 w-4" />
                     <span>{label}</span>
