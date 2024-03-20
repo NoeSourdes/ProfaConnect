@@ -6,11 +6,8 @@ import {
   FolderOpenDot,
   Gamepad2,
   LayoutDashboard,
-  Mail,
   MessageCircleMore,
   Search,
-  Smile,
-  User,
 } from "lucide-react";
 import * as React from "react";
 
@@ -22,83 +19,74 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-  CommandSeparator,
-  CommandShortcut,
 } from "@/components/ui/command";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
 
-export function CommandDialogSideBar() {
+const CommandGroupLinks = {
+  Dashboard: {
+    icon: LayoutDashboard,
+    href: "/admin",
+  },
+  Cours: {
+    icon: FolderOpenDot,
+    href: "/admin/cours",
+  },
+  "Emplois du temps": {
+    icon: CalendarDays,
+    href: "/admin/emplois-du-temps",
+  },
+  Communication: {
+    icon: MessageCircleMore,
+    href: "/admin/communication",
+  },
+  "Mini jeux": {
+    icon: Gamepad2,
+    href: "/admin/mini-jeux",
+  },
+};
+
+interface CommandDialogSideBarProps {
+  isSidebarOpen: boolean;
+}
+
+export function CommandDialogSideBar({
+  isSidebarOpen,
+}: CommandDialogSideBarProps) {
   const [open, setOpen] = React.useState(false);
-  const [firstLink, setFirstLink] = React.useState("");
-  const firstLinkRef = React.useRef(firstLink);
-  firstLinkRef.current = firstLink;
-  console.log(firstLink);
-  const router = useRouter();
 
   React.useEffect(() => {
     const down = (e: KeyboardEvent) => {
-      if (e.key === "Enter") {
-        setOpen(false);
-        console.log("firstLink");
-        console.log(firstLinkRef.current);
-        router.push(firstLinkRef.current || "/admin");
-      }
       if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
-        setFirstLink("");
         setOpen((open) => !open);
       }
     };
-
     document.addEventListener("keydown", down);
     return () => document.removeEventListener("keydown", down);
   }, []);
 
-  const CommandGroupLinks = {
-    Dashboard: {
-      icon: LayoutDashboard,
-      href: "/admin",
-    },
-    Cours: {
-      icon: FolderOpenDot,
-      href: "/admin/cours",
-    },
-    "Emplois du temps": {
-      icon: CalendarDays,
-      href: "/admin/emplois-du-temps",
-    },
-    Communication: {
-      icon: MessageCircleMore,
-      href: "/admin/communication",
-    },
-    "Mini jeux": {
-      icon: Gamepad2,
-      href: "/admin/mini-jeux",
-    },
-  };
-
-  const Links = [
-    "/admin",
-    "/admin/cours",
-    "/admin/emplois-du-temps",
-    "/admin/communication",
-    "/admin/mini-jeux",
-  ];
-
   return (
     <>
       <Button
-        size="lg_sideBar"
+        size={isSidebarOpen ? "lg_sideBar" : "sm"}
         variant={"outline"}
         className="flex justify-between items-center w-full border"
         onClick={() => setOpen(true)}
       >
         <div className="flex items-center gap-3 text-muted-foreground">
           <Search />
-          Rechercher
+          <span
+            className={`${
+              isSidebarOpen ? "opacity-1" : "opacity-0"
+            } transition-all`}
+          >
+            Rechercher
+          </span>
         </div>
-        <div className=" text-muted-foreground flex items-center gap-1">
+        <div
+          className={`text-muted-foreground flex items-center gap-1 ${
+            isSidebarOpen ? "opacity-1" : "opacity-0"
+          } transition-all`}
+        >
           <div className="bg-secondary w-5 h-5 flex items-center justify-center rounded-[3px]">
             <Command size={15} />
           </div>
@@ -108,61 +96,13 @@ export function CommandDialogSideBar() {
         </div>
       </Button>
       <CommandDialog open={open} onOpenChange={setOpen}>
-        <CommandInput
-          placeholder="Rechercher..."
-          onChangeCapture={(event: React.ChangeEvent<HTMLInputElement>) => {
-            const inputValue = event.target.value;
-            const link = Links.find((link) => {
-              const parts = link.split("/");
-              const searchPart = parts.slice(2).join("/");
-              let index = 0;
-              for (let char of inputValue) {
-                index = searchPart.indexOf(char, index);
-                if (index === -1) return false;
-                index++;
-              }
-              return true;
-            });
-            setFirstLink(link || "");
-          }}
-        />
+        <CommandInput placeholder="Type a command or search..." />
         <CommandList>
-          <CommandEmpty>Aucun résultat pour la recherche</CommandEmpty>
-          <CommandGroup heading="Liens">
-            {Object.entries(CommandGroupLinks).map(
-              ([label, { icon: Icon, href }]) => (
-                <Link
-                  key={label + href}
-                  href={href}
-                  onClick={() => {
-                    setOpen(false);
-                  }}
-                >
-                  <CommandItem>
-                    <Icon className="mr-2 h-4 w-4" />
-                    <span>{label}</span>
-                  </CommandItem>
-                </Link>
-              )
-            )}
-          </CommandGroup>
-          <CommandSeparator />
-          <CommandGroup heading="Settings">
-            <CommandItem>
-              <Smile className="mr-2 h-4 w-4" />
-              <span>Profile</span>
-              <CommandShortcut>⌘P</CommandShortcut>
-            </CommandItem>
-            <CommandItem>
-              <Mail className="mr-2 h-4 w-4" />
-              <span>Mail</span>
-              <CommandShortcut>⌘B</CommandShortcut>
-            </CommandItem>
-            <CommandItem>
-              <User className="mr-2 h-4 w-4" />
-              <span>Settings</span>
-              <CommandShortcut>⌘S</CommandShortcut>
-            </CommandItem>
+          <CommandEmpty>No results found.</CommandEmpty>
+          <CommandGroup heading="Suggestions">
+            <CommandItem>Calendar</CommandItem>
+            <CommandItem>Search Emoji</CommandItem>
+            <CommandItem>Calculator</CommandItem>
           </CommandGroup>
         </CommandList>
       </CommandDialog>

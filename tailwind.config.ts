@@ -20,6 +20,7 @@ const config = {
     extend: {
       width: {
         sideBar: "260px",
+        sideBarResponsive: "76px",
       },
       colors: {
         border: "hsl(var(--border))",
