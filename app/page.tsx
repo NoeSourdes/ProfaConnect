@@ -12,7 +12,7 @@ export default function Home() {
       <Button
         onClick={() => {
           signIn("google", {
-            callbackUrl: "/admin",
+            callbackUrl: "/dashboard",
           });
         }}
       >

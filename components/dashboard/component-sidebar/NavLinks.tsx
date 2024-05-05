@@ -14,27 +14,31 @@ import { usePathname } from "next/navigation";
 const links = {
   Dashboard: {
     icon: LayoutDashboard,
-    href: "/admin",
+    href: "/dashboard",
   },
   Cours: {
     icon: FolderOpenDot,
-    href: "/admin/cours",
+    href: "/dashboard/course",
   },
   "Emplois du temps": {
     icon: CalendarDays,
-    href: "/admin/emplois-du-temps",
+    href: "/dashboard/schedules",
   },
   Communication: {
     icon: MessageCircleMore,
-    href: "/admin/communication",
+    href: "/dashboard/communication",
   },
   "Mini jeux": {
     icon: Gamepad2,
-    href: "/admin/mini-jeux",
+    href: "/dashboard/games",
   },
 };
 
-export const NavLinks = () => {
+interface NavLinksProps {
+  isSidebarOpen: boolean;
+}
+
+export const NavLinks = ({ isSidebarOpen }: NavLinksProps) => {
   const pathname = usePathname();
   return (
     <div className="flex flex-col gap-4">
@@ -43,10 +47,16 @@ export const NavLinks = () => {
           <Button
             variant={pathname === href ? "default" : "hover_sideBar"}
             size="lg_sideBar"
-            className="w-full flex justify-start items-center gap-2"
+            className="w-full flex justify-start items-center overflow-hidden"
           >
-            <Icon />
-            {label}
+            <div className="flex items-center gap-2">
+              <Icon size={20} />
+              <div
+                className={`${isSidebarOpen ? "" : "opacity-0"} transition-all`}
+              >
+                {label}
+              </div>
+            </div>
           </Button>
         </Link>
       ))}

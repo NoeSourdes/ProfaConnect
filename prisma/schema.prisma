@@ -41,8 +41,30 @@ model User {
   email         String?   @unique
   emailVerified DateTime?
   image         String?
+  role          String?
   accounts      Account[]
   sessions      Session[]
+  courses       Course[] @relation("UserCourses")
+}
+
+model Course {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  lessons     Lesson[]
+  users       User[]   @relation("UserCourses")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  published   Boolean
+  category    String?
+}
+
+model Lesson {
+  id        String   @id @default(cuid())
+  title     String
+  content   String
+  courseId  String
+  course    Course   @relation(fields: [courseId], references: [id])
 }
 
 model VerificationToken {

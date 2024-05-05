@@ -1,7 +1,7 @@
 "use client";
 
+import { Sidebar } from "@/components/dashboard/Sidebar";
 import React from "react";
-import { Sidebar } from "./components/layout/Sidebar";
 
 interface Props {
   children: React.ReactNode;
