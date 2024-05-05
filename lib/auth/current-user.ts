@@ -9,15 +9,15 @@ export const currentUser = async () => {
   }
 
   const user = session.user as User;
+
   return user;
 };
 
-export const requireCurrentUser = async () => {
+export const requiredCurrentUser = async () => {
   const user = await currentUser();
 
   if (!user) {
     throw new Error("User not found");
   }
-
   return user;
 };

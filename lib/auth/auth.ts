@@ -4,14 +4,27 @@ import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 import { prisma } from "../prisma";
 
-export const { auth: baseAuth, handlers } = NextAuth({
+export const {
+  auth: baseAuth,
+  handlers,
+  signIn,
+  signOut,
+} = NextAuth({
   adapter: PrismaAdapter(prisma),
   session: {
     strategy: "jwt",
   },
-  // pages: {
-  //   signIn: "/sign-in",
-  //   error: "/sign-in",
-  // },
   providers: [GithubProvider, GoogleProvider],
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = user.id as string;
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      session.user.id = token.id as string;
+      return session;
+    },
+  },
 });

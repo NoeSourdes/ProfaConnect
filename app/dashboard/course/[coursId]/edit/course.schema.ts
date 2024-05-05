@@ -1,12 +1,15 @@
 import { z } from "zod";
 
 export const courseSchema = z.object({
-  id: z.string(),
-  title: z.string(),
-  description: z.string(),
-  createdAt: z.date(),
-  updatedAt: z.date(),
-  published: z.boolean(),
+  title: z.string({
+    message: "Le titre est obligatoire",
+  }),
+  description: z.string({
+    message: "La description est obligatoire",
+  }),
+  createdAt: z.date().optional(),
+  updatedAt: z.date().optional(),
+  published: z.boolean().optional(),
   category: z.string().optional(),
 });
 
