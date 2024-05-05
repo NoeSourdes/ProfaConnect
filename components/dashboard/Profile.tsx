@@ -1,15 +1,18 @@
-import { requireCurrentUser } from "@/lib/auth/current-user";
+import { baseAuth } from "@/lib/auth/auth";
+import { requiredCurrentUser } from "@/lib/auth/current-user";
 import { Bell } from "lucide-react";
 import Image from "next/image";
 import { CalendarComponent } from "../Calendar";
 import { Button } from "../ui/button";
 
 export const Profile = async () => {
-  const user = await requireCurrentUser();
+  const session = await baseAuth();
+  const user = await requiredCurrentUser();
   return (
     <div className="w-full h-full border p-7 bg-background">
       <header className="flex items-center justify-between">
         <h1 className="font-bold text-xl">Ton profil</h1>
+        <h2>{user.id}</h2>
         <Button variant="ghost" size="icon">
           <Bell />
         </Button>

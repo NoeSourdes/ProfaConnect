@@ -1,8 +1,8 @@
 import { Profile } from "@/components/dashboard/Profile";
-import { requireCurrentUser } from "@/lib/auth/current-user";
+import { requiredCurrentUser } from "@/lib/auth/current-user";
 
 export default async function Page() {
-  const user = await requireCurrentUser();
+  const user = await requiredCurrentUser();
   const surname = user?.name?.split(" ")[0];
   return (
     <div className="w-full h-full flex justify-between">

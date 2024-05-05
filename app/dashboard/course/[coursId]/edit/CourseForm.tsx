@@ -13,6 +13,10 @@ import {
   useZodForm,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { useMutation } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { createCourseAction } from "./course.actions";
 import { CourseType, courseSchema } from "./course.schema";
 
 export type CourseFormProps = {
@@ -24,8 +28,20 @@ export const CourseForm = (props: CourseFormProps) => {
     schema: courseSchema,
     defaultValues: props.defaultValues,
   });
-
   const isCreate = !Boolean(props.defaultValues);
+  const router = useRouter();
+
+  const mutation = useMutation({
+    mutationFn: async (values: CourseType) => {
+      const { data, serverError } = await createCourseAction(values);
+
+      if (serverError || !data) {
+        throw new Error(serverError);
+      }
+      toast.success("Le cours a été créé avec succès");
+      router.push(`/dashboard/courses/${data.id}`);
+    },
+  });
 
   return (
     <Card>
@@ -40,8 +56,8 @@ export const CourseForm = (props: CourseFormProps) => {
         <Form
           className="flex flex-col gap-4"
           form={form}
-          onSubmit={async (value) => {
-            console.log(value);
+          onSubmit={async (values) => {
+            await mutation.mutateAsync(values);
           }}
         >
           <FormField
@@ -84,9 +100,7 @@ export const CourseForm = (props: CourseFormProps) => {
               </FormItem>
             )}
           />
-          <Button type="submit" className="">
-            {isCreate ? "Créer le cours" : "Modifier le cours"}
-          </Button>
+          <Button>{isCreate ? "Créer le cours" : "Modifier le cours"}</Button>
         </Form>
       </CardContent>
     </Card>
