@@ -221,7 +221,7 @@ export default function Course() {
                         {new Date(course.updatedAt).toLocaleDateString()}
                       </p>
                     </div>
-                    <div className="flex gap-2 items-center">
+                    <div className="flex gap-1 items-center">
                       <Link
                         className="w-full grow"
                         href={`/dashboard/courses/${course.id}`}
