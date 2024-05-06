@@ -16,11 +16,12 @@ import { Input } from "@/components/ui/input";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { createCourseAction } from "./course.actions";
+import { createCourseAction, updateCourseAction } from "./course.actions";
 import { CourseType, courseSchema } from "./course.schema";
 
 export type CourseFormProps = {
   defaultValues?: CourseType;
+  courseId?: string;
 };
 
 export const CourseForm = (props: CourseFormProps) => {
@@ -33,12 +34,19 @@ export const CourseForm = (props: CourseFormProps) => {
 
   const mutation = useMutation({
     mutationFn: async (values: CourseType) => {
-      const { data, serverError } = await createCourseAction(values);
+      const { data, serverError } = isCreate
+        ? await createCourseAction(values)
+        : await updateCourseAction({
+            id: String(props.courseId),
+            data: values,
+          });
 
       if (serverError || !data) {
         throw new Error(serverError);
       }
-      toast.success("Le cours a été créé avec succès");
+      isCreate
+        ? toast.success("Le cours a été créé avec succès")
+        : toast.success("Le cours a été modifié avec succès");
       router.push(`/dashboard/courses/${data.id}`);
     },
   });
@@ -47,9 +55,14 @@ export const CourseForm = (props: CourseFormProps) => {
     <Card>
       <CardHeader>
         <CardTitle>
-          {isCreate
-            ? "Créer un cours"
-            : "Modifier le cours" + props.defaultValues?.title}
+          {isCreate ? (
+            <span>Création d'un nouveau cours</span>
+          ) : (
+            <span>
+              Modifier le cours{" "}
+              <span className="text-primary">{props.defaultValues?.title}</span>
+            </span>
+          )}
         </CardTitle>
       </CardHeader>
       <CardContent>

@@ -12,7 +12,6 @@ export const Profile = async () => {
     <div className="w-full h-full border p-7 bg-background">
       <header className="flex items-center justify-between">
         <h1 className="font-bold text-xl">Ton profil</h1>
-        <h2>{user.id}</h2>
         <Button variant="ghost" size="icon">
           <Bell />
         </Button>
