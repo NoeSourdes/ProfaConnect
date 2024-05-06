@@ -18,7 +18,7 @@ const links = {
   },
   Cours: {
     icon: FolderOpenDot,
-    href: "/dashboard/course",
+    href: "/dashboard/courses",
   },
   "Emplois du temps": {
     icon: CalendarDays,
