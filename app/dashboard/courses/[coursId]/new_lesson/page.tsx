@@ -1,38 +1,31 @@
 import { BreadcrumbComponent } from "@/components/dashboard/Breadcrumb";
-import { requiredCurrentUser } from "@/lib/auth/current-user";
 import { prisma } from "@/lib/prisma";
 import type { PageParams } from "@/types/next";
 import { notFound } from "next/navigation";
-import { CourseForm } from "./CourseForm";
+import { NewLessonComponent } from "../[lessonId]/edit/newLessonComponent";
 
 export default async function RoutePage(
   props: PageParams<{
     coursId: string;
   }>
 ) {
-  const user = await requiredCurrentUser();
-
-  const course = await prisma.course.findUnique({
+  const nameCourse = await prisma.course.findUnique({
     where: {
       id: props.params.coursId,
-      userId: user.id,
     },
     select: {
       title: true,
-      description: true,
     },
   });
-
-  if (!course) {
+  if (!nameCourse) {
     notFound();
   }
-
   return (
     <div className="p-7 h-full w-full">
       <main className="flex flex-1 flex-col gap-4 lg:gap-6 h-full">
         <div className="flex items-center">
           <h1 className="text-lg font-semibold md:text-2xl">
-            Mettre à jour un cours
+            Création d'une nouvelle leçon
           </h1>
         </div>
         <BreadcrumbComponent
@@ -46,8 +39,12 @@ export default async function RoutePage(
               link: "/dashboard/courses",
             },
             {
-              item: "Mettre à jour un cours",
-              link: `/dashboard/courses/${props.params.coursId}/edit`,
+              item: nameCourse.title,
+              link: `/dashboard/courses/${props.params.coursId}`,
+            },
+            {
+              item: "Nouvelle leçon",
+              link: `/dashboard/courses/${props.params.coursId}/new_lesson`,
             },
           ]}
         />
@@ -55,7 +52,7 @@ export default async function RoutePage(
           className="h-full w-full rounded-lg"
           x-chunk="dashboard-02-chunk-1"
         >
-          <CourseForm defaultValues={course} courseId={props.params.coursId} />
+          <NewLessonComponent />
         </div>
       </main>
     </div>
