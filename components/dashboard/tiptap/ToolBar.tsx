@@ -3,13 +3,12 @@
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { Bold, Italic, Underline } from "lucide-react";
 import ColorPicker from "./ColorPicker";
-import { SizePicker } from "./SizePicker";
 
-export type ToolBareProps = {
+export type ToolBarProps = {
   editor: any;
 };
 
-export const ToolBare = (props: ToolBareProps) => {
+export const ToolBar = (props: ToolBarProps) => {
   if (!props.editor) {
     return null;
   }
@@ -24,7 +23,6 @@ export const ToolBare = (props: ToolBareProps) => {
   return (
     <div className="border-b p-2">
       <ToggleGroup type="multiple" className="flex justify-start">
-        <SizePicker onSizeChange={handleSizeChange} />
         <ToggleGroupItem
           value="bold"
           aria-label="Toggle bold"
@@ -47,36 +45,6 @@ export const ToolBare = (props: ToolBareProps) => {
           <Underline size={17} />
         </ToggleGroupItem>
         <ColorPicker onColorChange={handleColorChange} />
-        <button
-          onClick={() =>
-            props.editor.chain().focus().toggleHeading({ level: 1 }).run()
-          }
-          className={
-            props.editor.isActive("heading", { level: 1 }) ? "is-active" : ""
-          }
-        >
-          H1
-        </button>
-        <button
-          onClick={() =>
-            props.editor.chain().focus().toggleHeading({ level: 2 }).run()
-          }
-          className={
-            props.editor.isActive("heading", { level: 2 }) ? "is-active" : ""
-          }
-        >
-          H2
-        </button>
-        <button
-          onClick={() =>
-            props.editor.chain().focus().toggleHeading({ level: 3 }).run()
-          }
-          className={
-            props.editor.isActive("heading", { level: 3 }) ? "is-active" : ""
-          }
-        >
-          H3
-        </button>
       </ToggleGroup>
     </div>
   );

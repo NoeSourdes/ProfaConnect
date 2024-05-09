@@ -1,6 +1,6 @@
 "use client";
 
-import Tiptap from "@/components/dashboard/tiptap/Tiptap";
+import TailwindEditor from "@/components/dashboard/tiptap/Editor";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -17,6 +17,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 export type NewLessonComponentProps = {};
 
 export const NewLessonComponent = (props: NewLessonComponentProps) => {
+  const description = "";
   return (
     <Tabs defaultValue="account" className="relative w-full h-full">
       <TabsList className="grid w-full grid-cols-2">
@@ -31,9 +32,9 @@ export const NewLessonComponent = (props: NewLessonComponentProps) => {
               Rédigez votre nouvelle leçon ci-dessous dans l'éditeur de texte.
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-2 flex-1 w-full">
-            <div className="w-full h-full border rounded-lg">
-              <Tiptap />
+          <CardContent className="space-y-2 flex-1 w-full overflow-hidden border-t">
+            <div role="dialog" className="w-full h-full overflow-y-scroll pt-3">
+              <TailwindEditor />
             </div>
           </CardContent>
           <CardFooter>
