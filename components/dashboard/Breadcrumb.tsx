@@ -37,7 +37,7 @@ export const BreadcrumbComponent = (props: BreadcrumbProps) => {
     <Breadcrumb>
       <BreadcrumbList>
         {props.array.map((item, index) => (
-          <>
+          <div key={index} className="flex items-center gap-3">
             <BreadcrumbItem key={index}>
               <BreadcrumbLink href={item.link}>
                 <span>{item.item}</span>
@@ -48,7 +48,7 @@ export const BreadcrumbComponent = (props: BreadcrumbProps) => {
                 <Slash />
               </BreadcrumbSeparator>
             )}
-          </>
+          </div>
         ))}
       </BreadcrumbList>
     </Breadcrumb>
