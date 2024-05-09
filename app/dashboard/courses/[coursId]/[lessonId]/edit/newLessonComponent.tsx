@@ -1,3 +1,5 @@
+"use client";
+
 import Tiptap from "@/components/dashboard/tiptap/Tiptap";
 import { Button } from "@/components/ui/button";
 import {
