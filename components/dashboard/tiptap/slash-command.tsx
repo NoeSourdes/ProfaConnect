@@ -12,12 +12,14 @@ import {
   TextQuote,
 } from "lucide-react";
 import { Command, createSuggestionItems, renderItems } from "novel/extensions";
+import Youtube from "@tiptap/extension-youtube";
+
 import { uploadFn } from "./image-upload";
 
 export const suggestionItems = createSuggestionItems([
   {
-    title: "Send Feedback",
-    description: "Let us know how we can improve.",
+    title: "Envoyer un feedback",
+    description: "Envoyer un feedback à l'équipe de développement.",
     icon: <MessageSquarePlus size={18} />,
     command: ({ editor, range }) => {
       editor.chain().focus().deleteRange(range).run();
@@ -25,8 +27,8 @@ export const suggestionItems = createSuggestionItems([
     },
   },
   {
-    title: "Text",
-    description: "Just start typing with plain text.",
+    title: "Texte",
+    description: "Ajouter un paragraphe.",
     searchTerms: ["p", "paragraph"],
     icon: <Text size={18} />,
     command: ({ editor, range }) => {
@@ -40,7 +42,7 @@ export const suggestionItems = createSuggestionItems([
   },
   {
     title: "To-do List",
-    description: "Track tasks with a to-do list.",
+    description: "Suivre les tâches à l'aide d'une to-do list.",
     searchTerms: ["todo", "task", "list", "check", "checkbox"],
     icon: <CheckSquare size={18} />,
     command: ({ editor, range }) => {
@@ -49,7 +51,7 @@ export const suggestionItems = createSuggestionItems([
   },
   {
     title: "Heading 1",
-    description: "Big section heading.",
+    description: "Grand titre.",
     searchTerms: ["title", "big", "large"],
     icon: <Heading1 size={18} />,
     command: ({ editor, range }) => {
@@ -63,7 +65,7 @@ export const suggestionItems = createSuggestionItems([
   },
   {
     title: "Heading 2",
-    description: "Medium section heading.",
+    description: "Sous-titre.",
     searchTerms: ["subtitle", "medium"],
     icon: <Heading2 size={18} />,
     command: ({ editor, range }) => {
@@ -77,7 +79,7 @@ export const suggestionItems = createSuggestionItems([
   },
   {
     title: "Heading 3",
-    description: "Small section heading.",
+    description: "Petit sous-titre.",
     searchTerms: ["subtitle", "small"],
     icon: <Heading3 size={18} />,
     command: ({ editor, range }) => {
@@ -90,8 +92,8 @@ export const suggestionItems = createSuggestionItems([
     },
   },
   {
-    title: "Bullet List",
-    description: "Create a simple bullet list.",
+    title: "Liste non ordonnée",
+    description: "Créer une simple liste.",
     searchTerms: ["unordered", "point"],
     icon: <List size={18} />,
     command: ({ editor, range }) => {
@@ -99,8 +101,8 @@ export const suggestionItems = createSuggestionItems([
     },
   },
   {
-    title: "Numbered List",
-    description: "Create a list with numbering.",
+    title: "Liste numérotée",
+    description: "Créer une liste numérotée.",
     searchTerms: ["ordered"],
     icon: <ListOrdered size={18} />,
     command: ({ editor, range }) => {
@@ -108,8 +110,8 @@ export const suggestionItems = createSuggestionItems([
     },
   },
   {
-    title: "Quote",
-    description: "Capture a quote.",
+    title: "Citation",
+    description: "Ajouter une citation.",
     searchTerms: ["blockquote"],
     icon: <TextQuote size={18} />,
     command: ({ editor, range }) =>
@@ -123,7 +125,7 @@ export const suggestionItems = createSuggestionItems([
   },
   {
     title: "Code",
-    description: "Capture a code snippet.",
+    description: "Ajouter un bloc de code.",
     searchTerms: ["codeblock"],
     icon: <Code size={18} />,
     command: ({ editor, range }) =>
@@ -131,7 +133,7 @@ export const suggestionItems = createSuggestionItems([
   },
   {
     title: "Image",
-    description: "Upload an image from your computer.",
+    description: "Ajouter une image.",
     searchTerms: ["photo", "picture", "media"],
     icon: <ImageIcon size={18} />,
     command: ({ editor, range }) => {

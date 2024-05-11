@@ -26,7 +26,7 @@ export type SelectorItem = {
 
 const items: SelectorItem[] = [
   {
-    name: "Text",
+    name: "Texte",
     icon: TextIcon,
     command: (editor) => editor?.chain().focus().clearNodes().run(),
     isActive: (editor) =>
@@ -36,21 +36,21 @@ const items: SelectorItem[] = [
       false,
   },
   {
-    name: "Heading 1",
+    name: "Gros titre",
     icon: Heading1,
     command: (editor) =>
       editor?.chain().focus().clearNodes().toggleHeading({ level: 1 }).run(),
     isActive: (editor) => editor?.isActive("heading", { level: 1 }) ?? false,
   },
   {
-    name: "Heading 2",
+    name: "Sous-titre",
     icon: Heading2,
     command: (editor) =>
       editor?.chain().focus().clearNodes().toggleHeading({ level: 2 }).run(),
     isActive: (editor) => editor?.isActive("heading", { level: 2 }) ?? false,
   },
   {
-    name: "Heading 3",
+    name: "Petit sous-titre",
     icon: Heading3,
     command: (editor) =>
       editor?.chain().focus().clearNodes().toggleHeading({ level: 3 }).run(),
@@ -64,21 +64,21 @@ const items: SelectorItem[] = [
     isActive: (editor) => editor?.isActive("taskItem") ?? false,
   },
   {
-    name: "Bullet List",
+    name: "Liste à puce",
     icon: ListOrdered,
     command: (editor) =>
       editor?.chain().focus().clearNodes().toggleBulletList().run(),
     isActive: (editor) => editor?.isActive("bulletList") ?? false,
   },
   {
-    name: "Numbered List",
+    name: "Liste numérotée",
     icon: ListOrdered,
     command: (editor) =>
       editor?.chain().focus().clearNodes().toggleOrderedList().run(),
     isActive: (editor) => editor?.isActive("orderedList") ?? false,
   },
   {
-    name: "Quote",
+    name: "Citation",
     icon: TextQuote,
     command: (editor) =>
       editor?.chain().focus().clearNodes().toggleBlockquote().run(),

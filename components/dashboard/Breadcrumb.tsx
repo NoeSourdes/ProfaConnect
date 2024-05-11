@@ -3,9 +3,11 @@ import {
   BreadcrumbItem,
   BreadcrumbLink,
   BreadcrumbList,
+  BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { Slash } from "lucide-react";
+import Link from "next/link";
+import { Fragment } from "react";
 
 type array = {
   item: string;
@@ -22,33 +24,38 @@ export const BreadcrumbComponent = (props: BreadcrumbProps) => {
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
-            <BreadcrumbLink href="/dashboard">
-              <span>Dashboard</span>
+            <BreadcrumbLink asChild>
+              <Link href="/">Home</Link>
             </BreadcrumbLink>
           </BreadcrumbItem>
-          <BreadcrumbSeparator>
-            <Slash />
-          </BreadcrumbSeparator>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage>Dashboard</BreadcrumbPage>
+          </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
     );
   }
+
   return (
     <Breadcrumb>
       <BreadcrumbList>
         {props.array.map((item, index) => (
-          <div key={index} className="flex items-center gap-3">
-            <BreadcrumbItem key={index}>
-              <BreadcrumbLink href={item.link}>
-                <span>{item.item}</span>
+          <Fragment key={index}>
+            <BreadcrumbItem>
+              <BreadcrumbLink asChild>
+                <Link
+                  href={item.link}
+                  className={`${
+                    index === props.array!.length - 1 ? "text-foreground" : ""
+                  }`}
+                >
+                  {item.item}
+                </Link>
               </BreadcrumbLink>
             </BreadcrumbItem>
-            {index < props.array!.length - 1 && (
-              <BreadcrumbSeparator>
-                <Slash />
-              </BreadcrumbSeparator>
-            )}
-          </div>
+            {index < props.array!.length - 1 && <BreadcrumbSeparator />}
+          </Fragment>
         ))}
       </BreadcrumbList>
     </Breadcrumb>
