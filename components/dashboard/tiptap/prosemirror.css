@@ -8,7 +8,6 @@
   color: var(--novel-stone-400);
   pointer-events: none;
   height: 0;
-  background-color: black;
 }
 .ProseMirror .is-empty::before {
   content: attr(data-placeholder);
@@ -17,8 +16,6 @@
   pointer-events: none;
   height: 0;
 }
-
-/* Custom image styles */
 
 .ProseMirror img {
   transition: filter 0.1s ease-in-out;
@@ -57,8 +54,6 @@
     transform: rotate(360deg);
   }
 }
-
-/* Custom TODO list checkboxes – shoutout to this awesome tutorial: https://moderncss.dev/pure-css-custom-checkbox-style/ */
 
 ul[data-type="taskList"] li > label {
   margin-right: 0.2rem;
@@ -115,8 +110,6 @@ ul[data-type="taskList"] li[data-checked="true"] > div > p {
   text-decoration: line-through;
   text-decoration-thickness: 2px;
 }
-
-/* Overwrite tippy-box original max-width */
 
 .tippy-box {
   max-width: 400px !important;
