@@ -1,6 +1,6 @@
 "use client";
 
-import { Ellipsis, LogOut } from "lucide-react";
+import { Ellipsis, LogOut, Star } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -16,6 +16,13 @@ import {
 import { getPages } from "@/lib/pages";
 import { cn } from "@/lib/utils";
 import { signOut } from "next-auth/react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "../ui/card";
 
 interface MenuProps {
   isOpen: boolean | undefined;
@@ -105,6 +112,32 @@ export function Menu({ isOpen }: MenuProps) {
             </li>
           ))}
           <li className="w-full grow flex items-end">
+            {isOpen ? (
+              <Card x-chunk="dashboard-02-chunk-0">
+                <CardHeader className="p-2 pt-0 md:p-4">
+                  <CardTitle>Passez à Pro</CardTitle>
+                  <CardDescription>
+                    Débloquez toutes les fonctionnalités et obtenez un accès
+                    illimité à notre équipe de support.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="p-2 pt-0 md:p-4 md:pt-0">
+                  <Button size="sm" className="w-full">
+                    Mettre à niveau
+                  </Button>
+                </CardContent>
+              </Card>
+            ) : (
+              <Button
+                size="lg_sideBar"
+                variant="hover_sideBar"
+                className="flex items-center justify-start gap-2 w-full overflow-hidden"
+              >
+                <Star fill="#2563EB" color="#2563EB" />
+              </Button>
+            )}
+          </li>
+          <li className="w-full">
             <TooltipProvider disableHoverableContent>
               <Tooltip delayDuration={100}>
                 <TooltipTrigger asChild>

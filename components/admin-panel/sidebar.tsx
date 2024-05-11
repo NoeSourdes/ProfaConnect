@@ -7,15 +7,18 @@ import { useSidebarToggle } from "@/hooks/use-sidebar-toggle";
 import { useStore } from "@/hooks/use-store";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
+import { useFullScreen } from "../dashboard/tiptap/fullScreen.store";
 
 export function Sidebar() {
   const sidebar = useStore(useSidebarToggle, (state) => state);
+  const { isFullScreen, setIsFullScreen } = useFullScreen();
 
   return (
     <aside
       className={cn(
-        "fixed top-0 left-0 z-[10001] h-screen -translate-x-full lg:translate-x-0 transition-[width] ease-in-out duration-300",
-        sidebar?.isOpen === false ? "w-[90px]" : "w-72"
+        "fixed top-0 left-0 h-screen -translate-x-full lg:translate-x-0 transition-[width] ease-in-out duration-300",
+        sidebar?.isOpen === false ? "w-[90px]" : "w-72",
+        isFullScreen ? "z-30" : "z-[4001]"
       )}
     >
       <SidebarToggle isOpen={sidebar?.isOpen} setIsOpen={sidebar?.setIsOpen} />

@@ -2,10 +2,16 @@ import { PageTitle } from "@/components/admin-panel/page-title";
 import { SheetMenu } from "@/components/admin-panel/sheet-menu";
 import { UserNav } from "@/components/admin-panel/user-nav";
 import { ModeToggle } from "@/components/mode-toggle";
+import { useFullScreen } from "../dashboard/tiptap/fullScreen.store";
 
 export function Navbar() {
+  const { isFullScreen, setIsFullScreen } = useFullScreen();
   return (
-    <header className="z-[10000] supports-backdrop-blur:bg-background/60 sticky top-0 w-full border-b bg-background/95 backdrop-blur">
+    <header
+      className={`supports-backdrop-blur:bg-background/60 sticky top-0 w-full border-b bg-background/95 backdrop-blur ${
+        isFullScreen ? "z-30" : "z-[4000]"
+      }`}
+    >
       <div className="mx-4 sm:mx-8 flex h-14 items-center">
         <div className="flex items-center space-x-4 lg:space-x-0">
           <SheetMenu />

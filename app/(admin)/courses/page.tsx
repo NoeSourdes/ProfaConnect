@@ -26,17 +26,6 @@ import {
 } from "./[coursId]/edit/course.actions";
 
 export default function Course() {
-  type CourseType = {
-    id: string;
-    userId: string;
-    title: string;
-    description: string;
-    createdAt: Date;
-    updatedAt: Date;
-    published: boolean | null;
-    category: string | null;
-  };
-
   const { data: user } = useSession();
   const queryClient = useQueryClient();
   const {

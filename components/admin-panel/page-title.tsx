@@ -1,11 +1,19 @@
-"use client";
-
-import { pagesUrl } from "@/lib/pages";
+import { Group, pagesUrl } from "@/lib/pages";
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export function PageTitle() {
   const pathname = usePathname();
-  const pages = pagesUrl(pathname);
+  const [pages, setPages] = useState<Group[]>([]);
+
+  useEffect(() => {
+    const fetchPages = async () => {
+      const result = await pagesUrl(pathname);
+      setPages(result);
+    };
+
+    fetchPages();
+  }, [pathname]);
 
   const pageTitle = pages.map(({ menus }) => {
     const activeMenu = menus.find((menu) => menu.active);
@@ -13,8 +21,6 @@ export function PageTitle() {
       ? activeMenu.submenus.find((submenu) => submenu.active)?.label
       : activeMenu?.label ?? "";
   });
-
-  console.log(pageTitle);
 
   return <h1 className="font-bold">{pageTitle}</h1>;
 }

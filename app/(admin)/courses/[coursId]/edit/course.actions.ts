@@ -70,3 +70,15 @@ export const deleteCourseAction = userAction(
     return deletedCourse;
   }
 );
+
+export const checkTitleCourseAction = async (title: string) => {
+  const courseTitle = await prisma.course.findFirst({
+    where: {
+      title,
+    },
+  });
+
+  if (courseTitle) {
+    return true;
+  }
+};

@@ -11,6 +11,7 @@ import { useFullScreen } from "./fullScreen.store";
 
 export type EditorProps = {
   editable?: boolean;
+  setContent?: (content: JSONContent) => void;
 };
 
 const TailwindAdvancedEditor = (props: EditorProps) => {
@@ -38,6 +39,7 @@ const TailwindAdvancedEditor = (props: EditorProps) => {
         "markdown",
         editor.storage.markdown.getMarkdown()
       );
+      if (props.setContent) props.setContent(json);
       setSaveStatus("Sauvegardé");
     },
     500
@@ -56,7 +58,7 @@ const TailwindAdvancedEditor = (props: EditorProps) => {
       <div
         className={`${
           isFullScreen
-            ? "fixed inset-0 z-[100000] bg-background overflow-y-scroll"
+            ? "fixed inset-0 z-50 bg-background overflow-y-scroll"
             : "z-10"
         }`}
       >
