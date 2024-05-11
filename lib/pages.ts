@@ -1,3 +1,4 @@
+import { getNameCourse } from "@/actions/courses/courses";
 import {
   CalendarDays,
   FolderOpenDot,
@@ -21,7 +22,7 @@ type Menu = {
   submenus: Submenu[];
 };
 
-type Group = {
+export type Group = {
   groupLabel: string;
   menus: Menu[];
 };
@@ -99,7 +100,20 @@ export function getPages(pathname: string): Group[] {
   ];
 }
 
-export function pagesUrl(pathname: string): Group[] {
+const handleNameCourse = async (id: string) => {
+  if (!id) {
+    return;
+  }
+  const response = await getNameCourse(id);
+  if (!response) {
+    return "Le cours n'existe pas";
+  }
+  return response?.title;
+};
+
+export async function pagesUrl(pathname: string): Promise<Group[]> {
+  const courseName = await handleNameCourse(pathname.split("/")[2]);
+
   return [
     {
       groupLabel: "",
@@ -144,7 +158,7 @@ export function pagesUrl(pathname: string): Group[] {
             },
             {
               href: "/courses/:id",
-              label: "Détails du cours",
+              label: "Details du cours : " + courseName,
               active: /\/courses\/[a-z0-9]+/.test(pathname),
             },
           ],

@@ -16,7 +16,11 @@ import { Input } from "@/components/ui/input";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { createCourseAction, updateCourseAction } from "./course.actions";
+import {
+  checkTitleCourseAction,
+  createCourseAction,
+  updateCourseAction,
+} from "./course.actions";
 import { CourseType, courseSchema } from "./course.schema";
 
 export type CourseFormProps = {
@@ -34,6 +38,11 @@ export const CourseForm = (props: CourseFormProps) => {
 
   const mutation = useMutation({
     mutationFn: async (values: CourseType) => {
+      const checkTitle = await checkTitleCourseAction(values.title);
+      if (checkTitle) {
+        toast.error("Le titre du cours est déjà utilisé");
+        return;
+      }
       const { data, serverError } = isCreate
         ? await createCourseAction(values)
         : await updateCourseAction({
