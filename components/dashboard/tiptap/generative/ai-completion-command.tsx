@@ -1,6 +1,10 @@
+import {
+  CommandGroup,
+  CommandItem,
+  CommandSeparator,
+} from "@/components/ui/command";
 import { Check, TextQuote, TrashIcon } from "lucide-react";
 import { useEditor } from "novel";
-import { CommandGroup, CommandItem, CommandSeparator } from "../ui/command";
 
 const AICompletionCommands = ({
   completion,
