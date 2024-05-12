@@ -1,6 +1,6 @@
 "use client";
 
-import { BreadcrumbComponent } from "@/components/dashboard/Breadcrumb";
+import { BreadcrumbComponent } from "@/src/components/dashboard/Breadcrumb";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -11,10 +11,10 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
+} from "@/src/components/ui/alert-dialog";
+import { Button } from "@/src/components/ui/button";
+import { Card, CardContent } from "@/src/components/ui/card";
+import { Skeleton } from "@/src/components/ui/skeleton";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { CirclePlus, Pencil, Trash2 } from "lucide-react";
 import { useSession } from "next-auth/react";

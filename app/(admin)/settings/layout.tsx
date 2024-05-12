@@ -1,4 +1,4 @@
-import type { LayoutParams } from "@/types/next";
+import type { LayoutParams } from "@/src/types/next";
 
 export default async function RouteLayout(props: LayoutParams<{}>) {
   return (

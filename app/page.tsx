@@ -1,7 +1,7 @@
 "use client";
 
-import { ModeToggle } from "@/components/ToogleTheme";
-import { Button } from "@/components/ui/button";
+import { ModeToggle } from "@/src/components/ToogleTheme";
+import { Button } from "@/src/components/ui/button";
 import { signIn } from "next-auth/react";
 
 export default function Home() {

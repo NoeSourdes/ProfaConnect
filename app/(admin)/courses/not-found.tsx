@@ -1,8 +1,8 @@
 "use client";
 
-import { BreadcrumbComponent } from "@/components/dashboard/Breadcrumb";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { BreadcrumbComponent } from "@/src/components/dashboard/Breadcrumb";
+import { Button } from "@/src/components/ui/button";
+import { Card, CardContent } from "@/src/components/ui/card";
 import Link from "next/link";
 
 export default function RouteError() {

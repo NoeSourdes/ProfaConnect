@@ -1,6 +1,6 @@
-import { BreadcrumbComponent } from "@/components/dashboard/Breadcrumb";
-import { prisma } from "@/lib/prisma";
-import type { PageParams } from "@/types/next";
+import { BreadcrumbComponent } from "@/src/components/dashboard/Breadcrumb";
+import { prisma } from "@/src/lib/prisma";
+import type { PageParams } from "@/src/types/next";
 import { notFound } from "next/navigation";
 import { NewLessonComponent } from "../[lessonId]/edit/newLessonComponent";
 

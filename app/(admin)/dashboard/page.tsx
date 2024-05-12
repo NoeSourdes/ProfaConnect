@@ -1,5 +1,5 @@
-import { BreadcrumbComponent } from "@/components/dashboard/Breadcrumb";
-import { requiredCurrentUser } from "@/lib/auth/current-user";
+import { BreadcrumbComponent } from "@/src/components/dashboard/Breadcrumb";
+import { requiredCurrentUser } from "@/src/lib/auth/current-user";
 
 export default async function Page() {
   const user = await requiredCurrentUser();

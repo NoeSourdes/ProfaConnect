@@ -1,7 +1,7 @@
 "use server";
 
-import { prisma } from "@/lib/prisma";
-import { userAction } from "@/lib/safe-actions";
+import { prisma } from "@/src/lib/prisma";
+import { userAction } from "@/src/lib/safe-actions";
 import { z } from "zod";
 import { courseSchema } from "./course.schema";
 

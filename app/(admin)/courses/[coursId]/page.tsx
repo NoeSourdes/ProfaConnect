@@ -1,7 +1,7 @@
 "use client";
 
 import { getNameCourse } from "@/actions/courses/courses";
-import { BreadcrumbComponent } from "@/components/dashboard/Breadcrumb";
+import { BreadcrumbComponent } from "@/src/components/dashboard/Breadcrumb";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -12,11 +12,11 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
-import type { PageParams } from "@/types/next";
+} from "@/src/components/ui/alert-dialog";
+import { Button } from "@/src/components/ui/button";
+import { Card, CardContent } from "@/src/components/ui/card";
+import { Skeleton } from "@/src/components/ui/skeleton";
+import type { PageParams } from "@/src/types/next";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { CirclePlus, Pencil, Trash2 } from "lucide-react";
 import Link from "next/link";

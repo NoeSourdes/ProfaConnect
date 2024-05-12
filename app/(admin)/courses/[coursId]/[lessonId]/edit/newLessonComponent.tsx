@@ -1,8 +1,8 @@
 "use client";
 
-import FileUploaderComponent from "@/components/dashboard/file-uploader/fileUpload";
-import TailwindEditor from "@/components/dashboard/tiptap/Editor";
-import { Button } from "@/components/ui/button";
+import FileUploaderComponent from "@/src/components/dashboard/file-uploader/fileUpload";
+import TailwindEditor from "@/src/components/dashboard/tiptap/Editor";
+import { Button } from "@/src/components/ui/button";
 import {
   Card,
   CardContent,
@@ -10,10 +10,15 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+} from "@/src/components/ui/card";
+import { Input } from "@/src/components/ui/input";
+import { Label } from "@/src/components/ui/label";
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@/src/components/ui/tabs";
 import { useMutation } from "@tanstack/react-query";
 import { Paperclip } from "lucide-react";
 import { useRouter } from "next/navigation";
