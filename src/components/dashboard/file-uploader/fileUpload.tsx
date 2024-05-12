@@ -7,7 +7,11 @@ import {
   FileUploaderItem,
 } from "@/src/components/extensions/file-uploader";
 import { Paperclip } from "lucide-react";
-import { useState } from "react";
+
+interface fileUploaderProps {
+  files: File[] | null;
+  setFiles: React.Dispatch<React.SetStateAction<File[] | null>>;
+}
 
 const FileSvgDraw = () => {
   return (
@@ -28,21 +32,22 @@ const FileSvgDraw = () => {
         />
       </svg>
       <p className="mb-1 text-sm text-gray-500 dark:text-gray-400">
-        <span className="font-semibold">Click to upload</span>
-        &nbsp; or drag and drop
+        <span className="font-semibold">
+          Cliquez pour sélectionner un fichier
+        </span>
+        &nbsp; ou faites glisser et déposez
       </p>
-      <p className="text-xs text-gray-500 dark:text-gray-400">
-        SVG, PNG, JPG or GIF
-      </p>
+      <p className="text-xs text-gray-500 dark:text-gray-400">PDF</p>
     </>
   );
 };
 
-const FileUploaderComponent = () => {
-  const [files, setFiles] = useState<File[] | null>(null);
-
+const FileUploaderComponent = ({ files, setFiles }: fileUploaderProps) => {
   const dropZoneConfig = {
-    maxFiles: 5,
+    accept: {
+      "application/pdf": [".pdf"],
+    },
+    maxFiles: 1,
     maxSize: 1024 * 1024 * 4,
     multiple: true,
   };

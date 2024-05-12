@@ -66,9 +66,17 @@ model Lesson {
   updatedAt     DateTime      @updatedAt
   title         String        @db.VarChar(255)
   userId        String
-  document      Json?         
+  document      Json?
+  url           String?       
   courseId      String
   course        Course      @relation(fields: [courseId], references: [id])
+}
+
+model file{
+  key String @id
+  name String
+  userId String
+  url String
 }
 
 model VerificationToken {
