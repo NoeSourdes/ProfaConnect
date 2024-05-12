@@ -250,7 +250,8 @@ export default function Course() {
                               Supprimer le cours
                             </AlertDialogTitle>
                             <AlertDialogDescription>
-                              Êtes-vous sûr de vouloir supprimer le cours ?
+                              Êtes-vous sûr de vouloir supprimer le cours, et
+                              toutes les leçons associées à {course.title} ?
                             </AlertDialogDescription>
                           </AlertDialogHeader>
                           <AlertDialogFooter>

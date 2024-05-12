@@ -59,7 +59,11 @@ export const deleteCourseAction = userAction(
     if (!course) {
       throw new Error("Course not found");
     }
-
+    await prisma.lesson.deleteMany({
+      where: {
+        courseId: id,
+      },
+    });
     const deletedCourse = await prisma.course.delete({
       where: {
         id: id,
