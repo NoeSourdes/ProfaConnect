@@ -85,9 +85,7 @@ const TailwindAdvancedEditor = (props: EditorProps) => {
         )}
         <EditorRootComponent
           editable={props.editable}
-          initialContent={JSON.parse(
-            window.localStorage.getItem("novel-content") ?? ""
-          )}
+          initialContent={initialContent}
           debouncedUpdates={debouncedUpdates}
           setSaveStatus={setSaveStatus}
           openNode={openNode}
