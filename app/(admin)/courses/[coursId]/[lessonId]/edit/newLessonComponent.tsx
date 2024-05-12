@@ -1,6 +1,5 @@
 "use client";
 
-import FileUploaderComponent from "@/src/components/dashboard/file-uploader/fileUpload";
 import TailwindEditor from "@/src/components/dashboard/tiptap/Editor";
 import { Button } from "@/src/components/ui/button";
 import {
@@ -19,14 +18,20 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/src/components/ui/tabs";
+import { UploadDropzone } from "@/src/utils/uploadthing";
 import { useMutation } from "@tanstack/react-query";
-import { Paperclip } from "lucide-react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { JSONContent } from "novel";
 import { useState } from "react";
 import { toast } from "sonner";
-import { checkTitleLessonAction, createLesson } from "./lesson.action";
-import { lessonType } from "./lesson.schema";
+import { ClientUploadedFileData } from "uploadthing/types";
+import {
+  checkTitleLessonAction,
+  createLesson,
+  createLesssonPDF,
+} from "./lesson.action";
+import { lessonType, lessonTypePDF } from "./lesson.schema";
 
 export type NewLessonComponentProps = {
   courseId: string;
@@ -34,9 +39,10 @@ export type NewLessonComponentProps = {
 
 export const NewLessonComponent = (props: NewLessonComponentProps) => {
   const [title, setTitle] = useState("");
+  const [titleLesson, setTitleLesson] = useState<string>("");
   const [content, setContent] = useState<JSONContent | null>(null);
   const router = useRouter();
-
+  const [files, setFiles] = useState<ClientUploadedFileData<null>[]>([]);
   const mutation = useMutation({
     mutationFn: async (values: lessonType) => {
       const checkTitle = await checkTitleLessonAction(values.title);
@@ -60,6 +66,26 @@ export const NewLessonComponent = (props: NewLessonComponentProps) => {
           content: [""],
         })
       );
+      router.push(`/courses/${data.courseId}`);
+    },
+  });
+
+  const mutationPDF = useMutation({
+    mutationFn: async (values: lessonTypePDF) => {
+      const checkTitle = await checkTitleLessonAction(values.title);
+      if (checkTitle) {
+        toast.error("Le titre de la leçon est déjà utilisé");
+        return;
+      }
+      if (!titleLesson) {
+        toast.error("Veuillez remplir le titre de la leçon");
+        return;
+      }
+      const { data, serverError } = await createLesssonPDF(values);
+      if (serverError || !data) {
+        throw new Error(serverError);
+      }
+      toast.success("La leçon a été créée avec succès");
       router.push(`/courses/${data.courseId}`);
     },
   });
@@ -131,20 +157,57 @@ export const NewLessonComponent = (props: NewLessonComponentProps) => {
                   type="text"
                   id="title"
                   placeholder="Tapez le titre de la leçon"
-                  onChange={(e) => setTitle(e.target.value)}
+                  onChange={(e) => setTitleLesson(e.target.value)}
                 />
               </div>
             </div>
           </CardHeader>
           <CardContent className="border-t pt-5 ">
-            <FileUploaderComponent />
+            <UploadDropzone
+              content={{
+                label: "Déposez un fichier ici ou cliquez pour importer",
+                allowedContent: "PDF (4MB)",
+                button({ ready, isUploading }) {
+                  return (
+                    <Button
+                      disabled={!ready || isUploading}
+                      className="w-full"
+                      type="button"
+                    >
+                      {isUploading ? "Téléchargement..." : "Télécharger"}
+                    </Button>
+                  );
+                },
+              }}
+              className="border-dashed border-2 border-foreground-mute"
+              endpoint="pdfUploader"
+              onClientUploadComplete={(res) => {
+                setFiles(res);
+                toast.success("Fichier importé avec succès");
+              }}
+              onUploadError={(error: Error) => {
+                toast.error(error.message);
+              }}
+            />
           </CardContent>
-          <CardFooter>
-            <Button>
-              <Paperclip size={16} className="mr-2" />
-              Importer le fichier
-            </Button>
-          </CardFooter>
+          {files.length > 0 && (
+            <CardFooter className="flex items-center gap-2">
+              <Link href={files[0].url}>
+                <Button variant="outline">Voir le fichier importé</Button>
+              </Link>
+              <Button
+                onClick={() =>
+                  mutationPDF.mutateAsync({
+                    title: titleLesson,
+                    courseId: props.courseId,
+                    url: files[0].url,
+                  })
+                }
+              >
+                Créer la leçon
+              </Button>
+            </CardFooter>
+          )}
         </Card>
       </TabsContent>
     </Tabs>

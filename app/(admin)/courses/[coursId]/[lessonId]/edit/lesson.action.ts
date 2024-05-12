@@ -3,7 +3,7 @@
 import { prisma } from "@/src/lib/prisma";
 import { userAction } from "@/src/lib/safe-actions";
 import { z } from "zod";
-import { lessonSchema } from "./lesson.schema";
+import { lessonSchema, lessonSchemaPDF } from "./lesson.schema";
 
 export const createLesson = userAction(
   lessonSchema,
@@ -13,6 +13,21 @@ export const createLesson = userAction(
       data: {
         title: inputs.title,
         document: content,
+        courseId: inputs.courseId,
+        userId: context.user.id,
+      },
+    });
+    return lesson;
+  }
+);
+
+export const createLesssonPDF = userAction(
+  lessonSchemaPDF,
+  async (inputs, context) => {
+    const lesson = await prisma.lesson.create({
+      data: {
+        title: inputs.title,
+        url: inputs.url,
         courseId: inputs.courseId,
         userId: context.user.id,
       },

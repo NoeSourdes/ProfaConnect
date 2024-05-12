@@ -1,6 +1,9 @@
+import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
 import { GeistSans } from "geist/font/sans";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { extractRouterConfig } from "uploadthing/server";
+import { ourFileRouter } from "./api/uploadthing/core";
 import "./globals.css";
 import { Providers } from "./providers";
 import "./style/prosemirror.css";
@@ -23,6 +26,7 @@ export default function RootLayout({
       <html lang="fr" suppressHydrationWarning>
         <head />
         <body className={GeistSans.className}>
+          <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
           <Providers>{children}</Providers>
         </body>
       </html>
