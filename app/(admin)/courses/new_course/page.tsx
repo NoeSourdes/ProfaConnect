@@ -1,5 +1,5 @@
-import { BreadcrumbComponent } from "@/components/dashboard/Breadcrumb";
-import type { PageParams } from "@/types/next";
+import { BreadcrumbComponent } from "@/src/components/dashboard/Breadcrumb";
+import type { PageParams } from "@/src/types/next";
 import { CourseForm } from "../[coursId]/edit/CourseForm";
 
 export default function RoutePage(props: PageParams<{}>) {

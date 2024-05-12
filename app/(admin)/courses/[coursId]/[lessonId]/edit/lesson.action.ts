@@ -1,8 +1,7 @@
 "use server";
 
-import { prisma } from "@/lib/prisma";
-import { userAction } from "@/lib/safe-actions";
-import { toast } from "sonner";
+import { prisma } from "@/src/lib/prisma";
+import { userAction } from "@/src/lib/safe-actions";
 import { z } from "zod";
 import { lessonSchema } from "./lesson.schema";
 
