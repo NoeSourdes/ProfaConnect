@@ -195,6 +195,11 @@ export default function Course() {
                 Créer un cours
               </Button>
             </Link>
+            <Button className="flex items-center gap-2 mb-4">
+              {" "}
+              <CirclePlus />
+              Créer un cours
+            </Button>
             <div className="w-full flex flex-wrap gap-4">
               {courses?.map((course) => (
                 <div
