@@ -45,7 +45,7 @@ export const NewLessonComponent = (props: NewLessonComponentProps) => {
         return;
       }
       if (!content || !title) {
-        toast.error("Veuillez rédiger le contenu de la leçon");
+        toast.error("Veuillez remplir tous les champs ( titre et contenu )");
         return;
       }
       const { data, serverError } = await createLesson(values);
