@@ -16,7 +16,7 @@ import { Button } from "@/src/components/ui/button";
 import { Card, CardContent } from "@/src/components/ui/card";
 import { Skeleton } from "@/src/components/ui/skeleton";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { CirclePlus, Pencil, Trash2 } from "lucide-react";
+import { CirclePlus, Pencil, Trash2, Undo2 } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { toast } from "sonner";
@@ -58,22 +58,29 @@ export default function Course() {
     return (
       <div className="h-full w-full overflow-y-scroll">
         <main className="flex flex-1 flex-col gap-4 lg:gap-6 h-full">
-          <BreadcrumbComponent
-            array={[
-              {
-                item: "Home",
-                link: "/",
-              },
-              {
-                item: "Dashboard",
-                link: "/dashboard",
-              },
-              {
-                item: "Cours",
-                link: "/courses",
-              },
-            ]}
-          />
+          <div className="flex items-center gap-3 w-full">
+            <Link href="/dashboard">
+              <Button size="icon" variant="secondary">
+                <Undo2 size={20} />
+              </Button>
+            </Link>
+            <BreadcrumbComponent
+              array={[
+                {
+                  item: "Home",
+                  link: "/",
+                },
+                {
+                  item: "Dashboard",
+                  link: "/dashboard",
+                },
+                {
+                  item: "Cours",
+                  link: "/courses",
+                },
+              ]}
+            />
+          </div>
           <div className="w-full flex flex-wrap gap-4">
             {Array.from({ length: 20 }).map((_, i) => (
               <Skeleton key={i} className="h-52 min-w-52 grow" />
@@ -88,22 +95,29 @@ export default function Course() {
     return (
       <div className="h-full w-full">
         <main className="flex flex-1 flex-col gap-4 lg:gap-6 h-full">
-          <BreadcrumbComponent
-            array={[
-              {
-                item: "Home",
-                link: "/",
-              },
-              {
-                item: "Dashboard",
-                link: "/dashboard",
-              },
-              {
-                item: "Cours",
-                link: "/courses",
-              },
-            ]}
-          />
+          <div className="flex items-center gap-3 w-full">
+            <Link href="/dashboard">
+              <Button size="icon" variant="secondary">
+                <Undo2 size={20} />
+              </Button>
+            </Link>
+            <BreadcrumbComponent
+              array={[
+                {
+                  item: "Home",
+                  link: "/",
+                },
+                {
+                  item: "Dashboard",
+                  link: "/dashboard",
+                },
+                {
+                  item: "Cours",
+                  link: "/courses",
+                },
+              ]}
+            />
+          </div>
           <Card className="rounded-lg shadow-none border-dashed mt-5">
             <CardContent className="p-6">
               <div className="flex justify-center items-center min-h-[calc(100vh-56px-64px-20px-24px-56px-48px)]">
@@ -130,22 +144,29 @@ export default function Course() {
     <div className="h-full w-full">
       {courses?.length === 0 ? (
         <>
-          <BreadcrumbComponent
-            array={[
-              {
-                item: "Home",
-                link: "/",
-              },
-              {
-                item: "Dashboard",
-                link: "/dashboard",
-              },
-              {
-                item: "Cours",
-                link: "/courses",
-              },
-            ]}
-          />
+          <div className="flex items-center gap-3 w-full">
+            <Link href="/dashboard">
+              <Button size="icon" variant="secondary">
+                <Undo2 size={20} />
+              </Button>
+            </Link>
+            <BreadcrumbComponent
+              array={[
+                {
+                  item: "Home",
+                  link: "/",
+                },
+                {
+                  item: "Dashboard",
+                  link: "/dashboard",
+                },
+                {
+                  item: "Cours",
+                  link: "/courses",
+                },
+              ]}
+            />
+          </div>
           <Card className="rounded-lg shadow-none border-dashed mt-5">
             <CardContent className="p-6">
               <div className="flex justify-center items-center min-h-[calc(100vh-56px-64px-20px-24px-56px-48px)]">
@@ -168,22 +189,29 @@ export default function Course() {
         </>
       ) : (
         <main className="flex flex-1 flex-col gap-4 lg:gap-6 h-full">
-          <BreadcrumbComponent
-            array={[
-              {
-                item: "Home",
-                link: "/",
-              },
-              {
-                item: "Dashboard",
-                link: "/dashboard",
-              },
-              {
-                item: "Cours",
-                link: "/courses",
-              },
-            ]}
-          />
+          <div className="flex items-center gap-3 w-full">
+            <Link href="/dashboard">
+              <Button size="icon" variant="secondary">
+                <Undo2 size={20} />
+              </Button>
+            </Link>
+            <BreadcrumbComponent
+              array={[
+                {
+                  item: "Home",
+                  link: "/",
+                },
+                {
+                  item: "Dashboard",
+                  link: "/dashboard",
+                },
+                {
+                  item: "Cours",
+                  link: "/courses",
+                },
+              ]}
+            />
+          </div>
           <div
             className="h-full w-full rounded-lg"
             x-chunk="dashboard-02-chunk-1"

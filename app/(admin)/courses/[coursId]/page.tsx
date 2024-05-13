@@ -18,7 +18,7 @@ import { Card, CardContent } from "@/src/components/ui/card";
 import { Skeleton } from "@/src/components/ui/skeleton";
 import type { PageParams } from "@/src/types/next";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { CirclePlus, Pencil, Trash2 } from "lucide-react";
+import { CirclePlus, Pencil, Trash2, Undo2 } from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
 import {
@@ -81,26 +81,34 @@ export default function RoutePage(
     return (
       <div className="h-full w-full">
         <main className="flex flex-1 flex-col gap-4 lg:gap-6 h-full">
-          <BreadcrumbComponent
-            array={[
-              {
-                item: "Home",
-                link: "/",
-              },
-              {
-                item: "Dashboard",
-                link: "/dashboard",
-              },
-              {
-                item: "Cours ",
-                link: "/courses",
-              },
-              {
-                item: "Chargement...",
-                link: `/courses/${props.params.coursId}`,
-              },
-            ]}
-          />
+          <div className="flex items-center gap-3">
+            <Link href={`/courses`}>
+              <Button size="icon" variant="secondary">
+                <Undo2 size={20} />
+              </Button>
+            </Link>
+
+            <BreadcrumbComponent
+              array={[
+                {
+                  item: "Home",
+                  link: "/",
+                },
+                {
+                  item: "Dashboard",
+                  link: "/dashboard",
+                },
+                {
+                  item: "Cours ",
+                  link: "/courses",
+                },
+                {
+                  item: "Chargement...",
+                  link: `/courses/${props.params.coursId}`,
+                },
+              ]}
+            />
+          </div>
           <div className="w-full flex flex-wrap gap-4">
             {Array.from({ length: 20 }).map((_, i) => (
               <Skeleton key={i} className="h-52 min-w-52 grow" />
@@ -114,26 +122,34 @@ export default function RoutePage(
     return (
       <div className="h-full w-full">
         <main className="flex flex-1 flex-col gap-4 lg:gap-6 h-full">
-          <BreadcrumbComponent
-            array={[
-              {
-                item: "Home",
-                link: "/",
-              },
-              {
-                item: "Dashboard",
-                link: "/dashboard",
-              },
-              {
-                item: "Cours ",
-                link: "/courses",
-              },
-              {
-                item: "Chargement...",
-                link: `/courses/${props.params.coursId}`,
-              },
-            ]}
-          />
+          <div className="flex items-center gap-3">
+            <Link href={`/courses`}>
+              <Button size="icon" variant="secondary">
+                <Undo2 size={20} />
+              </Button>
+            </Link>
+
+            <BreadcrumbComponent
+              array={[
+                {
+                  item: "Home",
+                  link: "/",
+                },
+                {
+                  item: "Dashboard",
+                  link: "/dashboard",
+                },
+                {
+                  item: "Cours ",
+                  link: "/courses",
+                },
+                {
+                  item: "Chargement...",
+                  link: `/courses/${props.params.coursId}`,
+                },
+              ]}
+            />
+          </div>
           <div className="w-full flex flex-wrap gap-4">
             {Array.from({ length: 20 }).map((_, i) => (
               <Skeleton key={i} className="h-52 min-w-52 grow" />
@@ -147,26 +163,34 @@ export default function RoutePage(
     return (
       <div className="h-full w-full">
         <main className="flex flex-1 flex-col gap-4 lg:gap-6 h-full">
-          <BreadcrumbComponent
-            array={[
-              {
-                item: "Home",
-                link: "/",
-              },
-              {
-                item: "Dashboard",
-                link: "/dashboard",
-              },
-              {
-                item: "Cours",
-                link: "/courses",
-              },
-              {
-                item: "Erreur",
-                link: `/courses/${props.params.coursId}`,
-              },
-            ]}
-          />
+          <div className="flex items-center gap-3">
+            <Link href={`/courses`}>
+              <Button size="icon" variant="secondary">
+                <Undo2 size={20} />
+              </Button>
+            </Link>
+
+            <BreadcrumbComponent
+              array={[
+                {
+                  item: "Home",
+                  link: "/",
+                },
+                {
+                  item: "Dashboard",
+                  link: "/dashboard",
+                },
+                {
+                  item: "Cours ",
+                  link: "/courses",
+                },
+                {
+                  item: "Erreur",
+                  link: `/courses/${props.params.coursId}`,
+                },
+              ]}
+            />
+          </div>
           <Card className="rounded-lg shadow-none border-dashed mt-5">
             <CardContent className="p-6">
               <div className="flex justify-center items-center min-h-[calc(100vh-56px-64px-20px-24px-56px-48px)]">
@@ -193,26 +217,33 @@ export default function RoutePage(
     <div className="h-full w-full">
       {lessons?.length === 0 ? (
         <>
-          <BreadcrumbComponent
-            array={[
-              {
-                item: "Home",
-                link: "/",
-              },
-              {
-                item: "Dashboard",
-                link: "/dashboard",
-              },
-              {
-                item: "Cours",
-                link: "/courses",
-              },
-              {
-                item: nameCourse ? nameCourse : "inconnu",
-                link: `/courses/${props.params.coursId}`,
-              },
-            ]}
-          />
+          <div className="flex items-center gap-3">
+            <Link href={`/courses`}>
+              <Button size="icon" variant="secondary">
+                <Undo2 size={20} />
+              </Button>
+            </Link>
+            <BreadcrumbComponent
+              array={[
+                {
+                  item: "Home",
+                  link: "/",
+                },
+                {
+                  item: "Dashboard",
+                  link: "/dashboard",
+                },
+                {
+                  item: "Cours ",
+                  link: "/courses",
+                },
+                {
+                  item: nameCourse ? nameCourse : "inconnu",
+                  link: `/courses/${props.params.coursId}`,
+                },
+              ]}
+            />
+          </div>
           <Card className="rounded-lg shadow-none border-dashed mt-5">
             <CardContent className="p-6">
               <div className="flex justify-center items-center min-h-[calc(100vh-56px-64px-20px-24px-56px-48px)]">
@@ -236,26 +267,33 @@ export default function RoutePage(
         </>
       ) : (
         <main className="flex flex-1 flex-col gap-4 lg:gap-6 h-full">
-          <BreadcrumbComponent
-            array={[
-              {
-                item: "Home",
-                link: "/",
-              },
-              {
-                item: "Dashboard",
-                link: "/dashboard",
-              },
-              {
-                item: "Cours",
-                link: "/courses",
-              },
-              {
-                item: nameCourse ? nameCourse : "inconnu",
-                link: `/courses/${props.params.coursId}`,
-              },
-            ]}
-          />
+          <div className="flex items-center gap-3">
+            <Link href={`/courses`}>
+              <Button size="icon" variant="secondary">
+                <Undo2 size={20} />
+              </Button>
+            </Link>
+            <BreadcrumbComponent
+              array={[
+                {
+                  item: "Home",
+                  link: "/",
+                },
+                {
+                  item: "Dashboard",
+                  link: "/dashboard",
+                },
+                {
+                  item: "Cours ",
+                  link: "/courses",
+                },
+                {
+                  item: nameCourse ? nameCourse : "inconnu",
+                  link: `/courses/${props.params.coursId}`,
+                },
+              ]}
+            />
+          </div>
           <div
             className="h-full w-full rounded-lg"
             x-chunk="dashboard-02-chunk-1"

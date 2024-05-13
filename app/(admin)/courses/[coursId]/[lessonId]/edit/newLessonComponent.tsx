@@ -43,8 +43,13 @@ export const NewLessonComponent = (props: NewLessonComponentProps) => {
   const [content, setContent] = useState<JSONContent | null>(null);
   const router = useRouter();
   const [files, setFiles] = useState<ClientUploadedFileData<null>[]>([]);
+
   const mutation = useMutation({
     mutationFn: async (values: lessonType) => {
+      // await convertToPDF({
+      //   type: "doc",
+      //   content: content,
+      // });
       const checkTitle = await checkTitleLessonAction(values.title);
       if (checkTitle) {
         toast.error("Le titre de la leçon est déjà utilisé");
@@ -129,10 +134,7 @@ export const NewLessonComponent = (props: NewLessonComponentProps) => {
                 mutation.mutateAsync({
                   title,
                   courseId: props.courseId,
-                  content: JSON.stringify({
-                    type: "doc",
-                    content: content,
-                  }),
+                  content: JSON.stringify(content),
                 })
               }
             >
@@ -163,6 +165,19 @@ export const NewLessonComponent = (props: NewLessonComponentProps) => {
             </div>
           </CardHeader>
           <CardContent className="border-t pt-5 ">
+            <div className="w-full rounded-lg h-20 border-dashed bg-warning/10 border-warning-border text-warning-border border-[1px] p-3 flex items-center">
+              <p>
+                <span className="font-semibold border rounded px-1 py-[0.5px] border-warning-border bg-warning-border/15">
+                  Veuillez
+                </span>{" "}
+                vous assurer de cliquer à nouveau sur le bouton{" "}
+                <span className="font-semibold border rounded px-1 py-[0.5px] border-warning-border bg-warning-border/15">
+                  Télécharger
+                </span>{" "}
+                après avoir importé le fichier, sinon l'importation ne sera pas
+                prise en compte.
+              </p>
+            </div>
             <UploadDropzone
               content={{
                 label: "Déposez un fichier ici ou cliquez pour importer",

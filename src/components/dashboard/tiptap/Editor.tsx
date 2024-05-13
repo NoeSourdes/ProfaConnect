@@ -12,6 +12,7 @@ import { useFullScreen } from "./fullScreen.store";
 export type EditorProps = {
   editable?: boolean;
   setContent?: (content: JSONContent) => void;
+  initialContent?: JSONContent;
 };
 
 const TailwindAdvancedEditor = (props: EditorProps) => {
@@ -46,15 +47,18 @@ const TailwindAdvancedEditor = (props: EditorProps) => {
   );
 
   useEffect(() => {
-    const content = window.localStorage.getItem("novel-content");
-    if (content) setInitialContent(JSON.parse(content));
-    else setInitialContent([defaultEditorContent]);
-  }, []);
+    if (props.initialContent) setInitialContent(props.initialContent);
+    else {
+      const content = window.localStorage.getItem("novel-content");
+      if (content) setInitialContent(JSON.parse(content));
+      else setInitialContent([defaultEditorContent]);
+    }
+  }, [props.initialContent]);
 
   if (!initialContent) return null;
 
   return (
-    <div className={`relative w-full h-full`}>
+    <div className={`relative bg-black`}>
       <div
         className={`${
           isFullScreen
@@ -62,27 +66,29 @@ const TailwindAdvancedEditor = (props: EditorProps) => {
             : "z-10"
         }`}
       >
-        {props.editable !== false && (
-          <div
-            className={`${
-              isFullScreen ? "fixed" : "absolute"
-            } flex items-center gap-2 z-10 mb-5 ${
-              isFullScreen ? "right-3 top-3" : "max-lg:right-3 right-0 top-0"
-            }`}
-          >
+        <div
+          className={`${
+            isFullScreen ? "fixed" : "absolute"
+          } flex items-center gap-2 z-10 mb-5 ${
+            isFullScreen
+              ? "right-3 top-3"
+              : "max-lg:right-3 right-0 max-sm:right-8 top-0"
+          }`}
+        >
+          {props.editable !== false && (
             <div className="rounded-lg bg-accent px-2 py-1 text-sm text-muted-foreground">
               {saveStatus}
             </div>
-            <Button
-              size="icon"
-              variant="outline"
-              onClick={toggleFullScreen}
-              className="text-muted-foreground"
-            >
-              {!isFullScreen ? <Expand size={20} /> : <Shrink size={20} />}
-            </Button>
-          </div>
-        )}
+          )}
+          <Button
+            size="icon"
+            variant="outline"
+            onClick={toggleFullScreen}
+            className="text-muted-foreground"
+          >
+            {!isFullScreen ? <Expand size={20} /> : <Shrink size={20} />}
+          </Button>
+        </div>
         <EditorRootComponent
           editable={props.editable}
           initialContent={initialContent}

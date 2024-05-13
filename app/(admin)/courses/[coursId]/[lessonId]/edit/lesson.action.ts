@@ -81,3 +81,14 @@ export const checkTitleLessonAction = async (title: string) => {
     return true;
   }
 };
+
+export const getLesson = async (id: string) => {
+  console.log("id", id);
+  const lesson = await prisma.lesson.findUnique({
+    where: {
+      lessonId: id,
+    },
+  });
+
+  return lesson;
+};
