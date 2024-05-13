@@ -165,7 +165,7 @@ export const NewLessonComponent = (props: NewLessonComponentProps) => {
             </div>
           </CardHeader>
           <CardContent className="border-t pt-5 ">
-            <div className="w-full rounded-lg h-20 border-dashed bg-warning/10 border-warning-border text-warning-border border-[1px] p-3 flex items-center">
+            <div className="w-full rounded-lg border-dashed bg-warning/10 border-warning-border text-warning-border border-[1px] p-3 flex items-center">
               <p>
                 <span className="font-semibold border rounded px-1 py-[0.5px] border-warning-border bg-warning-border/15">
                   Veuillez
