@@ -15,6 +15,7 @@ import { LinkSelector } from "../selectors/link-selector";
 import { NodeSelector } from "../selectors/node-selector";
 
 import { handleImageDrop, handleImagePaste } from "novel/plugins";
+import { useEffect, useState } from "react";
 import { defaultExtensions } from "../extensions.preview";
 import GenerativeMenuSwitch from "../generative/generative-menu-switch";
 import { uploadFn } from "../image-upload";
@@ -38,13 +39,25 @@ export type EditorRootComponentProps = {
 
 export const EditorRootComponent = (props: EditorRootComponentProps) => {
   const extensions = [...defaultExtensions, slashCommand];
+  const [imageUrl, setImageUrl] = useState(null);
+
+  useEffect(() => {
+    if (imageUrl) {
+      const img = new Image();
+      img.src = imageUrl;
+      img.onload = () => {
+        props.initialContent.content[1].attrs.width = img.width;
+        props.initialContent.content[1].attrs.height = img.height;
+      };
+    }
+  }, [imageUrl]);
   return (
     <EditorRoot>
       <EditorContent
         editable={props.editable ?? true}
         initialContent={props.initialContent}
         extensions={extensions}
-        className="relative min-h-[500px] w-full max-w-screen-lg bg-background sm:mb-[calc(20vh)]"
+        className="relative min-h-[500px] w-full max-w-screen-lg bg-background"
         editorProps={{
           handleDOMEvents: {
             keydown: (_view, event) => handleCommandNavigation(event),
