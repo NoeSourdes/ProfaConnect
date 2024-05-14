@@ -2,7 +2,7 @@
 
 import { Undo2 } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import "react-pdf/dist/Page/TextLayer.css";
@@ -26,6 +26,22 @@ export const PreviewPdf = (props: PreviewPdfProps) => {
   function onDocumentLoadSuccess({ numPages }: { numPages: number }): void {
     setNumPages(numPages);
   }
+
+  const [scale, setScale] = useState<number>(1);
+
+  useEffect(() => {
+    const handleResize = () => {
+      let newScale = window.innerWidth / 1000;
+      newScale = newScale < 0.7 ? 0.7 : newScale;
+      newScale = newScale > 1 ? 1 : newScale;
+      setScale(newScale);
+    };
+
+    window.addEventListener("resize", handleResize);
+    handleResize();
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
   return (
     <div>
       <div className="flex items-center gap-3 w-full">
@@ -54,9 +70,9 @@ export const PreviewPdf = (props: PreviewPdfProps) => {
             <Document
               file={props.url}
               onLoadSuccess={onDocumentLoadSuccess}
-              className="max-h-full"
+              className="max-h-ful"
             >
-              <Page pageNumber={pageNumber} />
+              <Page pageNumber={pageNumber} scale={scale} />
             </Document>
           </div>
         </div>
