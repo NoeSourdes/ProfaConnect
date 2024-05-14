@@ -79,7 +79,7 @@ export const PreviewPdf = (props: PreviewPdfProps) => {
           pageNumber={pageNumber}
         />
         <div
-          className={`flex-1 w-full max-h-screen flex justify-center max-sm:overflow-hidden`}
+          className={`flex-1 w-full max-h-screen flex justify-center max-sm:overflow-hidden mt-5`}
         >
           <div>
             <Document
