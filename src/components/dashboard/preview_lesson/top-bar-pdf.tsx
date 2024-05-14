@@ -1,7 +1,15 @@
 "use client";
 
-import { ArrowLeft, ArrowRight, Expand, Shrink } from "lucide-react";
+import {
+  ArrowLeft,
+  ArrowRight,
+  Expand,
+  Minus,
+  Plus,
+  Shrink,
+} from "lucide-react";
 import { Button } from "../../ui/button";
+import { Input } from "../../ui/input";
 
 export type TopBarPdfProps = {
   setNumPages: (numPages: number) => void;
@@ -10,6 +18,8 @@ export type TopBarPdfProps = {
   pageNumber: number;
   isFullScreen: boolean;
   setIsFullScreen: (isFullScreen: boolean) => void;
+  pourcentage: number;
+  setPourcentage: (pourcentage: number) => void;
 };
 
 export const TopBarPdf = (props: TopBarPdfProps) => {
@@ -36,7 +46,33 @@ export const TopBarPdf = (props: TopBarPdfProps) => {
           Page {props.pageNumber} sur {props.numPages}
         </span>
       </div>
-      <div>
+      <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2">
+          <Button
+            size="icon"
+            variant="secondary"
+            onClick={() => {
+              if (props.pourcentage > 10) {
+                props.setPourcentage(props.pourcentage - 10);
+              }
+            }}
+          >
+            <Minus size={20} />
+          </Button>
+          <Input
+            type="text"
+            className="max-w-16 w-full"
+            value={`${props.pourcentage}%`}
+            onChange={(e) => props.setPourcentage(parseInt(e.target.value))}
+          ></Input>
+          <Button
+            size="icon"
+            variant="secondary"
+            onClick={() => props.setPourcentage(props.pourcentage + 10)}
+          >
+            <Plus size={20} />
+          </Button>
+        </div>
         <Button
           size="icon"
           variant="secondary"

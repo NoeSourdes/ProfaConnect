@@ -24,10 +24,17 @@ export const PreviewPdf = (props: PreviewPdfProps) => {
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [scale, setScale] = useState<number>(1);
   const [isFullScreen, setIsFullScreen] = useState<boolean>(false);
+  const [pourcentage, setPourcentage] = useState<number>(100);
+  const [scalePoucentage, setScalePourcentage] = useState<number>(1);
 
   function onDocumentLoadSuccess({ numPages }: { numPages: number }): void {
     setNumPages(numPages);
   }
+
+  useEffect(() => {
+    setScalePourcentage(pourcentage / 100);
+    setScale(pourcentage / 100);
+  }, [pourcentage]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -71,6 +78,8 @@ export const PreviewPdf = (props: PreviewPdfProps) => {
         }`}
       >
         <TopBarPdf
+          pourcentage={pourcentage}
+          setPourcentage={setPourcentage}
           setIsFullScreen={setIsFullScreen}
           isFullScreen={isFullScreen}
           setNumPages={setNumPages}
@@ -79,7 +88,9 @@ export const PreviewPdf = (props: PreviewPdfProps) => {
           pageNumber={pageNumber}
         />
         <div
-          className={`flex-1 w-full max-h-screen flex justify-center max-sm:overflow-hidden mt-5`}
+          className={`flex-1 w-full max-h-screen flex mt-5 overflow-scroll scale-[${scalePoucentage}] transform transition-transform ${
+            scalePoucentage <= 1.4 && "justify-center"
+          }`}
         >
           <div>
             <Document
