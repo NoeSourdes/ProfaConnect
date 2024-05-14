@@ -32,7 +32,7 @@ export const PreviewPdf = (props: PreviewPdfProps) => {
   useEffect(() => {
     const handleResize = () => {
       let newScale = window.innerWidth / 1000;
-      newScale = newScale < 0.63 ? 0.63 : newScale;
+      newScale = newScale < 0.6 ? 0.6 : newScale;
       newScale = newScale > 1 ? 1 : newScale;
       setScale(newScale);
     };
