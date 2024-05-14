@@ -1,17 +1,14 @@
 "use client";
 
-import { ChevronLeft, ChevronRight, Undo2 } from "lucide-react";
+import { Undo2 } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import "react-pdf/dist/Page/TextLayer.css";
-import { toast } from "sonner";
 import { Button } from "../../ui/button";
-import { Card, CardContent } from "../../ui/card";
-import { Input } from "../../ui/input";
-import { Skeleton } from "../../ui/skeleton";
 import { BreadcrumbComponent } from "../Breadcrumb";
+import { TopBarPdf } from "./top-bar-pdf";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
@@ -50,61 +47,20 @@ export const PreviewPdf = (props: PreviewPdfProps) => {
           ]}
         />
       </div>
-      <Card className="rounded-lg border-none mt-6 shadow-none">
-        <CardContent className="p-6 border-t">
-          <div className="w-full border-b pb-6 flex justify-between items-center">
-            <div className="flex justify-between items-center gap-2">
-              <ChevronLeft
-                className="cursor-pointer"
-                size={20}
-                onClick={() => {
-                  if (pageNumber > 1) {
-                    setPageNumber(pageNumber - 1);
-                  }
-                }}
-              />
-              <div className="flex items-center gap-1">
-                <Input
-                  type="text"
-                  className="max-w-10"
-                  value={pageNumber}
-                  onChange={(e) => {
-                    const value = parseInt(e.target.value);
-                    if (value > 0 && value <= (numPages ?? 0)) {
-                      setPageNumber(value);
-                    }
-                  }}
-                />{" "}
-                <span className="text-muted-foreground">/{numPages}</span>
-              </div>
-              <ChevronRight
-                className="cursor-pointer"
-                size={20}
-                onClick={() => {
-                  if (pageNumber < (numPages ?? 0)) {
-                    setPageNumber(pageNumber + 1);
-                  }
-                }}
-              />
-            </div>
-          </div>
-          <div className="flex justify-center min-h-[calc(100vh-56px-64px-20px-24px-56px-48px)] rounded-lg overflow-x-hidden">
+      <div className="w-full bg-background flex flex-col items-center pt-5">
+        <TopBarPdf />
+        <div className="flex-1 w-full max-h-screen flex justify-center max-sm:overflow-hidden">
+          <div>
             <Document
-              loading={
-                <Skeleton className="flex justify-center items-center min-h-[calc(100vh-56px-64px-20px-24px-56px-48px)]"></Skeleton>
-              }
-              onLoadSuccess={onDocumentLoadSuccess}
-              onLoadError={() => {
-                toast.error("Erreur lors du chargement du fichier PDF.");
-              }}
               file={props.url}
-              className="sm:max-h-full max-sm:w-[600px]"
+              onLoadSuccess={onDocumentLoadSuccess}
+              className="max-h-full"
             >
               <Page pageNumber={pageNumber} />
             </Document>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     </div>
   );
 };
