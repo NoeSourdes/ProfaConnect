@@ -22,12 +22,12 @@ export type PreviewPdfProps = {
 export const PreviewPdf = (props: PreviewPdfProps) => {
   const [numPages, setNumPages] = useState<number>();
   const [pageNumber, setPageNumber] = useState<number>(1);
+  const [scale, setScale] = useState<number>(1);
+  const [isFullScreen, setIsFullScreen] = useState<boolean>(false);
 
   function onDocumentLoadSuccess({ numPages }: { numPages: number }): void {
     setNumPages(numPages);
   }
-
-  const [scale, setScale] = useState<number>(1);
 
   useEffect(() => {
     const handleResize = () => {
@@ -63,14 +63,24 @@ export const PreviewPdf = (props: PreviewPdfProps) => {
           ]}
         />
       </div>
-      <div className="w-full bg-background flex flex-col items-center pt-5">
+      <div
+        className={`w-full bg-background flex flex-col items-center pt-5 ${
+          isFullScreen
+            ? "fixed top-0 left-0 h-screen w-screen bg-background z-[123456] items-center justify-center px-5"
+            : ""
+        }`}
+      >
         <TopBarPdf
+          setIsFullScreen={setIsFullScreen}
+          isFullScreen={isFullScreen}
           setNumPages={setNumPages}
           numPages={numPages}
           setPageNumber={setPageNumber}
           pageNumber={pageNumber}
         />
-        <div className="flex-1 w-full max-h-screen flex justify-center max-sm:overflow-hidden mt-5">
+        <div
+          className={`flex-1 w-full max-h-screen flex justify-center max-sm:overflow-hidden`}
+        >
           <div>
             <Document
               file={props.url}
