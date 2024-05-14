@@ -58,7 +58,7 @@ const TailwindAdvancedEditor = (props: EditorProps) => {
   if (!initialContent) return null;
 
   return (
-    <div className={`relative bg-black`}>
+    <div className={`relative`}>
       <div
         className={`${
           isFullScreen
