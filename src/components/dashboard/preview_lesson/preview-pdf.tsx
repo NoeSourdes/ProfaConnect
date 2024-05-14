@@ -1,12 +1,23 @@
 "use client";
 
-import { Undo2 } from "lucide-react";
+import { Pencil, Undo2 } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import "react-pdf/dist/Page/TextLayer.css";
 import { Button } from "../../ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "../../ui/dialog";
+import { Input } from "../../ui/input";
+import { Label } from "../../ui/label";
 import { BreadcrumbComponent } from "../Breadcrumb";
 import { TopBarPdf } from "./top-bar-pdf";
 
@@ -51,24 +62,61 @@ export const PreviewPdf = (props: PreviewPdfProps) => {
   }, []);
   return (
     <div>
-      <div className="flex items-center gap-3 w-full">
-        <Link href={`/courses/${props.courseId}`}>
-          <Button size="icon" variant="secondary">
-            <Undo2 size={20} />
-          </Button>
-        </Link>
-        <BreadcrumbComponent
-          array={[
-            { item: "Home", link: "/" },
-            { item: "Dashboard", link: "/dashboard" },
-            { item: "Cours", link: "/courses" },
-            { item: "Leçons", link: `/courses/${props.courseId}` },
-            {
-              item: props.lessonTitle,
-              link: `/courses/${props.courseId}/${props.lessonId}`,
-            },
-          ]}
-        />
+      <div className="flex items-center justify-between gap-3 w-full">
+        <div className="flex items-center gap-3">
+          <Link href={`/courses/${props.courseId}`}>
+            <Button size="icon" variant="secondary">
+              <Undo2 size={20} />
+            </Button>
+          </Link>
+          <BreadcrumbComponent
+            array={[
+              { item: "Home", link: "/" },
+              { item: "Dashboard", link: "/dashboard" },
+              { item: "Cours", link: "/courses" },
+              { item: "Leçons", link: `/courses/${props.courseId}` },
+              {
+                item: props.lessonTitle,
+                link: `/courses/${props.courseId}/${props.lessonId}`,
+              },
+            ]}
+          />
+        </div>
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button size="icon">
+              <Pencil size={20} />
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-[425px]">
+            <DialogHeader>
+              <DialogTitle>Modifier le titre de la leçon</DialogTitle>
+              <DialogDescription>
+                Modifier le titre de la leçon pour le rendre plus attrayant
+              </DialogDescription>
+            </DialogHeader>
+            <div className="gap-4 w-full">
+              <Label htmlFor="title" className="text-right">
+                Titre de la leçon
+              </Label>
+              <Input
+                id="title"
+                defaultValue={props.lessonTitle}
+                className="col-span-3"
+              />
+            </div>
+            <DialogFooter className="flex items-center">
+              <Link href={`/courses/${props.courseId}/${props.lessonId}/edit`}>
+                <Button type="submit" variant="secondary">
+                  <span>Plus d'options</span>
+                </Button>
+              </Link>
+              <Button type="submit">
+                <span>Modifier</span>
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
       <div
         className={`w-full bg-background flex flex-col items-center pt-5 ${
@@ -98,7 +146,11 @@ export const PreviewPdf = (props: PreviewPdfProps) => {
               onLoadSuccess={onDocumentLoadSuccess}
               className="max-h-ful"
             >
-              <Page pageNumber={pageNumber} scale={scale} />
+              <Page
+                pageNumber={pageNumber}
+                scale={scale}
+                className="border-2 rounded-xl overflow-hidden"
+              />
             </Document>
           </div>
         </div>
