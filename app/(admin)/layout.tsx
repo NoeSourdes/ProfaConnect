@@ -7,6 +7,7 @@ import { useFullScreen } from "@/src/components/dashboard/tiptap/fullScreen.stor
 import { useSidebarToggle } from "@/src/hooks/use-sidebar-toggle";
 import { useStore } from "@/src/hooks/use-store";
 import { cn } from "@/src/lib/utils";
+
 import React from "react";
 
 interface Props {

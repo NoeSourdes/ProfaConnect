@@ -295,11 +295,11 @@ export default function RoutePage(
             />
           </div>
           <div
-            className="h-full w-full rounded-lg"
+            className="h-full w-full border-t pt-5"
             x-chunk="dashboard-02-chunk-1"
           >
             <Link href={`/courses/${props.params.coursId}/new_lesson`}>
-              <Button className="flex items-center gap-2 mb-4">
+              <Button className="flex items-center gap-2 mb-5">
                 {" "}
                 <CirclePlus />
                 Créer une leçon

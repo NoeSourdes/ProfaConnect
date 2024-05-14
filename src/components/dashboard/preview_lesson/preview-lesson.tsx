@@ -13,7 +13,6 @@ export type previewProps = {
 };
 
 export const PreviewLesson = (props: previewProps) => {
-  console.log(props.content);
   return (
     <div>
       <div className="flex items-center gap-3 w-full">
