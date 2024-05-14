@@ -1,4 +1,9 @@
-export type TopBarPdfProps = {};
+export type TopBarPdfProps = {
+  setNumPages: (numPages: number) => void;
+  numPages: number | undefined;
+  setPageNumber: (pageNumber: number) => void;
+  pageNumber: number;
+};
 
 export const TopBarPdf = (props: TopBarPdfProps) => {
   return (

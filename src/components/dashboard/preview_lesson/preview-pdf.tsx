@@ -64,7 +64,12 @@ export const PreviewPdf = (props: PreviewPdfProps) => {
         />
       </div>
       <div className="w-full bg-background flex flex-col items-center pt-5">
-        <TopBarPdf />
+        <TopBarPdf
+          setNumPages={setNumPages}
+          numPages={numPages}
+          setPageNumber={setPageNumber}
+          pageNumber={pageNumber}
+        />
         <div className="flex-1 w-full max-h-screen flex justify-center max-sm:overflow-hidden mt-5">
           <div>
             <Document
