@@ -42,8 +42,11 @@ export const TopBarPdf = (props: TopBarPdfProps) => {
         >
           <ArrowRight size={20} />
         </Button>
-        <span className="text-sm">
+        <span className="text-sm sm:block hidden">
           Page {props.pageNumber} sur {props.numPages}
+        </span>
+        <span className="text-sm sm:hidden block">
+          {props.pageNumber} / {props.numPages}
         </span>
       </div>
       <div className="flex items-center gap-3">
