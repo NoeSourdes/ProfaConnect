@@ -1,7 +1,6 @@
 "use client";
 
-import { ArrowLeft, ArrowRight, Expand } from "lucide-react";
-import { useState } from "react";
+import { ArrowLeft, ArrowRight, Expand, Shrink } from "lucide-react";
 import { Button } from "../../ui/button";
 
 export type TopBarPdfProps = {
@@ -33,7 +32,7 @@ export const TopBarPdf = (props: TopBarPdfProps) => {
         >
           <ArrowRight size={20} />
         </Button>
-        <span>
+        <span className="text-sm">
           Page {props.pageNumber} sur {props.numPages}
         </span>
       </div>
@@ -43,7 +42,7 @@ export const TopBarPdf = (props: TopBarPdfProps) => {
           variant="secondary"
           onClick={() => props.setIsFullScreen(!props.isFullScreen)}
         >
-          <Expand size={20} />
+          {props.isFullScreen ? <Shrink size={20} /> : <Expand size={20} />}
         </Button>
       </div>
     </div>
