@@ -8,7 +8,7 @@ export function Navbar() {
   const { isFullScreen, setIsFullScreen } = useFullScreen();
   return (
     <header
-      className={`supports-backdrop-blur:bg-background/60 sticky top-0 w-full border-b bg-background/95 backdrop-blur ${
+      className={`sticky top-0 w-full border-b ${
         isFullScreen ? "z-30" : "z-[4000]"
       }`}
     >
