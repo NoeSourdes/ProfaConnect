@@ -30,7 +30,7 @@ export default function RootLayout({
           <NextTopLoader
             zIndex={1000000000000000}
             color="#2463EB"
-            height={5}
+            height={3}
             easing="ease"
             speed={200}
             shadow="0 0 10px #2463EB,0 0 5px #2463EB"
