@@ -57,7 +57,7 @@ export default function Course() {
   if (isLoading) {
     return (
       <div className="h-full w-full overflow-y-scroll">
-        <main className="flex flex-1 flex-col gap-4 lg:gap-6 h-full">
+        <main className="flex flex-1 flex-col gap-4 lg:gap-5 h-full">
           <div className="flex items-center gap-3 w-full">
             <Link href="/dashboard">
               <Button size="icon" variant="secondary">
@@ -94,7 +94,7 @@ export default function Course() {
   if (isError) {
     return (
       <div className="h-full w-full">
-        <main className="flex flex-1 flex-col gap-4 lg:gap-6 h-full">
+        <main className="flex flex-1 flex-col gap-4 lg:gap-5 h-full">
           <div className="flex items-center gap-3 w-full">
             <Link href="/dashboard">
               <Button size="icon" variant="secondary">
@@ -188,7 +188,7 @@ export default function Course() {
           </Card>
         </>
       ) : (
-        <main className="flex flex-1 flex-col gap-4 lg:gap-6 h-full">
+        <main className="flex flex-1 flex-col gap-4 lg:gap-5 h-full">
           <div className="flex items-center gap-3 w-full">
             <Link href="/dashboard">
               <Button size="icon" variant="secondary">
@@ -213,7 +213,7 @@ export default function Course() {
             />
           </div>
           <div
-            className="h-full w-full rounded-lg"
+            className="h-full w-full border-t pt-5"
             x-chunk="dashboard-02-chunk-1"
           >
             <Link href="/courses/new_course">
@@ -227,7 +227,7 @@ export default function Course() {
               {courses?.map((course) => (
                 <div
                   key={course.id}
-                  className="h-52 min-w-60 sm:max-w-80 grow flex flex-col justify-between p-4 border rounded-lg"
+                  className="h-52 min-w-60 sm:max-w-80 grow flex flex-col justify-between p-4 border rounded-lg shadow-lg"
                 >
                   <div>
                     <div className="flex flex-col gap-1">
@@ -250,25 +250,27 @@ export default function Course() {
                         {new Date(course.updatedAt).toLocaleDateString()}
                       </p>
                     </div>
-                    <div className="flex gap-1 items-center">
-                      <Link
-                        className="w-full grow"
-                        href={`courses/${course.id}`}
-                      >
-                        <Button className="w-full grow">Voir le cours</Button>
-                      </Link>
-                      <Link href={`courses/${course.id}/edit`}>
-                        <Button size="icon" className="p-3">
-                          <Pencil />
-                        </Button>
-                      </Link>
-                      <AlertDialog>
-                        <AlertDialogTrigger asChild>
+                    <div className="flex flex-row-reverse gap-1 items-center justify-between">
+                      <div className="flex flex-row-reverse items-center gap-1">
+                        <Link
+                          className="w-full grow"
+                          href={`courses/${course.id}`}
+                        >
+                          <Button>Voir le cours</Button>
+                        </Link>
+                        <Link href={`courses/${course.id}/edit`}>
                           <Button
-                            variant="destructive"
+                            variant="secondary"
                             size="icon"
                             className="p-3"
                           >
+                            <Pencil />
+                          </Button>
+                        </Link>
+                      </div>
+                      <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                          <Button variant="ghost" size="icon" className="p-3">
                             <Trash2 />
                           </Button>
                         </AlertDialogTrigger>
