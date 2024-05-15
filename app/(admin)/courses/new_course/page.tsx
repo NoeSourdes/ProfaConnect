@@ -5,7 +5,7 @@ import { CourseForm } from "../[coursId]/edit/CourseForm";
 export default function RoutePage(props: PageParams<{}>) {
   return (
     <div className="h-full w-full">
-      <main className="flex flex-1 flex-col gap-4 lg:gap-6 h-full">
+      <main className="flex flex-1 flex-col gap-4 lg:gap-5 h-full">
         <BreadcrumbComponent
           array={[
             {

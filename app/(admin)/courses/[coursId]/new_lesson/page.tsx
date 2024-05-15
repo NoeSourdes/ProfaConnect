@@ -25,7 +25,7 @@ export default async function RoutePage(
   }
   return (
     <div className="h-full w-full">
-      <main className="flex flex-1 flex-col gap-4 lg:gap-6 h-full">
+      <main className="flex flex-1 flex-col gap-4 lg:gap-5 h-full">
         <div className="flex items-center gap-3">
           <Link href={`/courses/${props.params.coursId}`}>
             <Button size="icon" variant="secondary">

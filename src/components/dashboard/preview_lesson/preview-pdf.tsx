@@ -136,14 +136,15 @@ export const PreviewPdf = (props: PreviewPdfProps) => {
           pageNumber={pageNumber}
         />
         <div
-          className={`flex-1 w-full max-h-screen flex mt-5 scale-[${scalePoucentage}] transform transition-transform ${
+          className={`flex-1 w-full max-h-screen flex overflow-scroll my-5 scale-[${scalePoucentage}] transform transition-transform ${
             scalePoucentage <= 1.4 && "justify-center"
-          } ${scalePoucentage > 1 && "overflow-scroll"}`}
+          }`}
         >
           <div>
             <Document
               file={props.url}
               onLoadSuccess={onDocumentLoadSuccess}
+              loading={<div>Chargement...</div>}
               className="max-h-ful"
             >
               <Page

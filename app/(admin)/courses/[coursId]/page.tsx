@@ -80,7 +80,7 @@ export default function RoutePage(
   if (isLoading) {
     return (
       <div className="h-full w-full">
-        <main className="flex flex-1 flex-col gap-4 lg:gap-6 h-full">
+        <main className="flex flex-1 flex-col gap-4 lg:gap-5 h-full">
           <div className="flex items-center gap-3">
             <Link href={`/courses`}>
               <Button size="icon" variant="secondary">
@@ -121,7 +121,7 @@ export default function RoutePage(
   if (isLoadingLessons) {
     return (
       <div className="h-full w-full">
-        <main className="flex flex-1 flex-col gap-4 lg:gap-6 h-full">
+        <main className="flex flex-1 flex-col gap-4 lg:gap-5 h-full">
           <div className="flex items-center gap-3">
             <Link href={`/courses`}>
               <Button size="icon" variant="secondary">
@@ -162,7 +162,7 @@ export default function RoutePage(
   if (isError) {
     return (
       <div className="h-full w-full">
-        <main className="flex flex-1 flex-col gap-4 lg:gap-6 h-full">
+        <main className="flex flex-1 flex-col gap-4 lg:gap-5 h-full">
           <div className="flex items-center gap-3">
             <Link href={`/courses`}>
               <Button size="icon" variant="secondary">
@@ -266,7 +266,7 @@ export default function RoutePage(
           </Card>
         </>
       ) : (
-        <main className="flex flex-1 flex-col gap-4 lg:gap-6 h-full">
+        <main className="flex flex-1 flex-col gap-4 lg:gap-5 h-full">
           <div className="flex items-center gap-3">
             <Link href={`/courses`}>
               <Button size="icon" variant="secondary">
@@ -309,7 +309,7 @@ export default function RoutePage(
               {lessons?.map((lesson) => (
                 <div
                   key={lesson.lessonId}
-                  className="h-52 min-w-60 sm:max-w-80 grow flex flex-col justify-between p-4 border rounded-lg"
+                  className="h-52 min-w-60 sm:max-w-80 grow flex flex-col justify-between p-4 border rounded-lg shadow-lg"
                 >
                   <div>
                     <div className="flex flex-col gap-1">
@@ -327,27 +327,29 @@ export default function RoutePage(
                         {new Date(lesson.updatedAt).toLocaleDateString()}
                       </p>
                     </div>
-                    <div className="flex gap-1 items-center">
-                      <Link
-                        className="w-full grow"
-                        href={`/courses/${props.params.coursId}/${lesson.lessonId}`}
-                      >
-                        <Button className="w-full grow">Voir la leçon</Button>
-                      </Link>
-                      <Link
-                        href={`/courses/${props.params.coursId}/${lesson.lessonId}`}
-                      >
-                        <Button size="icon" className="p-3">
-                          <Pencil />
-                        </Button>
-                      </Link>
-                      <AlertDialog>
-                        <AlertDialogTrigger asChild>
+                    <div className="flex gap-1 items-center flex-row-reverse justify-between">
+                      <div className="flex flex-row-reverse items-center gap-1">
+                        <Link
+                          className="w-full grow"
+                          href={`/courses/${props.params.coursId}/${lesson.lessonId}`}
+                        >
+                          <Button>Voir la leçon</Button>
+                        </Link>
+                        <Link
+                          href={`/courses/${props.params.coursId}/${lesson.lessonId}`}
+                        >
                           <Button
-                            variant="destructive"
+                            variant="secondary"
                             size="icon"
                             className="p-3"
                           >
+                            <Pencil />
+                          </Button>
+                        </Link>
+                      </div>
+                      <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                          <Button variant="ghost" size="icon" className="p-3">
                             <Trash2 />
                           </Button>
                         </AlertDialogTrigger>
