@@ -336,7 +336,7 @@ export default function RoutePage(
                           <Button>Voir la leçon</Button>
                         </Link>
                         <Link
-                          href={`/courses/${props.params.coursId}/${lesson.lessonId}`}
+                          href={`/courses/${props.params.coursId}/${lesson.lessonId}/edit`}
                         >
                           <Button
                             variant="secondary"

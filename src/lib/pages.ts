@@ -1,6 +1,8 @@
 import { getNameCourse } from "@/actions/courses/courses";
+import { getNameLesson } from "@/app/(admin)/courses/[coursId]/[lessonId]/edit/lesson.action";
 import {
   CalendarDays,
+  CircleHelp,
   FolderOpenDot,
   Gamepad2,
   LayoutGrid,
@@ -86,13 +88,27 @@ export function getPages(pathname: string): Group[] {
       ],
     },
     {
-      groupLabel: "Paramètres",
+      groupLabel: "Lien rapide",
       menus: [
         {
           href: "/settings",
-          label: "Compte",
+          label: "Paramètres",
           active: pathname.includes("/settings"),
           icon: Settings,
+          submenus: [],
+        },
+        // {
+        //   href: "Profile",
+        //   label: "Profil",
+        //   active: pathname.includes("/profile"),
+        //   icon: User,
+        //   submenus: [],
+        // },
+        {
+          href: "FAQ",
+          label: "Centre d'aide",
+          active: pathname.includes("/faq"),
+          icon: CircleHelp,
           submenus: [],
         },
       ],
@@ -111,8 +127,20 @@ const handleNameCourse = async (id: string) => {
   return response?.title;
 };
 
+const handleNameLesson = async (id: string) => {
+  if (!id) {
+    return;
+  }
+  const response = await getNameLesson(id);
+  if (!response) {
+    return "La leçon n'existe pas";
+  }
+  return response?.title;
+};
+
 export async function pagesUrl(pathname: string): Promise<Group[]> {
   const courseName = await handleNameCourse(pathname.split("/")[2]);
+  const lessonName = await handleNameLesson(pathname.split("/")[3]);
 
   return [
     {
@@ -157,6 +185,11 @@ export async function pagesUrl(pathname: string): Promise<Group[]> {
               active: /\/courses\/[a-z0-9]+\/edit/.test(pathname),
             },
             {
+              href: "/courses/:id/:id",
+              label: "Details de la leçon : " + lessonName,
+              active: /\/courses\/[a-z0-9]+\/[a-z0-9]+/.test(pathname),
+            },
+            {
               href: "/courses/:id",
               label: "Details du cours : " + courseName,
               active: /\/courses\/[a-z0-9]+/.test(pathname),
@@ -187,13 +220,27 @@ export async function pagesUrl(pathname: string): Promise<Group[]> {
       ],
     },
     {
-      groupLabel: "Paramètres",
+      groupLabel: "Lien rapide",
       menus: [
         {
           href: "/settings",
-          label: "Compte",
+          label: "Paramètres",
           active: pathname.includes("/settings"),
           icon: Settings,
+          submenus: [],
+        },
+        // {
+        //   href: "Profile",
+        //   label: "Profil",
+        //   active: pathname.includes("/profile"),
+        //   icon: User,
+        //   submenus: [],
+        // },
+        {
+          href: "FAQ",
+          label: "Centre d'aide",
+          active: pathname.includes("/faq"),
+          icon: CircleHelp,
           submenus: [],
         },
       ],
