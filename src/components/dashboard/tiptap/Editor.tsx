@@ -70,7 +70,7 @@ const TailwindAdvancedEditor = (props: EditorProps) => {
           className={`${
             isFullScreen ? "fixed" : "absolute"
           } flex items-center gap-2 z-10 mb-5 ${
-            isFullScreen ? "right-3 top-3" : "max-lg:right-3 right-0 top-0"
+            isFullScreen ? "right-3 top-3" : "right-3 top-0"
           }`}
         >
           {props.editable !== false && (

@@ -21,6 +21,26 @@ export const createLesson = userAction(
   }
 );
 
+export const updateLesson = userAction(
+  z.object({
+    id: z.string(),
+    data: lessonSchema,
+  }),
+  async (inputs, context) => {
+    const lesson = await prisma.lesson.update({
+      where: {
+        lessonId: inputs.id,
+        userId: context.user.id,
+      },
+      data: {
+        title: inputs.data.title,
+        document: JSON.parse(inputs.data.content),
+      },
+    });
+    return lesson;
+  }
+);
+
 export const createLesssonPDF = userAction(
   lessonSchemaPDF,
   async (inputs, context) => {
@@ -30,6 +50,26 @@ export const createLesssonPDF = userAction(
         url: inputs.url,
         courseId: inputs.courseId,
         userId: context.user.id,
+      },
+    });
+    return lesson;
+  }
+);
+
+export const updateLessonPdf = userAction(
+  z.object({
+    id: z.string(),
+    data: lessonSchemaPDF,
+  }),
+  async (inputs, context) => {
+    const lesson = await prisma.lesson.update({
+      where: {
+        lessonId: inputs.id,
+        userId: context.user.id,
+      },
+      data: {
+        title: inputs.data.title,
+        url: inputs.data.url,
       },
     });
     return lesson;
@@ -83,6 +123,16 @@ export const checkTitleLessonAction = async (title: string) => {
 };
 
 export const getLesson = async (id: string) => {
+  const lesson = await prisma.lesson.findUnique({
+    where: {
+      lessonId: id,
+    },
+  });
+
+  return lesson;
+};
+
+export const getNameLesson = async (id: string) => {
   const lesson = await prisma.lesson.findUnique({
     where: {
       lessonId: id,
