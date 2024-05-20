@@ -114,13 +114,13 @@ export function Menu({ isOpen }: MenuProps) {
           <li className="w-full grow flex items-end">
             {isOpen ? (
               <Card x-chunk="dashboard-02-chunk-0">
-                <CardHeader className="p-2">
+                <CardHeader className="p-3">
                   <CardTitle>Passez à Pro</CardTitle>
                   <CardDescription>
                     Débloquez toutes les fonctionnalités !!
                   </CardDescription>
                 </CardHeader>
-                <CardContent className="p-2">
+                <CardContent className="p-3">
                   <Button size="sm" className="w-full">
                     Mettre à niveau
                   </Button>

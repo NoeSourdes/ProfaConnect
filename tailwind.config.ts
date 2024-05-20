@@ -16,12 +16,16 @@ export default withUt({
       padding: "2rem",
       screens: {
         "2xl": "1400px",
+        desktop: "1280px",
       },
     },
     extend: {
       width: {
         sideBar: "260px",
         sideBarResponsive: "76px",
+      },
+      boxShadow: {
+        blue: "0 0 20px 0 rgba(37, 99, 235, 0.5)",
       },
       colors: {
         border: "hsl(var(--border))",

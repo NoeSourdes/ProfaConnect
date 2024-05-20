@@ -14,7 +14,7 @@ import Image from "next/image";
 export function SheetMenu() {
   return (
     <Sheet>
-      <SheetTrigger className="lg:hidden" asChild>
+      <SheetTrigger className="max-[1200px]:flex hidden" asChild>
         <Button className="h-8" variant="outline" size="icon">
           <MenuIcon size={20} />
         </Button>

@@ -24,19 +24,23 @@ export default function Layout({ children }: Props) {
       <main
         className={cn(
           "min-h-[calc(100vh_-_56px)] transition-[margin-left] ease-in-out duration-300",
-          sidebar?.isOpen === false ? "lg:ml-[90px]" : "lg:ml-72"
+          sidebar?.isOpen === false
+            ? "max-[1200px]:ml-0 ml-[90px]"
+            : "max-[1200px]:ml-0 ml-72"
         )}
       >
         <Navbar />
-        <div className="container pt-8 pb-8 px-4 sm:px-8">{children}</div>
+        <div className="container py-5 px-5">{children}</div>
       </main>
       <footer
         className={cn(
           "transition-[margin-left] ease-in-out duration-300",
-          sidebar?.isOpen === false ? "lg:ml-[90px]" : "lg:ml-72"
+          sidebar?.isOpen === false
+            ? "max-[1200px]:ml-0 ml-[90px]"
+            : "max-[1200px]:ml-0 ml-72"
         )}
       >
-        <Footer />
+        <Footer />x
       </footer>
     </>
   );

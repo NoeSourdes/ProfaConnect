@@ -13,7 +13,7 @@ export function Navbar() {
       }`}
     >
       <div className="mx-4 sm:mx-8 flex h-14 items-center">
-        <div className="flex items-center space-x-4 lg:space-x-0">
+        <div className="flex items-center max-[1200px]:space-x-4 space-x-0">
           <SheetMenu />
           <PageTitle />
         </div>
