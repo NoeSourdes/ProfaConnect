@@ -72,6 +72,28 @@ model Lesson {
   course        Course      @relation(fields: [courseId], references: [id])
 }
 
+// gestion du calendrier
+
+model Event {
+  id          Int      @id @default(autoincrement())
+  userId      String
+  title       String
+  description String
+  startDate   DateTime
+  startTime   String
+  endDate     DateTime
+  endTime     String
+  color       String
+  category    Category @relation(fields: [categoryId], references: [id])
+  categoryId  Int
+}
+model Category {
+  id      Int      @id @default(autoincrement())
+  userId  String
+  name    String
+  events  Event[]
+}
+
 model file{
   key String @id
   name String

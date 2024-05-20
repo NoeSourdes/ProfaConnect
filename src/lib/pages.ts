@@ -59,7 +59,7 @@ export function getPages(pathname: string): Group[] {
             },
             {
               href: "/courses/new_course",
-              label: "Ajouter un cours",
+              label: "Créer un cours",
               active: pathname === "/courses/new_course",
             },
           ],

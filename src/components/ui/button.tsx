@@ -28,6 +28,8 @@ const buttonVariants = cva(
         lg_sideBar: "h-11 p-[11.5px]",
         lg_sideBar_search: "h-11 pl-[10px] pr-[11.5px]",
         icon: "h-10 w-10",
+        icon_sm: "h-8 w-8",
+        icon_xs: "h-6 w-6",
       },
     },
     defaultVariants: {

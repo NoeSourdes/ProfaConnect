@@ -14,11 +14,26 @@ import {
 } from "@/src/components/ui/alert-dialog";
 import { Button } from "@/src/components/ui/button";
 import { Card, CardContent } from "@/src/components/ui/card";
+import { Input } from "@/src/components/ui/input";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/src/components/ui/popover";
 import { Skeleton } from "@/src/components/ui/skeleton";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { CirclePlus, Pencil, Trash2, Undo2 } from "lucide-react";
+import {
+  CirclePlus,
+  FolderOpen,
+  Pencil,
+  SlidersHorizontal,
+  Trash2,
+  Undo2,
+} from "lucide-react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useQueryState } from "nuqs";
 import { toast } from "sonner";
 import {
   deleteCourseAction,
@@ -28,6 +43,17 @@ import {
 export default function Course() {
   const { data: user } = useSession();
   const queryClient = useQueryClient();
+  const router = useRouter();
+
+  // gestion de nuqs
+
+  const [search, setSearch] = useQueryState("search", {
+    defaultValue: "",
+  });
+
+  const params = useSearchParams();
+  const searchParams = params.get("search");
+
   const {
     data: courses,
     isLoading,
@@ -36,6 +62,7 @@ export default function Course() {
     queryKey: ["courses", user?.user?.id ? user.user.id : ""],
     queryFn: async () => {
       const courses = await getUserCourses(user?.user?.id ? user.user.id : "");
+      console.log(courses);
       return courses;
     },
   });
@@ -189,118 +216,152 @@ export default function Course() {
         </>
       ) : (
         <main className="flex flex-1 flex-col gap-4 lg:gap-5 h-full">
-          <div className="flex items-center gap-3 w-full">
-            <Link href="/dashboard">
-              <Button size="icon" variant="secondary">
-                <Undo2 size={20} />
-              </Button>
-            </Link>
-            <BreadcrumbComponent
-              array={[
-                {
-                  item: "Home",
-                  link: "/",
-                },
-                {
-                  item: "Dashboard",
-                  link: "/dashboard",
-                },
-                {
-                  item: "Cours",
-                  link: "/courses",
-                },
-              ]}
-            />
+          <div className="flex items-center justify-between gap-5 w-full">
+            <div className="flex items-center gap-3">
+              <Link href="/dashboard">
+                <Button size="icon" variant="secondary">
+                  <Undo2 size={20} />
+                </Button>
+              </Link>
+              <BreadcrumbComponent
+                array={[
+                  {
+                    item: "Home",
+                    link: "/",
+                  },
+                  {
+                    item: "Dashboard",
+                    link: "/dashboard",
+                  },
+                  {
+                    item: "Cours",
+                    link: "/courses",
+                  },
+                ]}
+              />
+            </div>
           </div>
-          <div
-            className="h-full w-full border-t pt-5"
-            x-chunk="dashboard-02-chunk-1"
-          >
-            <Link href="/courses/new_course">
-              <Button className="flex items-center gap-2 mb-4">
-                {" "}
-                <CirclePlus />
-                Créer un cours
-              </Button>
-            </Link>
+          <div className="h-full w-full border-t pt-5 space-y-5">
+            <div className="flex gap-3">
+              <Link href="/courses/new_course">
+                <Button className="flex items-center gap-2">
+                  {" "}
+                  <CirclePlus />
+                  <span className="sm:block hidden">Créer un cours</span>
+                </Button>
+              </Link>
+              <Popover>
+                <PopoverTrigger>
+                  <Button variant="secondary">
+                    <SlidersHorizontal size={20} />
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="text-warning font-medium">
+                  En cours de développement
+                </PopoverContent>
+              </Popover>
+
+              <Input
+                defaultValue={search}
+                className="w-full max-w-96"
+                type="text"
+                id="search"
+                placeholder="Rechercher un cours"
+                onChange={(e) => setSearch(e.target.value)}
+              />
+            </div>
             <div className="w-full flex flex-wrap gap-4">
-              {courses?.map((course) => (
-                <div
-                  key={course.id}
-                  className="h-52 min-w-60 sm:max-w-80 grow flex flex-col justify-between p-4 border rounded-lg shadow-lg"
-                >
-                  <div>
-                    <div className="flex flex-col gap-1">
-                      <h2 className="text-lg font-semibold">
-                        {course.title.length > 20
-                          ? course.title.slice(0, 20) + "..."
-                          : course.title}
-                      </h2>
-                      <p className="text-sm text-muted-foreground">
-                        {course.description.length > 80
-                          ? course.description.slice(0, 80) + "..."
-                          : course.description}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="space-y-1">
-                    <div className="flex justify-end">
-                      <p className="text-sm text-muted-foreground">
-                        mis à jour le :{" "}
-                        {new Date(course.updatedAt).toLocaleDateString()}
-                      </p>
-                    </div>
-                    <div className="flex flex-row-reverse gap-1 items-center justify-between">
-                      <div className="flex flex-row-reverse items-center gap-1">
-                        <Link
-                          className="w-full grow"
-                          href={`courses/${course.id}`}
-                        >
-                          <Button>Voir le cours</Button>
-                        </Link>
-                        <Link href={`courses/${course.id}/edit`}>
-                          <Button
-                            variant="secondary"
-                            size="icon"
-                            className="p-3"
-                          >
-                            <Pencil />
-                          </Button>
-                        </Link>
+              {courses
+                ?.filter((course) =>
+                  course.title
+                    .toLowerCase()
+                    .includes(searchParams?.toLowerCase() ?? "")
+                )
+                .map((course) => (
+                  <div
+                    key={course.id}
+                    className="h-48 sm:max-w-80 grow flex flex-col p-4 justify-between border rounded-2xl shadow-lg hover:ring ring-primary/70 cursor-pointer transition-all hover:shadow-blue"
+                    onDoubleClick={() => {
+                      router.push(`/courses/${course.id}`);
+                    }}
+                  >
+                    <div>
+                      <div className="flex flex-col gap-1">
+                        <div className="flex items-center gap-2">
+                          <div className="">
+                            <FolderOpen />
+                          </div>
+                          <h2 className="text-lg font-semibold">
+                            {course.title.length > 20
+                              ? course.title.slice(0, 20) + "..."
+                              : course.title}
+                          </h2>
+                        </div>
+                        <p className="text-sm text-muted-foreground">
+                          {course.description.length > 80
+                            ? course.description.slice(0, 80) + "..."
+                            : course.description}
+                        </p>
                       </div>
-                      <AlertDialog>
-                        <AlertDialogTrigger asChild>
-                          <Button variant="ghost" size="icon" className="p-3">
-                            <Trash2 />
-                          </Button>
-                        </AlertDialogTrigger>
-                        <AlertDialogContent>
-                          <AlertDialogHeader>
-                            <AlertDialogTitle>
-                              Supprimer le cours
-                            </AlertDialogTitle>
-                            <AlertDialogDescription>
-                              Êtes-vous sûr de vouloir supprimer le cours, et
-                              toutes les leçons associées à {course.title} ?
-                            </AlertDialogDescription>
-                          </AlertDialogHeader>
-                          <AlertDialogFooter>
-                            <AlertDialogCancel>Annuler</AlertDialogCancel>
-                            <AlertDialogAction
-                              className="bg-destructive hover:bg-destructive/90"
-                              onClick={() => {
-                                deleteMutation.mutate({ id: course.id });
-                              }}
+                    </div>
+                    <div className="space-y-1">
+                      <div className="flex justify-end">
+                        <p className="text-sm text-muted-foreground">
+                          mis à jour le :{" "}
+                          {new Date(course.updatedAt).toLocaleDateString()}
+                        </p>
+                      </div>
+                      <div className="flex flex-row-reverse gap-1 items-center justify-between">
+                        <div className="flex flex-row-reverse items-center gap-1">
+                          <Link
+                            className="w-full grow"
+                            href={`courses/${course.id}`}
+                          >
+                            <Button>Voir le cours</Button>
+                          </Link>
+                          <Link href={`courses/${course.id}/edit`}>
+                            <Button
+                              variant="secondary"
+                              size="icon"
+                              className="p-3"
                             >
-                              Supprimer
-                            </AlertDialogAction>
-                          </AlertDialogFooter>
-                        </AlertDialogContent>
-                      </AlertDialog>
+                              <Pencil />
+                            </Button>
+                          </Link>
+                        </div>
+                        <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                            <Button variant="ghost" size="icon" className="p-3">
+                              <Trash2 />
+                            </Button>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>
+                                Supprimer le cours
+                              </AlertDialogTitle>
+                              <AlertDialogDescription>
+                                Êtes-vous sûr de vouloir supprimer le cours, et
+                                toutes les leçons associées à {course.title} ?
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel>Annuler</AlertDialogCancel>
+                              <AlertDialogAction
+                                className="bg-destructive hover:bg-destructive/90"
+                                onClick={() => {
+                                  deleteMutation.mutate({ id: course.id });
+                                }}
+                              >
+                                Supprimer
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                ))}
             </div>
           </div>
         </main>
