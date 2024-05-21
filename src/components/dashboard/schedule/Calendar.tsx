@@ -19,11 +19,14 @@ import {
 } from "@/src/components/ui/tabs";
 import { endOfWeek, format, startOfWeek } from "date-fns";
 import { fr } from "date-fns/locale";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, MenuIcon } from "lucide-react";
 import { useState } from "react";
 import { monthNames } from "./actions/calendar/calendar";
 
-export type CalendarProps = {};
+export type CalendarProps = {
+  sidebarIsOpen: boolean;
+  setSidebarIsOpen: (value: boolean) => void;
+};
 
 export const FullCalendarComponent = (props: CalendarProps) => {
   const [date, setDate] = useState(new Date());
@@ -43,8 +46,17 @@ export const FullCalendarComponent = (props: CalendarProps) => {
         defaultValue={currentView}
         onValueChange={(value) => setCurrentView(value)}
       >
-        <TabsList className="flex items-center justify-between gap-3 w-full bg-background">
+        <TabsList className="flex max-sm:flex-col max-sm:items-start items-center justify-between gap-3 w-full bg-background">
           <div className="flex items-center gap-2">
+            <div className="hidden max-[900px]:block">
+              <Button
+                size="icon_sm"
+                variant="ghost"
+                onClick={() => props.setSidebarIsOpen(!props.sidebarIsOpen)}
+              >
+                <MenuIcon size={20} />
+              </Button>
+            </div>
             <div className="flex items-center gap-1">
               <Button onClick={handlePrevMonth} size="icon_sm" variant="ghost">
                 <ChevronLeft />
@@ -77,14 +89,14 @@ export const FullCalendarComponent = (props: CalendarProps) => {
               )}
             </div>
           </div>
-          <div className="inline-flex h-10 items-center justify-center rounded-md bg-muted p-1 text-muted-foreground">
+          <div className="inline-flex h-10 items-center justify-center rounded-md bg-muted p-1 text-muted-foreground mr-2">
             <TabsTrigger value="month">Mois</TabsTrigger>
             <TabsTrigger value="week">Semaine</TabsTrigger>
             <TabsTrigger value="day">Jour</TabsTrigger>
             <TabsTrigger value="list">Liste</TabsTrigger>
           </div>
         </TabsList>
-        <TabsContent value="month" className="mt-4">
+        <TabsContent value="month" className="mt-4 max-sm:mt-16">
           <Card>
             <CardHeader>
               <CardTitle>Account</CardTitle>
@@ -107,7 +119,7 @@ export const FullCalendarComponent = (props: CalendarProps) => {
             </CardFooter>
           </Card>
         </TabsContent>
-        <TabsContent value="week" className="mt-4">
+        <TabsContent value="week" className="mt-4 max-sm:mt-16">
           <Card>
             <CardHeader>
               <CardTitle>Password</CardTitle>
@@ -130,7 +142,7 @@ export const FullCalendarComponent = (props: CalendarProps) => {
             </CardFooter>
           </Card>
         </TabsContent>
-        <TabsContent value="day" className="mt-4">
+        <TabsContent value="day" className="mt-4 max-sm:mt-16">
           <Card>
             <CardHeader>
               <CardTitle>Password</CardTitle>
@@ -154,7 +166,7 @@ export const FullCalendarComponent = (props: CalendarProps) => {
             </CardFooter>
           </Card>
         </TabsContent>
-        <TabsContent value="list" className="mt-4">
+        <TabsContent value="list" className="mt-4 max-sm:mt-16">
           <Card>
             <CardHeader>
               <CardTitle>Password</CardTitle>

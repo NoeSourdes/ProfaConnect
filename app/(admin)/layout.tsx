@@ -40,7 +40,7 @@ export default function Layout({ children }: Props) {
             : "max-[1200px]:ml-0 ml-72"
         )}
       >
-        <Footer />x
+        <Footer />
       </footer>
     </>
   );

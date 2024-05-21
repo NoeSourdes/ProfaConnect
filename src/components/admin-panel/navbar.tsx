@@ -12,8 +12,8 @@ export function Navbar() {
         isFullScreen ? "z-30" : "z-[4000]"
       }`}
     >
-      <div className="mx-4 sm:mx-8 flex h-14 items-center">
-        <div className="flex items-center max-[1200px]:space-x-4 space-x-0">
+      <div className="mx-4 flex h-14 items-center">
+        <div className="flex items-center max-[1200px]:space-x-4 space-x-0 transition-all max-[1200px]:ml-0 ml-4">
           <SheetMenu />
           <PageTitle />
         </div>

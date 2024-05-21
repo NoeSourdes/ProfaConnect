@@ -32,27 +32,39 @@ import {
 } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useQueryState } from "nuqs";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import {
   deleteCourseAction,
   getUserCourses,
 } from "./[coursId]/edit/course.actions";
 
+function useDebounce(value: string, delay: number) {
+  const [debouncedValue, setDebouncedValue] = useState(value);
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedValue(value);
+    }, delay);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [value, delay]);
+
+  return debouncedValue;
+}
+
 export default function Course() {
   const { data: user } = useSession();
   const queryClient = useQueryClient();
   const router = useRouter();
 
-  // gestion de nuqs
+  const [search, setSearch] = useState("");
 
-  const [search, setSearch] = useQueryState("search", {
-    defaultValue: "",
-  });
-
-  const params = useSearchParams();
-  const searchParams = params.get("search");
+  const debouncedSearch = useDebounce(search, 100);
 
   const {
     data: courses,
@@ -62,7 +74,6 @@ export default function Course() {
     queryKey: ["courses", user?.user?.id ? user.user.id : ""],
     queryFn: async () => {
       const courses = await getUserCourses(user?.user?.id ? user.user.id : "");
-      console.log(courses);
       return courses;
     },
   });
@@ -271,11 +282,20 @@ export default function Course() {
               />
             </div>
             <div className="w-full flex flex-wrap gap-4">
+              {courses?.filter((course) =>
+                course.title.toLowerCase().includes(search?.toLowerCase() ?? "")
+              ).length === 0 && (
+                <div className="">
+                  <h3 className="text-xl font-medium text-muted-foreground">
+                    Aucun cours trouvé
+                  </h3>
+                </div>
+              )}
               {courses
                 ?.filter((course) =>
                   course.title
                     .toLowerCase()
-                    .includes(searchParams?.toLowerCase() ?? "")
+                    .includes(search?.toLowerCase() ?? "")
                 )
                 .map((course) => (
                   <div
