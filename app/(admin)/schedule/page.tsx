@@ -13,7 +13,9 @@ export default function TimeStamp() {
 
   return (
     <div
-      className={`min-h-[calc(100vh-56px-64px-20px-24px-56px-48px)] w-full flex gap-3 relative overflow-hidden`}
+      className={`min-h-[calc(100vh-56px-64px-20px-24px-56px-48px)] w-full flex gap-3 relative overflow-hidden ${
+        sidebarIsOpen ? "border rounded-md shadow-lg" : ""
+      }`}
     >
       <div
         onClick={() => setSidebarIsOpen(false)}
