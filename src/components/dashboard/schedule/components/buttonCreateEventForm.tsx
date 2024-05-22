@@ -152,23 +152,6 @@ export const ButtonCreateEventForm = (props: ButtonCreateEventFormProps) => {
                 </FormItem>
               )}
             />
-            <FormField
-              name="description"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Description de l'événement</FormLabel>
-                  <FormControl>
-                    <Textarea
-                      className="resize-none"
-                      placeholder="
-                  Entrez la description de l'événement"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
             <div className="flex items-center gap-4 w-full justify-between">
               <FormField
                 control={form.control}
@@ -256,6 +239,23 @@ export const ButtonCreateEventForm = (props: ButtonCreateEventFormProps) => {
                 )}
               />
             </div>
+            <FormField
+              name="description"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Description de l'événement</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      className="resize-none"
+                      placeholder="
+                  Entrez la description de l'événement"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <Button>
               {isCreate ? "Créer l'événement" : "Mettre à jour l'événement"}
             </Button>
