@@ -75,17 +75,16 @@ model Lesson {
 // gestion du calendrier
 
 model Event {
-  id          Int      @id @default(autoincrement())
+  id          String     @id @default(uuid())
   userId      String
   title       String
-  description String
-  startDate   DateTime
-  startTime   String
-  endDate     DateTime
-  endTime     String
+  description String?
+  date        DateTime
+  start       DateTime
+  end         DateTime
   color       String
-  category    Category @relation(fields: [categoryId], references: [id])
-  categoryId  Int
+  categoryId Int?
+  category    Category? @relation(fields: [categoryId], references: [id])
 }
 model Category {
   id      Int      @id @default(autoincrement())
