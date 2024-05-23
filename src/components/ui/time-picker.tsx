@@ -1,5 +1,24 @@
 "use client";
 
+import { Button } from "@/src/components/ui/button";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/src/components/ui/popover";
+import { cn } from "@/src/lib/utils";
+import {
+  CalendarDate,
+  isToday as _isToday,
+  createCalendar,
+  fromDate,
+  getLocalTimeZone,
+  getWeeksInMonth,
+  parseDateTime,
+  toCalendarDate,
+  toCalendarDateTime,
+} from "@internationalized/date";
+import { DateSegment as IDateSegment } from "@react-stately/datepicker";
 import {
   CalendarIcon,
   ChevronLeftIcon,
@@ -41,25 +60,6 @@ import {
   useDatePickerState,
   useTimeFieldState,
 } from "react-stately";
-import { cn } from "@/src/lib/utils";
-import { Button } from "@/src/components/ui/button";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/src/components/ui/popover";
-import {
-  CalendarDate,
-  createCalendar,
-  getLocalTimeZone,
-  getWeeksInMonth,
-  parseDateTime,
-  fromDate,
-  toCalendarDateTime,
-  isToday as _isToday,
-  toCalendarDate,
-} from "@internationalized/date";
-import { DateSegment as IDateSegment } from "@react-stately/datepicker";
 
 function Calendar(props: CalendarProps<DateValue>) {
   const prevButtonRef = React.useRef<HTMLButtonElement | null>(null);
@@ -289,6 +289,7 @@ function TimeField(props: AriaTimeFieldProps<TimeValue>) {
         "inline-flex h-10 w-full flex-1 rounded-md border border-input bg-transparent px-3 py-2 text-sm ring-offset-background focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
         props.isDisabled && "cursor-not-allowed opacity-50"
       )}
+      aria-label={props["aria-label"] || "Time field"} // Ajout de l'aria-label ici
     >
       {state.segments.map((segment, i) => (
         <DateSegment key={i} segment={segment} state={state} />

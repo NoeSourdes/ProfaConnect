@@ -19,7 +19,7 @@ export const createCategoryAction = userAction(
 );
 
 export const deleteCategoryAction = userAction(
-  z.number(),
+  z.string(),
   async (id, context) => {
     const category = await prisma.category.delete({
       where: {
@@ -32,7 +32,7 @@ export const deleteCategoryAction = userAction(
 
 export const updateCategoryAction = userAction(
   z.object({
-    id: z.number(),
+    id: z.string(),
     name: z.string(),
   }),
   async (inputs, context) => {

@@ -80,14 +80,14 @@ model Event {
   title       String
   description String?
   date        DateTime
-  start       DateTime
-  end         DateTime
+  start       String
+  end         String
   color       String
-  categoryId Int?
+  categoryId String?
   category    Category? @relation(fields: [categoryId], references: [id])
 }
 model Category {
-  id      Int      @id @default(autoincrement())
+  id      String     @id @default(uuid())
   userId  String
   name    String
   events  Event[]

@@ -35,6 +35,15 @@
     --novel-highlight-orange: #faebdd;
     --novel-highlight-pink: #faf1f5;
     --novel-highlight-gray: #f1f1ef;
+    --novel-highlight-default-var: 0 0% 100%;
+    --novel-highlight-purple-var: 276 22% 89%;
+    --novel-highlight-red-var: 0 37% 81%;
+    --novel-highlight-yellow-var: 55 35% 81%;
+    --novel-highlight-blue-var: 194 22% 87%;
+    --novel-highlight-green-var: 111 36% 80%;
+    --novel-highlight-orange-var: 29 12% 92%;
+    --novel-highlight-pink-var: 333 4% 96%;
+    --novel-highlight-gray-var: 60 1% 94%;
   }
 
   .dark {
@@ -66,6 +75,15 @@
     --novel-highlight-orange: #5c3a1a;
     --novel-highlight-pink: #5c1a3a;
     --novel-highlight-gray: #3a3a3a;
+    --novel-highlight-default-var: 0 0% 0%;
+    --novel-highlight-purple-var: 277 41% 23%;
+    --novel-highlight-red-var: 0 72% 23%;
+    --novel-highlight-yellow-var: 45 72% 23%;
+    --novel-highlight-blue-var: 208 72% 23%;
+    --novel-highlight-green-var: 125 72% 23%;
+    --novel-highlight-orange-var: 29 72% 23%;
+    --novel-highlight-pink-var: 331 72% 23%;
+    --novel-highlight-gray-var: 0 0% 23%;
   }
 }
 
