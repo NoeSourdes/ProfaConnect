@@ -77,6 +77,21 @@ export default withUt({
           DEFAULT: "hsl(var(--info))",
           border: "hsl(var(--info-border))",
         },
+        "novel-highlight-purple": {
+          DEFAULT: "hsl(var(--novel-highlight-purple-var))",
+        },
+        "novel-highlight-red": {
+          DEFAULT: "hsl(var(--novel-highlight-red-var))",
+        },
+        "novel-highlight-yellow": {
+          DEFAULT: "hsl(var(--novel-highlight-yellow-var))",
+        },
+        "novel-highlight-blue": {
+          DEFAULT: "hsl(var(--novel-highlight-blue-var))",
+        },
+        "novel-highlight-green": {
+          DEFAULT: "hsl(var(--novel-highlight-green-var))",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",

@@ -22,7 +22,7 @@ import {
 } from "@/src/components/ui/form";
 import { DialogClose } from "@radix-ui/react-dialog";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { EllipsisVertical, Flag, Pen, Plus, Trash } from "lucide-react";
+import { EllipsisVertical, Flag, Pen, Trash } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
 import { Checkbox } from "../../ui/checkbox";
@@ -40,6 +40,7 @@ import {
   categorySchema,
   categoryType,
 } from "./actions/category/category.schema";
+import { ButtonCreateCategory } from "./components/buttonCreateCategory";
 
 export type categoriesProps = {};
 
@@ -83,7 +84,7 @@ export const Categories = (props: categoriesProps) => {
   });
 
   const updateMutation = useMutation({
-    mutationFn: async (values: { id: number; name: string }) => {
+    mutationFn: async (values: { id: string; name: string }) => {
       const check = await handleCheckNameCategory(
         values.name,
         session?.user?.id as string
@@ -116,7 +117,7 @@ export const Categories = (props: categoriesProps) => {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: async (id: number) => {
+    mutationFn: async (id: string) => {
       const { data, serverError } = await deleteCategoryAction(id);
       if (serverError || !data) {
         throw new Error(serverError);
@@ -155,58 +156,7 @@ export const Categories = (props: categoriesProps) => {
             <Flag size={20} />
             Catégories
           </h2>
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button size="icon_sm">
-                <Plus size={20} />
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
-              <DialogHeader>
-                <DialogTitle>Gérer les catégories</DialogTitle>
-                <DialogDescription>
-                  Ajoutez, modifiez ou supprimez des catégories
-                </DialogDescription>
-              </DialogHeader>
-              <div>
-                <Form
-                  form={form}
-                  onSubmit={async (values) => {
-                    await mutation.mutateAsync(values);
-                  }}
-                >
-                  <FormField
-                    control={form.control}
-                    name="name"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Titre de la catégorie</FormLabel>
-                        <FormControl>
-                          <Input
-                            placeholder="
-                  Entrez le titre de la catégorie"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormDescription>
-                          Le titre de la catégorie doit être unique
-                        </FormDescription>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <DialogFooter>
-                    <DialogClose asChild>
-                      <Button variant="ghost">Annuler</Button>
-                    </DialogClose>
-                    <Button type="submit">
-                      {mutation.isPending ? "En cours..." : "Ajouter"}
-                    </Button>
-                  </DialogFooter>
-                </Form>
-              </div>
-            </DialogContent>
-          </Dialog>
+          <ButtonCreateCategory />
         </div>
       </div>
       <div className="py-3 px-2 text-sm text-muted-foreground">

@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/src/components/ui/button";
 import {
   Credenza,
@@ -19,8 +21,8 @@ import {
 import { Input } from "@/src/components/ui/input";
 
 import { Textarea } from "@/src/components/ui/textarea";
-import { addDays, format } from "date-fns";
-import { ArrowRight, Calendar as CalendarIcon } from "lucide-react";
+import { format } from "date-fns";
+import { ArrowRight, Calendar as CalendarIcon, Loader2 } from "lucide-react";
 import {
   eventSchema,
   eventType,
@@ -42,7 +44,14 @@ import {
 } from "@/src/components/ui/select";
 import { TimePicker } from "@/src/components/ui/time-picker";
 import { cn } from "@/src/lib/utils";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { fr } from "date-fns/locale";
+import { useSession } from "next-auth/react";
 import { useState } from "react";
+import { TimeValue } from "react-aria";
+import { toast } from "sonner";
+import { getCategoriesAction } from "../actions/category/category.action";
+import { createEventAction } from "../actions/create-event/create-event.action";
 
 export type ButtonCreateEventFormProps = {
   defaultValues?: eventType;
@@ -55,6 +64,63 @@ export const ButtonCreateEventForm = (props: ButtonCreateEventFormProps) => {
   });
   const isCreate = !Boolean(props.defaultValues);
   const [date, setDate] = useState<Date>();
+  const { data: session } = useSession();
+
+  const {
+    data: categories,
+    isError,
+    isLoading,
+  } = useQuery({
+    queryKey: ["categories", session?.user?.id],
+    queryFn: async () => {
+      const categories = await getCategoriesAction(session?.user?.id as string);
+      return categories;
+    },
+  });
+  const colors = [
+    "novel-highlight-purple",
+    "novel-highlight-red",
+    "novel-highlight-yellow",
+    "novel-highlight-blue",
+    "novel-highlight-green",
+  ];
+
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation({
+    mutationFn: async (values: eventType) => {
+      const start = `${values.start.hour}:${values.start.minute}`;
+      const end = `${values.end.hour}:${values.end.minute}`;
+      values = { ...values, start, end };
+      if (values.start > values.end) {
+        toast.error("L'heure de début doit être avant l'heure de fin");
+      }
+      if (values.start === values.end) {
+        toast.error("L'heure de début ne peut pas être égale à l'heure de fin");
+      }
+      if (typeof values.start !== "string") {
+        return;
+      }
+      if (typeof values.end !== "string") {
+        return;
+      }
+      console.log(values);
+      const { data, serverError } = await createEventAction(values);
+      if (serverError || !data) {
+        throw new Error(serverError);
+      }
+      toast.success("L'événement a été créé avec succès");
+      return data;
+    },
+    onSuccess: (data) => {
+      if (data && session?.user) {
+        queryClient.setQueryData(
+          ["events", session.user.id],
+          (oldData: any[]) => [...(oldData as any[]), data]
+        );
+      }
+    },
+  });
 
   return (
     <Credenza>
@@ -67,12 +133,12 @@ export const ButtonCreateEventForm = (props: ButtonCreateEventFormProps) => {
         <CredenzaHeader>
           <CredenzaTitle>Créer un événement</CredenzaTitle>
         </CredenzaHeader>
-        <CredenzaBody className="space-y-4 pb-4 text-center text-sm sm:pb-0 sm:text-left">
+        <CredenzaBody>
           <Form
             className="flex flex-col gap-4"
             form={form}
             onSubmit={async (values) => {
-              console.log(values);
+              mutation.mutate(values);
             }}
           >
             <FormField
@@ -115,36 +181,19 @@ export const ButtonCreateEventForm = (props: ButtonCreateEventFormProps) => {
                           )}
                         >
                           <CalendarIcon className="mr-2 h-4 w-4" />
-                          {date ? (
-                            format(date, "PPP")
+                          {field.value ? (
+                            format(field.value, "PPP", { locale: fr })
                           ) : (
-                            <span>Pick a date</span>
+                            <span>Choisissez une date</span>
                           )}
                         </Button>
                       </PopoverTrigger>
-                      <PopoverContent className="flex w-auto flex-col space-y-2 p-2">
-                        <Select
-                          onValueChange={(value) =>
-                            setDate(addDays(new Date(), parseInt(value)))
-                          }
-                        >
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select" />
-                          </SelectTrigger>
-                          <SelectContent position="popper">
-                            <SelectItem value="0">Today</SelectItem>
-                            <SelectItem value="1">Tomorrow</SelectItem>
-                            <SelectItem value="3">In 3 days</SelectItem>
-                            <SelectItem value="7">In a week</SelectItem>
-                          </SelectContent>
-                        </Select>
-                        <div className="rounded-md border">
-                          <Calendar
-                            mode="single"
-                            selected={date}
-                            onSelect={setDate}
-                          />
-                        </div>
+                      <PopoverContent className="w-auto p-0" align="start">
+                        <Calendar
+                          mode="single"
+                          selected={field.value}
+                          onSelect={field.onChange}
+                        />
                       </PopoverContent>
                     </Popover>
                   </FormControl>
@@ -163,7 +212,13 @@ export const ButtonCreateEventForm = (props: ButtonCreateEventFormProps) => {
                       <span className="text-destructive">*</span>
                     </FormLabel>
                     <FormControl className="w-full">
-                      <TimePicker />
+                      <TimePicker
+                        granularity="minute"
+                        value={
+                          field.value as unknown as TimeValue | null | undefined
+                        }
+                        onChange={field.onChange}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -180,7 +235,12 @@ export const ButtonCreateEventForm = (props: ButtonCreateEventFormProps) => {
                       <span className="text-destructive">*</span>
                     </FormLabel>
                     <FormControl className="w-full">
-                      <TimePicker />
+                      <TimePicker
+                        value={
+                          field.value as unknown as TimeValue | null | undefined
+                        }
+                        onChange={field.onChange}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -198,11 +258,18 @@ export const ButtonCreateEventForm = (props: ButtonCreateEventFormProps) => {
                       <span className="text-destructive">*</span>
                     </FormLabel>
                     <FormControl>
-                      <Input
-                        placeholder="
-                  Entrez la couleur de l'événement"
-                        {...field}
-                      />
+                      <div className="flex flex-row gap-4 w-full">
+                        {colors.map((color) => (
+                          <div
+                            key={color}
+                            onClick={() => field.onChange(color)}
+                            className={cn(
+                              "w-5 h-5 rounded-full cursor-pointer",
+                              `bg-${color}`
+                            )}
+                          />
+                        ))}
+                      </div>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -213,23 +280,22 @@ export const ButtonCreateEventForm = (props: ButtonCreateEventFormProps) => {
                 name="categoryId"
                 render={({ field }) => (
                   <FormItem className="w-full">
-                    <FormLabel>
-                      Catégorie de l'événement{" "}
-                      <span className="text-destructive">*</span>
-                    </FormLabel>
+                    <FormLabel>Catégorie de l'événement </FormLabel>
                     <FormControl>
-                      <Select>
+                      <Select onValueChange={field.onChange}>
                         <SelectTrigger>
-                          <SelectValue placeholder="Select" />
+                          <SelectValue placeholder="Selectionner" />
                         </SelectTrigger>
                         <SelectContent position="popper">
-                          <SelectGroup>
-                            <SelectItem value="1">Option 1</SelectItem>
-                            <SelectItem value="2">Option 2</SelectItem>
-                            <SelectItem value="3">Option 3</SelectItem>
-                            <SelectItem value="4">Option 4</SelectItem>
-                            <SelectItem value="5">Option 5</SelectItem>
-                            <SelectItem value="6">Option 6</SelectItem>
+                          <SelectGroup className="space-y-2">
+                            {categories?.map((category) => (
+                              <SelectItem
+                                key={category.id}
+                                value={String(category.id)}
+                              >
+                                {category.name}
+                              </SelectItem>
+                            ))}
                           </SelectGroup>
                         </SelectContent>
                       </Select>
@@ -240,6 +306,7 @@ export const ButtonCreateEventForm = (props: ButtonCreateEventFormProps) => {
               />
             </div>
             <FormField
+              control={form.control}
               name="description"
               render={({ field }) => (
                 <FormItem>
@@ -250,14 +317,18 @@ export const ButtonCreateEventForm = (props: ButtonCreateEventFormProps) => {
                       placeholder="
                   Entrez la description de l'événement"
                       {...field}
+                      onChange={(e) => field.onChange(e.target.value)}
                     />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <Button>
+            <Button type="submit" disabled={mutation.isPending}>
               {isCreate ? "Créer l'événement" : "Mettre à jour l'événement"}
+              {mutation.isPending && (
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              )}
             </Button>
           </Form>
         </CredenzaBody>
