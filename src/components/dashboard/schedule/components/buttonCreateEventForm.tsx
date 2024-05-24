@@ -25,6 +25,7 @@ import { format } from "date-fns";
 import { ArrowRight, Calendar as CalendarIcon, Loader2 } from "lucide-react";
 import {
   eventSchema,
+  eventSchemaClean,
   eventType,
 } from "../actions/create-event/create-event.schema";
 
@@ -47,7 +48,7 @@ import { cn } from "@/src/lib/utils";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { fr } from "date-fns/locale";
 import { useSession } from "next-auth/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { TimeValue } from "react-aria";
 import { toast } from "sonner";
 import {
@@ -76,10 +77,20 @@ export const ButtonCreateEventForm = (props: ButtonCreateEventFormProps) => {
     schema: categorySchema,
   });
 
+  const formClean = useZodForm({
+    schema: eventSchemaClean,
+    defaultValues: props.defaultValues,
+  });
+
   const isCreate = !Boolean(props.defaultValues);
   const [date, setDate] = useState<Date>();
   const { data: session } = useSession();
 
+  useEffect(() => {
+    if (date && date <= new Date(Date.now() - 86400000)) {
+      toast.warning("La date de l'événement est passée !!");
+    }
+  }, [date]);
   const {
     data: categories,
     isError,
@@ -201,7 +212,7 @@ export const ButtonCreateEventForm = (props: ButtonCreateEventFormProps) => {
           <Form
             id={formId}
             className="flex flex-col gap-4"
-            form={form}
+            form={formClean}
             onSubmit={async (values) => {
               mutation.mutate(values);
             }}
@@ -257,7 +268,10 @@ export const ButtonCreateEventForm = (props: ButtonCreateEventFormProps) => {
                         <Calendar
                           mode="single"
                           selected={field.value}
-                          onSelect={field.onChange}
+                          onSelect={(date) => {
+                            field.onChange(date);
+                            setDate(date);
+                          }}
                         />
                       </PopoverContent>
                     </Popover>
@@ -312,7 +326,7 @@ export const ButtonCreateEventForm = (props: ButtonCreateEventFormProps) => {
                 )}
               />
             </div>
-            <div className="flex flex-row-reverse items-center gap-4 w-full justify-between">
+            <div className="flex flex-row-reverse max-sm:flex-col-reverse items-center gap-4 w-full justify-between">
               <FormField
                 control={form.control}
                 name="color"
@@ -327,11 +341,11 @@ export const ButtonCreateEventForm = (props: ButtonCreateEventFormProps) => {
                         {colors.map((color) => (
                           <div
                             key={color}
-                            className={`w-6 h-6 rounded-full cursor-pointer hover:ring-[3px] hover:ring-muted-foreground/50 transition-all ${
+                            className={`w-6 h-6 rounded-full cursor-pointer hover:ring-[3px] hover:ring-primary/30 transition-all ${
                               colorClasses[color]
                             } ${
                               selectedColor === color
-                                ? "ring-[3px] ring-muted-foreground/50"
+                                ? "ring-[3px] ring-primary/30"
                                 : ""
                             }`}
                             onClick={() => {
