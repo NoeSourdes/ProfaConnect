@@ -50,8 +50,17 @@ import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { TimeValue } from "react-aria";
 import { toast } from "sonner";
-import { getCategoriesAction } from "../actions/category/category.action";
+import {
+  checkNameCategoryAction,
+  createCategoryAction,
+  getCategoriesAction,
+} from "../actions/category/category.action";
+import {
+  categorySchema,
+  categoryType,
+} from "../actions/category/category.schema";
 import { createEventAction } from "../actions/create-event/create-event.action";
+import { ButtonCreateCategoryPopover } from "./buttonCreateCategoryPopover";
 
 export type ButtonCreateEventFormProps = {
   defaultValues?: eventType;
@@ -62,6 +71,11 @@ export const ButtonCreateEventForm = (props: ButtonCreateEventFormProps) => {
     schema: eventSchema,
     defaultValues: props.defaultValues,
   });
+
+  const formCategory = useZodForm({
+    schema: categorySchema,
+  });
+
   const isCreate = !Boolean(props.defaultValues);
   const [date, setDate] = useState<Date>();
   const { data: session } = useSession();
@@ -77,13 +91,29 @@ export const ButtonCreateEventForm = (props: ButtonCreateEventFormProps) => {
       return categories;
     },
   });
-  const colors = [
+  const colors: Array<
+    | "novel-highlight-purple"
+    | "novel-highlight-red"
+    | "novel-highlight-yellow"
+    | "novel-highlight-blue"
+    | "novel-highlight-green"
+  > = [
     "novel-highlight-purple",
     "novel-highlight-red",
     "novel-highlight-yellow",
     "novel-highlight-blue",
     "novel-highlight-green",
   ];
+
+  const colorClasses: Record<(typeof colors)[number], string> = {
+    "novel-highlight-purple": "bg-novel-highlight-purple",
+    "novel-highlight-red": "bg-novel-highlight-red",
+    "novel-highlight-yellow": "bg-novel-highlight-yellow",
+    "novel-highlight-blue": "bg-novel-highlight-blue",
+    "novel-highlight-green": "bg-novel-highlight-green",
+  };
+
+  const [selectedColor, setSelectedColor] = useState<string | null>(null);
 
   const queryClient = useQueryClient();
 
@@ -122,6 +152,40 @@ export const ButtonCreateEventForm = (props: ButtonCreateEventFormProps) => {
     },
   });
 
+  const handleCheckNameCategory = async (name: string, userId: string) => {
+    return await checkNameCategoryAction(name, userId);
+  };
+
+  const mutationCategory = useMutation({
+    mutationFn: async (values: categoryType) => {
+      const check = await handleCheckNameCategory(
+        values.name,
+        session?.user?.id as string
+      );
+      if (check) {
+        toast.error("Le nom de la catégorie existe déjà");
+        return;
+      }
+      const { data, serverError } = await createCategoryAction(values);
+      if (serverError || !data) {
+        throw new Error(serverError);
+      }
+      toast.success("Catégorie ajoutée avec succès");
+      return data;
+    },
+    onSuccess: (data) => {
+      if (data && session?.user) {
+        queryClient.setQueryData(
+          ["categories", session.user.id],
+          (oldData: any[]) => [...(oldData as any[]), data]
+        );
+      }
+    },
+  });
+
+  const formId = "create-event-form";
+  const formIdCategory = "create-category-form";
+
   return (
     <Credenza>
       <CredenzaTrigger asChild>
@@ -135,6 +199,7 @@ export const ButtonCreateEventForm = (props: ButtonCreateEventFormProps) => {
         </CredenzaHeader>
         <CredenzaBody>
           <Form
+            id={formId}
             className="flex flex-col gap-4"
             form={form}
             onSubmit={async (values) => {
@@ -258,15 +323,21 @@ export const ButtonCreateEventForm = (props: ButtonCreateEventFormProps) => {
                       <span className="text-destructive">*</span>
                     </FormLabel>
                     <FormControl>
-                      <div className="flex flex-row gap-4 w-full">
+                      <div className="flex space-x-5">
                         {colors.map((color) => (
                           <div
                             key={color}
-                            onClick={() => field.onChange(color)}
-                            className={cn(
-                              "w-5 h-5 rounded-full cursor-pointer",
-                              `bg-${color}`
-                            )}
+                            className={`w-6 h-6 rounded-full cursor-pointer hover:ring-[3px] hover:ring-muted-foreground/50 transition-all ${
+                              colorClasses[color]
+                            } ${
+                              selectedColor === color
+                                ? "ring-[3px] ring-muted-foreground/50"
+                                : ""
+                            }`}
+                            onClick={() => {
+                              field.onChange(color);
+                              setSelectedColor(color);
+                            }}
                           />
                         ))}
                       </div>
@@ -296,6 +367,19 @@ export const ButtonCreateEventForm = (props: ButtonCreateEventFormProps) => {
                                 {category.name}
                               </SelectItem>
                             ))}
+
+                            <div
+                              className={`flex items-center justify-center gap-3 py-2 text-muted-foreground text-sm font-medium ${
+                                categories?.length === 0 ? "" : "border-t"
+                              }`}
+                            >
+                              <ButtonCreateCategoryPopover
+                                categories={categories}
+                                formCategory={formCategory}
+                                formIdCategory={formIdCategory}
+                                mutationCategory={mutationCategory}
+                              />
+                            </div>
                           </SelectGroup>
                         </SelectContent>
                       </Select>
@@ -324,7 +408,7 @@ export const ButtonCreateEventForm = (props: ButtonCreateEventFormProps) => {
                 </FormItem>
               )}
             />
-            <Button type="submit" disabled={mutation.isPending}>
+            <Button type="submit" disabled={mutation.isPending} form={formId}>
               {isCreate ? "Créer l'événement" : "Mettre à jour l'événement"}
               {mutation.isPending && (
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
