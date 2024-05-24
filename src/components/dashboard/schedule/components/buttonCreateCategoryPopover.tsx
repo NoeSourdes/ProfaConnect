@@ -46,8 +46,9 @@ export const ButtonCreateCategoryPopover = (
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-80">
-          <form className="flex flex-col gap-3">
-            <div>
+          <form className="flex flex-col">
+            <h1 className="text-lg font-medium">Ajouter une catégorie</h1>
+            <div className="space-y-1">
               <label className="text-sm font-medium" htmlFor="categoryName">
                 Titre de la catégorie
               </label>
@@ -61,7 +62,7 @@ export const ButtonCreateCategoryPopover = (
             <Button
               onClick={handleSubmit}
               disabled={props.mutationCategory.isPending}
-              className="w-full"
+              className="w-full mt-3"
             >
               {props.mutationCategory.isPending ? "En cours..." : "Ajouter"}
             </Button>

@@ -2,18 +2,8 @@
 
 import { Button } from "@/src/components/ui/button";
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/src/components/ui/dialog";
-import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -21,7 +11,8 @@ import {
   useZodForm,
 } from "@/src/components/ui/form";
 import { Input } from "@/src/components/ui/input";
-import { DialogClose } from "@radix-ui/react-dialog";
+import { Popover, PopoverContent } from "@/src/components/ui/popover";
+import { PopoverTrigger } from "@radix-ui/react-popover";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Plus } from "lucide-react";
 import { useSession } from "next-auth/react";
@@ -79,22 +70,20 @@ export const ButtonCreateCategory = (props: ButtonCreateCategoryProps) => {
     },
   });
   return (
-    <Dialog>
-      <DialogTrigger asChild>
+    <Popover>
+      <PopoverTrigger asChild>
         <Button
+          variant="secondary"
           size={props.buttonString ? "sm" : "icon_sm"}
           className={props.buttonString ? "w-full" : ""}
         >
           {props.buttonString ? "Ajouter une catégorie" : <Plus size={20} />}
         </Button>
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader>
-          <DialogTitle>Ajouter une catégorie</DialogTitle>
-          <DialogDescription>
-            Ajoutez une catégorie pour organiser votre temps
-          </DialogDescription>
-        </DialogHeader>
+      </PopoverTrigger>
+      <PopoverContent className="sm:max-w-[425px]">
+        <div>
+          <h2 className="text-lg font-semibold">Ajouter une catégorie</h2>
+        </div>
         <div>
           <Form
             form={form}
@@ -115,24 +104,16 @@ export const ButtonCreateCategory = (props: ButtonCreateCategoryProps) => {
                       {...field}
                     />
                   </FormControl>
-                  <FormDescription>
-                    Le titre de la catégorie doit être unique
-                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <DialogFooter>
-              <DialogClose asChild>
-                <Button variant="ghost">Annuler</Button>
-              </DialogClose>
-              <Button type="submit">
-                {mutation.isPending ? "En cours..." : "Ajouter"}
-              </Button>
-            </DialogFooter>
+            <Button type="submit" className="w-full mt-3">
+              {mutation.isPending ? "En cours..." : "Ajouter"}
+            </Button>
           </Form>
         </div>
-      </DialogContent>
-    </Dialog>
+      </PopoverContent>
+    </Popover>
   );
 };
