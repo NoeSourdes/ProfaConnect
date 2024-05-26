@@ -25,7 +25,6 @@ import { format } from "date-fns";
 import { ArrowRight, Calendar as CalendarIcon, Loader2 } from "lucide-react";
 import {
   eventSchema,
-  eventSchemaClean,
   eventType,
 } from "../actions/create-event/create-event.schema";
 
@@ -60,6 +59,7 @@ import {
   categorySchema,
   categoryType,
 } from "../actions/category/category.schema";
+import { colorClasses, colors } from "../actions/color";
 import { createEventAction } from "../actions/create-event/create-event.action";
 import { ButtonCreateCategoryPopover } from "./buttonCreateCategoryPopover";
 
@@ -75,11 +75,6 @@ export const ButtonCreateEventForm = (props: ButtonCreateEventFormProps) => {
 
   const formCategory = useZodForm({
     schema: categorySchema,
-  });
-
-  const formClean = useZodForm({
-    schema: eventSchemaClean,
-    defaultValues: props.defaultValues,
   });
 
   const isCreate = !Boolean(props.defaultValues);
@@ -102,27 +97,6 @@ export const ButtonCreateEventForm = (props: ButtonCreateEventFormProps) => {
       return categories;
     },
   });
-  const colors: Array<
-    | "novel-highlight-purple"
-    | "novel-highlight-red"
-    | "novel-highlight-yellow"
-    | "novel-highlight-blue"
-    | "novel-highlight-green"
-  > = [
-    "novel-highlight-purple",
-    "novel-highlight-red",
-    "novel-highlight-yellow",
-    "novel-highlight-blue",
-    "novel-highlight-green",
-  ];
-
-  const colorClasses: Record<(typeof colors)[number], string> = {
-    "novel-highlight-purple": "bg-novel-highlight-purple",
-    "novel-highlight-red": "bg-novel-highlight-red",
-    "novel-highlight-yellow": "bg-novel-highlight-yellow",
-    "novel-highlight-blue": "bg-novel-highlight-blue",
-    "novel-highlight-green": "bg-novel-highlight-green",
-  };
 
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
 
@@ -145,7 +119,6 @@ export const ButtonCreateEventForm = (props: ButtonCreateEventFormProps) => {
       if (typeof values.end !== "string") {
         return;
       }
-      console.log(values);
       const { data, serverError } = await createEventAction(values);
       if (serverError || !data) {
         throw new Error(serverError);
@@ -194,9 +167,6 @@ export const ButtonCreateEventForm = (props: ButtonCreateEventFormProps) => {
     },
   });
 
-  const formId = "create-event-form";
-  const formIdCategory = "create-category-form";
-
   return (
     <Credenza>
       <CredenzaTrigger asChild>
@@ -210,9 +180,8 @@ export const ButtonCreateEventForm = (props: ButtonCreateEventFormProps) => {
         </CredenzaHeader>
         <CredenzaBody>
           <Form
-            id={formId}
             className="flex flex-col gap-4"
-            form={formClean}
+            form={form}
             onSubmit={async (values) => {
               mutation.mutate(values);
             }}
@@ -341,11 +310,11 @@ export const ButtonCreateEventForm = (props: ButtonCreateEventFormProps) => {
                         {colors.map((color) => (
                           <div
                             key={color}
-                            className={`w-6 h-6 rounded-full cursor-pointer hover:ring-[3px] hover:ring-primary/30 transition-all ${
+                            className={`w-6 h-6 rounded-full cursor-pointer hover:ring-[3px] hover:ring-border transition-all ${
                               colorClasses[color]
                             } ${
                               selectedColor === color
-                                ? "ring-[3px] ring-primary/30"
+                                ? "ring-[3px] ring-border"
                                 : ""
                             }`}
                             onClick={() => {
@@ -390,7 +359,6 @@ export const ButtonCreateEventForm = (props: ButtonCreateEventFormProps) => {
                               <ButtonCreateCategoryPopover
                                 categories={categories}
                                 formCategory={formCategory}
-                                formIdCategory={formIdCategory}
                                 mutationCategory={mutationCategory}
                               />
                             </div>
@@ -422,7 +390,7 @@ export const ButtonCreateEventForm = (props: ButtonCreateEventFormProps) => {
                 </FormItem>
               )}
             />
-            <Button type="submit" disabled={mutation.isPending} form={formId}>
+            <Button type="submit" disabled={mutation.isPending}>
               {isCreate ? "Créer l'événement" : "Mettre à jour l'événement"}
               {mutation.isPending && (
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />

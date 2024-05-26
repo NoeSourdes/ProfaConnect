@@ -16,7 +16,6 @@ import { toast } from "sonner";
 export type buttonCreateCategoryPopoverProps = {
   categories: any;
   formCategory: any;
-  formIdCategory: any;
   mutationCategory: any;
 };
 
