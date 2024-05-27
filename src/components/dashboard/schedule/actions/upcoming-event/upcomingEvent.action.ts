@@ -7,6 +7,23 @@ export const getUpcomingEventAction = async (userId: string) => {
     where: {
       userId,
     },
+    select: {
+      id: true,
+      title: true,
+      description: true,
+      date: true,
+      start: true,
+      end: true,
+      startTime: true,
+      endTime: true,
+      color: true,
+      categoryId: true,
+      category: {
+        select: {
+          name: true,
+        },
+      },
+    },
   });
 
   return events;

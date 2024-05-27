@@ -22,7 +22,13 @@ import { Input } from "@/src/components/ui/input";
 
 import { Textarea } from "@/src/components/ui/textarea";
 import { format } from "date-fns";
-import { ArrowRight, Calendar as CalendarIcon, Loader2 } from "lucide-react";
+import {
+  ArrowRight,
+  Calendar as CalendarIcon,
+  Loader2,
+  Pen,
+  Plus,
+} from "lucide-react";
 import {
   eventSchema,
   eventType,
@@ -60,14 +66,19 @@ import {
   categoryType,
 } from "../actions/category/category.schema";
 import { colorClasses, colors } from "../actions/color";
-import { createEventAction } from "../actions/create-event/create-event.action";
+import {
+  createEventAction,
+  updateEventAction,
+} from "../actions/create-event/create-event.action";
 import { ButtonCreateCategoryPopover } from "./buttonCreateCategoryPopover";
 
-export type ButtonCreateEventFormProps = {
+export type ModalEventFormProps = {
   defaultValues?: eventType;
+  id?: string;
+  icon?: boolean;
 };
 
-export const ButtonCreateEventForm = (props: ButtonCreateEventFormProps) => {
+export const ModalEventForm = (props: ModalEventFormProps) => {
   const form = useZodForm({
     schema: eventSchema,
     defaultValues: props.defaultValues,
@@ -78,6 +89,7 @@ export const ButtonCreateEventForm = (props: ButtonCreateEventFormProps) => {
   });
 
   const isCreate = !Boolean(props.defaultValues);
+  console.log("isCreate", isCreate);
   const [date, setDate] = useState<Date>();
   const { data: session } = useSession();
 
@@ -104,9 +116,12 @@ export const ButtonCreateEventForm = (props: ButtonCreateEventFormProps) => {
 
   const mutation = useMutation({
     mutationFn: async (values: eventType) => {
-      const start = `${values.start.hour}:${values.start.minute}`;
-      const end = `${values.end.hour}:${values.end.minute}`;
-      values = { ...values, start, end };
+      const startTime = `${values.start.hour}:${values.start.minute}`;
+      const endTime = `${values.end.hour}:${values.end.minute}`;
+      const start = JSON.stringify(values.start);
+      const end = JSON.stringify(values.end);
+      values = { ...values, startTime, endTime, start, end };
+      console.log("values", values);
       if (values.start > values.end) {
         toast.error("L'heure de début doit être avant l'heure de fin");
       }
@@ -119,18 +134,32 @@ export const ButtonCreateEventForm = (props: ButtonCreateEventFormProps) => {
       if (typeof values.end !== "string") {
         return;
       }
-      const { data, serverError } = await createEventAction(values);
+      const { data, serverError } = isCreate
+        ? await createEventAction(values)
+        : await updateEventAction({ id: props.id as string, data: values });
       if (serverError || !data) {
         throw new Error(serverError);
       }
-      toast.success("L'événement a été créé avec succès");
+      toast.success(
+        isCreate
+          ? "Événement créé avec succès"
+          : "Événement mis à jour avec succès"
+      );
       return data;
     },
     onSuccess: (data) => {
       if (data && session?.user) {
         queryClient.setQueryData(
           ["events", session.user.id],
-          (oldData: any[]) => [...(oldData as any[]), data]
+          (oldData: any[]) => {
+            if (isCreate) {
+              return [...(oldData as any[]), data];
+            } else {
+              return (oldData as any[]).map((event) =>
+                event.id === data.id ? data : event
+              );
+            }
+          }
         );
       }
     },
@@ -170,8 +199,29 @@ export const ButtonCreateEventForm = (props: ButtonCreateEventFormProps) => {
   return (
     <Credenza>
       <CredenzaTrigger asChild>
-        <Button size="lg" className="w-full">
-          Créer un événement
+        <Button
+          size={isCreate ? (props.icon ? "icon_sm" : "lg") : "sm"}
+          variant={isCreate ? (props.icon ? "secondary" : "default") : "ghost"}
+          className={
+            isCreate
+              ? props.icon
+                ? ""
+                : "w-full"
+              : "w-full flex items-center justify-start gap-2"
+          }
+        >
+          {isCreate ? (
+            props.icon ? (
+              <Plus />
+            ) : (
+              "Créer un événement"
+            )
+          ) : (
+            <>
+              <Pen size={18} />
+              Modifier l'événement
+            </>
+          )}
         </Button>
       </CredenzaTrigger>
       <CredenzaContent>

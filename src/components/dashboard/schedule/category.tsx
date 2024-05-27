@@ -205,7 +205,7 @@ export const Categories = (props: categoriesProps) => {
                       <EllipsisVertical size={20} />
                     </PopoverTrigger>
                     <PopoverContent className="max-w-56 p-2">
-                      <div className="flex flex-col gap-3">
+                      <div className="flex flex-col gap-2">
                         <Dialog>
                           <DialogTrigger asChild>
                             <Button

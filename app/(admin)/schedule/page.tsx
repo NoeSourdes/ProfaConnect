@@ -3,7 +3,7 @@
 import { FullCalendarComponent } from "@/src/components/dashboard/schedule/Calendar";
 import { UpcomingEvents } from "@/src/components/dashboard/schedule/UpcomingEvents";
 import { Categories } from "@/src/components/dashboard/schedule/category";
-import { ButtonCreateEventForm } from "@/src/components/dashboard/schedule/components/buttonCreateEventForm";
+import { ModalEventForm } from "@/src/components/dashboard/schedule/components/ModalEventForm";
 import { Calendar } from "@/src/components/ui/calendar";
 import { useState } from "react";
 
@@ -30,7 +30,7 @@ export default function TimeStamp() {
             : "max-[900px]:-translate-x-[19rem]"
         }`}
       >
-        <ButtonCreateEventForm />
+        <ModalEventForm />
         <Calendar
           mode="single"
           selected={date}
