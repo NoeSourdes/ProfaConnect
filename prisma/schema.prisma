@@ -82,6 +82,8 @@ model Event {
   date        DateTime
   start       String
   end         String
+  startTime   String
+  endTime     String
   color       String
   categoryId String?
   category    Category? @relation(fields: [categoryId], references: [id])

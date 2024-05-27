@@ -1,20 +1,14 @@
 "use client";
 
 import { Button } from "@/src/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/src/components/ui/dialog";
 import { useQuery } from "@tanstack/react-query";
-import { Calendar, EllipsisVertical, Pen, Trash } from "lucide-react";
+import { Calendar, EllipsisVertical, Trash } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { Popover, PopoverContent, PopoverTrigger } from "../../ui/popover";
+import { Skeleton } from "../../ui/skeleton";
 import { checkHour } from "./actions/hour";
 import { getUpcomingEventAction } from "./actions/upcoming-event/upcomingEvent.action";
+import { ModalEventForm } from "./components/ModalEventForm";
 
 export type UpcomingEventsProps = {};
 
@@ -51,22 +45,48 @@ export const UpcomingEvents = (props: UpcomingEventsProps) => {
   };
   return (
     <div className="border rounded-lg w-full">
-      <div className="flex justify-between border-b py-3 px-2 scroll-px-24">
-        <div>
+      <div className="flex justify-between border-b py-2 px-2 scroll-px-24">
+        <div className="flex items-center justify-between w-full">
           <h2 className="flex items-center gap-3 text-sm font-medium">
             <Calendar size={20} />
             Événements à venir
           </h2>
+          <ModalEventForm icon={true} />
         </div>
       </div>
       <div className="max-h-60 overflow-y-auto">
-        {isLoading && <p>Chargement...</p>}
-        {isError && <p>Erreur lors du chargement des événements</p>}
-        {events && events.length === 0 && <p>Aucun événement à venir</p>}
+        {isLoading && (
+          <div className="flex flex-col gap-3 w-full p-2">
+            {Array(3)
+              .fill(0)
+              .map((_, index) => (
+                <div
+                  key={index}
+                  className="flex items-center justify-between gap-3 w-full"
+                >
+                  <div className="flex items-center gap-2 w-full">
+                    <Skeleton className="w-4 h-4 rounded" />
+                    <Skeleton className="w-1/2 h-4" />
+                  </div>
+                  <EllipsisVertical size={20} />
+                </div>
+              ))}
+          </div>
+        )}
+        {isError && (
+          <p className="text-sm text-muted-foreground font-medium p-2">
+            Erreur lors du chargement des événements
+          </p>
+        )}
+        {events && events.length === 0 && (
+          <p className="text-sm text-muted-foreground font-medium p-2">
+            Aucun événement à venir
+          </p>
+        )}
         {events &&
           events.map((event, index) => (
             <div
-              key={event.id}
+              key={`${event.id}-${index}`} // Utilisation d'une combinaison pour garantir l'unicité
               className={`flex items-center gap-2 pr-2 ${
                 events.length - 1 === index ? "" : "border-b"
               } ${index === 0 ? "pt-2" : ""} ${
@@ -82,7 +102,7 @@ export const UpcomingEvents = (props: UpcomingEventsProps) => {
                       }`}
                     ></span>
                     <p className="text-sm text-muted-foreground">
-                      {checkHour(event.start)} - {checkHour(event.end)}
+                      {checkHour(event.startTime)} - {checkHour(event.endTime)}
                     </p>
                   </div>
                   <Popover>
@@ -92,29 +112,18 @@ export const UpcomingEvents = (props: UpcomingEventsProps) => {
                         className="text-muted-foreground"
                       />
                     </PopoverTrigger>
-                    <PopoverContent className="max-w-56 p-2">
+                    <PopoverContent className="max-w-56 p-2 space-y-2 z-50">
+                      <ModalEventForm
+                        defaultValues={{
+                          ...event,
+                          description: event.description ?? undefined,
+                          categoryId: event.categoryId ?? undefined,
+                          start: JSON.parse(event.start),
+                          end: JSON.parse(event.end),
+                        }}
+                        id={event.id}
+                      />
                       <div className="flex flex-col gap-3">
-                        <Dialog>
-                          <DialogTrigger asChild>
-                            <Button
-                              size="sm"
-                              className="w-full flex items-center justify-start gap-2"
-                              variant="ghost"
-                            >
-                              <Pen size={18} />
-                              Modifier l'événement
-                            </Button>
-                          </DialogTrigger>
-                          <DialogContent className="sm:max-w-[425px]">
-                            <DialogHeader>
-                              <DialogTitle>Modifier l'événement</DialogTitle>
-                              <DialogDescription>
-                                Modifiez le titre de l'événement
-                              </DialogDescription>
-                            </DialogHeader>
-                            <div></div>
-                          </DialogContent>
-                        </Dialog>
                         <Button
                           size="sm"
                           className="w-full flex items-center justify-start gap-2 hover:text-destructive tramsition-colors"
