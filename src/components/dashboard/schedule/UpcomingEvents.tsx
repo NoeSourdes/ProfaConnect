@@ -26,6 +26,16 @@ export const UpcomingEvents = (props: UpcomingEventsProps) => {
     },
   });
 
+  const today = new Date();
+  const todayEvents = events?.filter((event) => {
+    const eventDate = new Date(event.date);
+    return (
+      eventDate.getDate() === today.getDate() &&
+      eventDate.getMonth() === today.getMonth() &&
+      eventDate.getFullYear() === today.getFullYear()
+    );
+  });
+
   const descriptionMaxLength = (description: string | null | undefined) => {
     if (!description) {
       return "";
@@ -78,19 +88,19 @@ export const UpcomingEvents = (props: UpcomingEventsProps) => {
             Erreur lors du chargement des événements
           </p>
         )}
-        {events && events.length === 0 && (
+        {todayEvents && todayEvents.length === 0 && (
           <p className="text-sm text-muted-foreground font-medium p-2">
             Aucun événement à venir
           </p>
         )}
-        {events &&
-          events.map((event, index) => (
+        {todayEvents &&
+          todayEvents.map((event, index) => (
             <div
-              key={`${event.id}-${index}`} // Utilisation d'une combinaison pour garantir l'unicité
+              key={`${event.id}-${index}`}
               className={`flex items-center gap-2 pr-2 ${
-                events.length - 1 === index ? "" : "border-b"
+                todayEvents.length - 1 === index ? "" : "border-b"
               } ${index === 0 ? "pt-2" : ""} ${
-                index === events.length - 1 ? "pb-2" : "pb-2"
+                index === todayEvents.length - 1 ? "pb-2" : "pb-2"
               } py-2 hover:bg-secondary transition-colors cursor-pointer pl-2`}
             >
               <div className="flex flex-col w-full">
