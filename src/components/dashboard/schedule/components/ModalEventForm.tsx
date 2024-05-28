@@ -89,7 +89,7 @@ export const ModalEventForm = (props: ModalEventFormProps) => {
   });
 
   const isCreate = !Boolean(props.defaultValues);
-  console.log("isCreate", isCreate);
+
   const [date, setDate] = useState<Date>();
   const { data: session } = useSession();
 
@@ -121,7 +121,6 @@ export const ModalEventForm = (props: ModalEventFormProps) => {
       const start = JSON.stringify(values.start);
       const end = JSON.stringify(values.end);
       values = { ...values, startTime, endTime, start, end };
-      console.log("values", values);
       if (values.start > values.end) {
         toast.error("L'heure de début doit être avant l'heure de fin");
       }
@@ -200,7 +199,7 @@ export const ModalEventForm = (props: ModalEventFormProps) => {
     <Credenza>
       <CredenzaTrigger asChild>
         <Button
-          size={isCreate ? (props.icon ? "icon_sm" : "lg") : "sm"}
+          size={isCreate ? (props.icon ? "icon_sm" : "default") : "sm"}
           variant={isCreate ? (props.icon ? "secondary" : "default") : "ghost"}
           className={
             isCreate
