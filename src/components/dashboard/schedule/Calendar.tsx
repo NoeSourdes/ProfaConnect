@@ -19,7 +19,7 @@ import {
 } from "@/src/components/ui/tabs";
 import { endOfWeek, format, startOfWeek } from "date-fns";
 import { fr } from "date-fns/locale";
-import { ChevronLeft, ChevronRight, MenuIcon } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useState } from "react";
 import { monthNames } from "./actions/calendar/calendar";
 
@@ -46,57 +46,57 @@ export const FullCalendarComponent = (props: CalendarProps) => {
         defaultValue={currentView}
         onValueChange={(value) => setCurrentView(value)}
       >
-        <TabsList className="flex max-sm:flex-col max-sm:items-start items-center justify-between gap-3 w-full bg-background">
+        <TabsList className="flex max-md:flex-col max-md:items-start items-center justify-between gap-3 w-full bg-background">
           <div className="flex items-center gap-2">
-            <div className="hidden max-[900px]:block">
-              <Button
-                size="icon_sm"
-                variant="ghost"
-                onClick={() => props.setSidebarIsOpen(!props.sidebarIsOpen)}
-              >
-                <MenuIcon size={20} />
-              </Button>
-            </div>
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-3">
+              <Button variant="secondary">Ajourd'hui</Button>
               <Button onClick={handlePrevMonth} size="icon_sm" variant="ghost">
                 <ChevronLeft />
               </Button>
+              <div>
+                {currentView === "month" && (
+                  <span className="font-medium">
+                    {monthNames[date.getMonth()]} {date.getFullYear()}
+                  </span>
+                )}
+                {currentView === "week" && (
+                  <span className="font-medium">
+                    {format(startOfWeek(date), "MMMM d", { locale: fr })} -{" "}
+                    {format(endOfWeek(date), "d, yyyy", { locale: fr })}
+                  </span>
+                )}
+                {currentView === "day" && (
+                  <span className="font-medium">
+                    {format(date, "d MMMM, yyyy", { locale: fr })}
+                  </span>
+                )}
+                {currentView === "list" && (
+                  <span className="font-medium">
+                    {monthNames[date.getMonth()]} {date.getFullYear()}
+                  </span>
+                )}
+              </div>
               <Button onClick={handleNextMonth} size="icon_sm" variant="ghost">
                 <ChevronRight />
               </Button>
             </div>
-            <div>
-              {currentView === "month" && (
-                <span className="font-medium">
-                  {monthNames[date.getMonth()]} {date.getFullYear()}
-                </span>
-              )}
-              {currentView === "week" && (
-                <span className="font-medium">
-                  Semaine du {format(startOfWeek(date), "d", { locale: fr })} au{" "}
-                  {format(endOfWeek(date), "d MMMM, yyyy", { locale: fr })}
-                </span>
-              )}
-              {currentView === "day" && (
-                <span className="font-medium">
-                  {format(date, "d MMMM, yyyy", { locale: fr })}
-                </span>
-              )}
-              {currentView === "list" && (
-                <span className="font-medium">
-                  {monthNames[date.getMonth()]} {date.getFullYear()}
-                </span>
-              )}
-            </div>
           </div>
-          <div className="inline-flex h-10 items-center justify-center rounded-md bg-muted p-1 text-muted-foreground mr-2">
-            <TabsTrigger value="month">Mois</TabsTrigger>
-            <TabsTrigger value="week">Semaine</TabsTrigger>
-            <TabsTrigger value="day">Jour</TabsTrigger>
-            <TabsTrigger value="list">Liste</TabsTrigger>
+          <div className="inline-flex h-10 items-center justify-center rounded-md bg-muted p-1 text-muted-foreground mr-2 max-md:w-full">
+            <TabsTrigger className="max-md:grow" value="month">
+              Mois
+            </TabsTrigger>
+            <TabsTrigger className="max-md:grow" value="week">
+              Semaine
+            </TabsTrigger>
+            <TabsTrigger className="max-md:grow" value="day">
+              Jour
+            </TabsTrigger>
+            <TabsTrigger className="max-md:grow" value="list">
+              Liste
+            </TabsTrigger>
           </div>
         </TabsList>
-        <TabsContent value="month" className="mt-4 max-sm:mt-16">
+        <TabsContent value="month" className="mt-3 max-md:mt-[68px]">
           <Card>
             <CardHeader>
               <CardTitle>Account</CardTitle>
@@ -119,7 +119,7 @@ export const FullCalendarComponent = (props: CalendarProps) => {
             </CardFooter>
           </Card>
         </TabsContent>
-        <TabsContent value="week" className="mt-4 max-sm:mt-16">
+        <TabsContent value="week" className="mt-3 max-md:mt-[68px]">
           <Card>
             <CardHeader>
               <CardTitle>Password</CardTitle>
@@ -142,7 +142,7 @@ export const FullCalendarComponent = (props: CalendarProps) => {
             </CardFooter>
           </Card>
         </TabsContent>
-        <TabsContent value="day" className="mt-4 max-sm:mt-16">
+        <TabsContent value="day" className="mt-3 max-md:mt-[68px]">
           <Card>
             <CardHeader>
               <CardTitle>Password</CardTitle>
@@ -166,7 +166,7 @@ export const FullCalendarComponent = (props: CalendarProps) => {
             </CardFooter>
           </Card>
         </TabsContent>
-        <TabsContent value="list" className="mt-4 max-sm:mt-16">
+        <TabsContent value="list" className="mt-3 max-md:mt-[68px]">
           <Card>
             <CardHeader>
               <CardTitle>Password</CardTitle>
