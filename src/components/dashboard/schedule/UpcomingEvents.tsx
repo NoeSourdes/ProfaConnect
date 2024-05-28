@@ -101,7 +101,7 @@ export const UpcomingEvents = (props: UpcomingEventsProps) => {
                 todayEvents.length - 1 === index ? "" : "border-b"
               } ${index === 0 ? "pt-2" : ""} ${
                 index === todayEvents.length - 1 ? "pb-2" : "pb-2"
-              } py-2 hover:bg-secondary transition-colors cursor-pointer pl-2`}
+              } py-2 pl-2`}
             >
               <div className="flex flex-col w-full">
                 <div className="flex items-center justify-between w-full">
