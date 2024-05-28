@@ -47,38 +47,48 @@ export const FullCalendarComponent = (props: CalendarProps) => {
         onValueChange={(value) => setCurrentView(value)}
       >
         <TabsList className="flex max-md:flex-col max-md:items-start items-center justify-between gap-3 w-full bg-background">
-          <div className="flex items-center gap-2">
-            <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 w-full">
+            <div className="flex items-center gap-3 max-md:w-full max-sm:justify-between">
               <Button variant="secondary">Ajourd'hui</Button>
-              <Button onClick={handlePrevMonth} size="icon_sm" variant="ghost">
-                <ChevronLeft />
-              </Button>
-              <div>
-                {currentView === "month" && (
-                  <span className="font-medium">
-                    {monthNames[date.getMonth()]} {date.getFullYear()}
-                  </span>
-                )}
-                {currentView === "week" && (
-                  <span className="font-medium">
-                    {format(startOfWeek(date), "MMMM d", { locale: fr })} -{" "}
-                    {format(endOfWeek(date), "d, yyyy", { locale: fr })}
-                  </span>
-                )}
-                {currentView === "day" && (
-                  <span className="font-medium">
-                    {format(date, "d MMMM, yyyy", { locale: fr })}
-                  </span>
-                )}
-                {currentView === "list" && (
-                  <span className="font-medium">
-                    {monthNames[date.getMonth()]} {date.getFullYear()}
-                  </span>
-                )}
+              <div className="flex items-center gap-3">
+                <Button
+                  onClick={handlePrevMonth}
+                  size="icon_sm"
+                  variant="ghost"
+                >
+                  <ChevronLeft />
+                </Button>
+                <div>
+                  {currentView === "month" && (
+                    <span className="font-medium">
+                      {monthNames[date.getMonth()]} {date.getFullYear()}
+                    </span>
+                  )}
+                  {currentView === "week" && (
+                    <span className="font-medium">
+                      {format(startOfWeek(date), "MMMM d", { locale: fr })} -{" "}
+                      {format(endOfWeek(date), "d, yyyy", { locale: fr })}
+                    </span>
+                  )}
+                  {currentView === "day" && (
+                    <span className="font-medium">
+                      {format(date, "d MMMM, yyyy", { locale: fr })}
+                    </span>
+                  )}
+                  {currentView === "list" && (
+                    <span className="font-medium">
+                      {monthNames[date.getMonth()]} {date.getFullYear()}
+                    </span>
+                  )}
+                </div>
+                <Button
+                  onClick={handleNextMonth}
+                  size="icon_sm"
+                  variant="ghost"
+                >
+                  <ChevronRight />
+                </Button>
               </div>
-              <Button onClick={handleNextMonth} size="icon_sm" variant="ghost">
-                <ChevronRight />
-              </Button>
             </div>
           </div>
           <div className="inline-flex h-10 items-center justify-center rounded-md bg-muted p-1 text-muted-foreground mr-2 max-md:w-full">
