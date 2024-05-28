@@ -22,6 +22,7 @@ import { fr } from "date-fns/locale";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useState } from "react";
 import { monthNames } from "./actions/calendar/calendar";
+import { CalendarMonth } from "./components/CalendarMonth";
 
 export type CalendarProps = {
   sidebarIsOpen: boolean;
@@ -31,13 +32,25 @@ export type CalendarProps = {
 export const FullCalendarComponent = (props: CalendarProps) => {
   const [date, setDate] = useState(new Date());
   const [currentView, setCurrentView] = useState("month");
+  const [years, setYears] = useState<number>(new Date().getFullYear());
+  const [months, setMonths] = useState<number>(new Date().getMonth() + 1);
 
   const handlePrevMonth = () => {
     setDate(new Date(date.setMonth(date.getMonth() - 1)));
+    setMonths(months - 1);
+    if (months === 1) {
+      setYears(years - 1);
+      setMonths(12);
+    }
   };
 
   const handleNextMonth = () => {
     setDate(new Date(date.setMonth(date.getMonth() + 1)));
+    setMonths(months + 1);
+    if (months === 12) {
+      setYears(years + 1);
+      setMonths(1);
+    }
   };
 
   return (
@@ -46,7 +59,7 @@ export const FullCalendarComponent = (props: CalendarProps) => {
         defaultValue={currentView}
         onValueChange={(value) => setCurrentView(value)}
       >
-        <TabsList className="flex max-md:flex-col max-md:items-start items-center justify-between gap-3 w-full bg-background">
+        <TabsList className="flex max-md:flex-col max-md:items-start items-center justify-between gap-3 w-full p-0 bg-background">
           <div className="flex items-center gap-2 w-full">
             <div className="flex items-center gap-3 max-md:w-full max-sm:justify-between">
               <Button variant="secondary">Ajourd'hui</Button>
@@ -107,30 +120,14 @@ export const FullCalendarComponent = (props: CalendarProps) => {
           </div>
         </TabsList>
         <TabsContent value="month" className="mt-3 max-md:mt-[68px]">
-          <Card>
-            <CardHeader>
-              <CardTitle>Account</CardTitle>
-              <CardDescription>
-                Make changes to your account here. Click save when you're done.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-2">
-              <div className="space-y-1">
-                <Label htmlFor="name">Name</Label>
-                <Input id="name" defaultValue="Pedro Duarte" />
-              </div>
-              <div className="space-y-1">
-                <Label htmlFor="username">Username</Label>
-                <Input id="username" defaultValue="@peduarte" />
-              </div>
+          <Card className="border-none shadow-none">
+            <CardContent className="p-0">
+              <CalendarMonth year={years} month={months} />
             </CardContent>
-            <CardFooter>
-              <Button>Save changes</Button>
-            </CardFooter>
           </Card>
         </TabsContent>
         <TabsContent value="week" className="mt-3 max-md:mt-[68px]">
-          <Card>
+          <Card className="border-none shadow-none">
             <CardHeader>
               <CardTitle>Password</CardTitle>
               <CardDescription>
@@ -153,7 +150,7 @@ export const FullCalendarComponent = (props: CalendarProps) => {
           </Card>
         </TabsContent>
         <TabsContent value="day" className="mt-3 max-md:mt-[68px]">
-          <Card>
+          <Card className="border-none shadow-none">
             <CardHeader>
               <CardTitle>Password</CardTitle>
               <CardDescription>
@@ -177,7 +174,7 @@ export const FullCalendarComponent = (props: CalendarProps) => {
           </Card>
         </TabsContent>
         <TabsContent value="list" className="mt-3 max-md:mt-[68px]">
-          <Card>
+          <Card className="border-none shadow-none">
             <CardHeader>
               <CardTitle>Password</CardTitle>
               <CardDescription>Change your</CardDescription>
