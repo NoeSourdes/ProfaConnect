@@ -6,6 +6,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/src/components/ui/breadcrumb";
+import { Home } from "lucide-react";
 import Link from "next/link";
 import { Fragment } from "react";
 
@@ -40,6 +41,14 @@ export const BreadcrumbComponent = (props: BreadcrumbProps) => {
   return (
     <Breadcrumb>
       <BreadcrumbList>
+        <BreadcrumbItem>
+          <BreadcrumbLink asChild>
+            <Link href="/dashboard">
+              <Home size={16} />
+            </Link>
+          </BreadcrumbLink>
+        </BreadcrumbItem>
+        <BreadcrumbSeparator />
         {props.array.map((item, index) => (
           <Fragment key={index}>
             <BreadcrumbItem>

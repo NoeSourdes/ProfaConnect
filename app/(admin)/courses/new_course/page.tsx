@@ -11,16 +11,12 @@ export default function RoutePage(props: PageParams<{}>) {
       <main className="flex flex-1 flex-col gap-4 lg:gap-5 h-full">
         <div className="flex items-center gap-3">
           <Link href="/courses">
-            <Button size="icon" variant="secondary">
+            <Button size="icon" variant="outline">
               <Undo2 size={20} />
             </Button>
           </Link>
           <BreadcrumbComponent
             array={[
-              {
-                item: "Dashboard",
-                link: "/dashboard",
-              },
               {
                 item: "Cours",
                 link: "/courses",
