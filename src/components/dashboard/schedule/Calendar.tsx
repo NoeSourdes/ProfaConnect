@@ -62,7 +62,16 @@ export const FullCalendarComponent = (props: CalendarProps) => {
         <TabsList className="flex max-md:flex-col max-md:items-start items-center justify-between gap-3 w-full p-0 bg-background">
           <div className="flex items-center gap-2 w-full">
             <div className="flex items-center gap-3 max-md:w-full max-sm:justify-between">
-              <Button variant="secondary">Ajourd'hui</Button>
+              <Button
+                onClick={() => {
+                  setDate(new Date());
+                  setMonths(new Date().getMonth() + 1);
+                  setYears(new Date().getFullYear());
+                }}
+                variant="secondary"
+              >
+                Ajourd'hui
+              </Button>
               <div className="flex items-center gap-3">
                 <Button
                   onClick={handlePrevMonth}
