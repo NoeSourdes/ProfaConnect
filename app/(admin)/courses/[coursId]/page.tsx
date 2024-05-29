@@ -319,10 +319,7 @@ export default function RoutePage(
               ]}
             />
           </div>
-          <div
-            className="h-full w-full border-t pt-5"
-            x-chunk="dashboard-02-chunk-1"
-          >
+          <div className="h-full w-full" x-chunk="dashboard-02-chunk-1">
             <div className="flex gap-3 pb-5">
               <Link
                 href="/courses/[coursId]/new_lesson"
@@ -364,7 +361,7 @@ export default function RoutePage(
                 .map((lesson) => (
                   <div
                     key={lesson.lessonId}
-                    className="h-48 sm:max-w-80 grow flex flex-col p-4 justify-between border rounded-2xl shadow-lg hover:ring ring-primary/70 cursor-pointer transition-all hover:shadow-blue"
+                    className="h-48 sm:max-w-80 grow flex flex-col p-4 justify-between border rounded-2xl shadow-lg hover:ring ring-primary/70 cursor-pointer transition-all hover:shadow-blue bg-background"
                     onDoubleClick={() => {
                       router.push(
                         `/courses/${props.params.coursId}/${lesson.lessonId}`
