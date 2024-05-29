@@ -3,7 +3,7 @@
 import { prisma } from "@/src/lib/prisma";
 import { userAction } from "@/src/lib/safe-actions";
 import { z } from "zod";
-import { eventSchema } from "./create-event.schema";
+import { eventSchema } from "./event.schema";
 
 export const createEventAction = userAction(
   eventSchema,
@@ -56,3 +56,47 @@ export const updateEventAction = userAction(
     return event;
   }
 );
+
+export const deleteEventAction = userAction(z.string(), async (id, context) => {
+  if (!context.user) {
+    throw new Error("User not found");
+  }
+  const event = await prisma.event.delete({
+    where: {
+      id,
+      userId: context.user.id,
+    },
+  });
+  return event;
+});
+
+export const getEventAction = async (userId: string) => {
+  const events = await prisma.event.findMany({
+    where: {
+      userId,
+    },
+    select: {
+      id: true,
+      title: true,
+      description: true,
+      date: true,
+      start: true,
+      end: true,
+      startTime: true,
+      endTime: true,
+      color: true,
+      categoryId: true,
+      category: {
+        select: {
+          name: true,
+        },
+      },
+      userId: true,
+    },
+    orderBy: {
+      startTime: "asc",
+    },
+  });
+
+  return events;
+};

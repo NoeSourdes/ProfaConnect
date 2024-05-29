@@ -29,10 +29,7 @@ import {
   Pen,
   Plus,
 } from "lucide-react";
-import {
-  eventSchema,
-  eventType,
-} from "../actions/create-event/create-event.schema";
+import { eventSchema, eventType } from "../actions/events/event.schema";
 
 import { Calendar } from "@/src/components/ui/calendar";
 import {
@@ -74,7 +71,7 @@ import {
 import {
   createEventAction,
   updateEventAction,
-} from "../actions/create-event/create-event.action";
+} from "../actions/events/event.action";
 import { ButtonCreateCategoryPopover } from "./buttonCreateCategoryPopover";
 
 export type ModalEventFormProps = {

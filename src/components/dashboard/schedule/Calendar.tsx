@@ -17,11 +17,14 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/src/components/ui/tabs";
+import { useQuery } from "@tanstack/react-query";
 import { endOfWeek, format, startOfWeek } from "date-fns";
 import { fr } from "date-fns/locale";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { monthNames } from "./actions/calendar/calendar";
+import { getEventAction } from "./actions/events/event.action";
 import { CalendarMonth } from "./components/CalendarMonth";
 
 export type CalendarProps = {
@@ -34,6 +37,7 @@ export const FullCalendarComponent = (props: CalendarProps) => {
   const [currentView, setCurrentView] = useState("month");
   const [years, setYears] = useState<number>(new Date().getFullYear());
   const [months, setMonths] = useState<number>(new Date().getMonth() + 1);
+  const { data: session } = useSession();
 
   const handlePrevMonth = () => {
     setDate(new Date(date.setMonth(date.getMonth() - 1)));
@@ -52,6 +56,14 @@ export const FullCalendarComponent = (props: CalendarProps) => {
       setMonths(1);
     }
   };
+
+  const { data: events = [] } = useQuery({
+    queryKey: ["events", session?.user?.id],
+    queryFn: async () => {
+      const events = await getEventAction(session?.user?.id as string);
+      return events;
+    },
+  });
 
   return (
     <div>
@@ -131,7 +143,7 @@ export const FullCalendarComponent = (props: CalendarProps) => {
         <TabsContent value="month" className="mt-3 max-md:mt-[68px]">
           <Card className="border-none shadow-none">
             <CardContent className="p-0">
-              <CalendarMonth year={years} month={months} />
+              <CalendarMonth year={years} month={months} events={events} />
             </CardContent>
           </Card>
         </TabsContent>

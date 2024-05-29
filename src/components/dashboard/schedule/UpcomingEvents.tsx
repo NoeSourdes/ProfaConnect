@@ -1,14 +1,15 @@
 "use client";
 
-import { Button } from "@/src/components/ui/button";
 import { useQuery } from "@tanstack/react-query";
-import { Calendar, EllipsisVertical, Trash } from "lucide-react";
+import { Calendar, EllipsisVertical } from "lucide-react";
 import { useSession } from "next-auth/react";
-import { Popover, PopoverContent, PopoverTrigger } from "../../ui/popover";
 import { Skeleton } from "../../ui/skeleton";
-import { checkHour } from "./actions/hour";
-import { getUpcomingEventAction } from "./actions/upcoming-event/upcomingEvent.action";
+import { colorClassesClean } from "./actions/color";
+import { checkHour, sortEvents } from "./actions/hour";
+import { EventType } from "./actions/types/events-type";
 import { ModalEventForm } from "./components/ModalEventForm";
+import { PopoverManagementEvents } from "./components/popoverManagementEvents";
+import { getEventAction } from "./actions/events/event.action";
 
 export type UpcomingEventsProps = {};
 
@@ -21,7 +22,7 @@ export const UpcomingEvents = (props: UpcomingEventsProps) => {
   } = useQuery({
     queryKey: ["events", session?.user?.id],
     queryFn: async () => {
-      const events = await getUpcomingEventAction(session?.user?.id as string);
+      const events = await getEventAction(session?.user?.id as string);
       return events;
     },
   });
@@ -94,7 +95,7 @@ export const UpcomingEvents = (props: UpcomingEventsProps) => {
           </p>
         )}
         {todayEvents &&
-          todayEvents.map((event, index) => (
+          sortEvents(todayEvents).map((event: EventType, index: number) => (
             <div
               key={`${event.id}-${index}`}
               className={`flex items-center gap-2 pr-2 ${
@@ -107,47 +108,17 @@ export const UpcomingEvents = (props: UpcomingEventsProps) => {
                 <div className="flex items-center justify-between w-full">
                   <div className="flex items-center gap-2">
                     <span
-                      className={`w-2 h-2 rounded-full bg-${
-                        event.color || "novel-highlight-purple"
+                      className={`w-2 h-2 rounded-full ${
+                        colorClassesClean[
+                          event.color as keyof typeof colorClassesClean
+                        ]
                       }`}
                     ></span>
                     <p className="text-sm text-muted-foreground">
                       {checkHour(event.startTime)} - {checkHour(event.endTime)}
                     </p>
                   </div>
-                  <Popover>
-                    <PopoverTrigger>
-                      <EllipsisVertical
-                        size={20}
-                        className="text-muted-foreground"
-                      />
-                    </PopoverTrigger>
-                    <PopoverContent className="max-w-56 p-2 space-y-2 z-50">
-                      <ModalEventForm
-                        defaultValues={{
-                          ...event,
-                          description: event.description ?? undefined,
-                          categoryId: event.categoryId ?? undefined,
-                          start: JSON.parse(event.start),
-                          end: JSON.parse(event.end),
-                        }}
-                        id={event.id}
-                      />
-                      <div className="flex flex-col gap-3">
-                        <Button
-                          size="sm"
-                          className="w-full flex items-center justify-start gap-2 hover:text-destructive tramsition-colors"
-                          variant="ghost"
-                          onClick={() => {
-                            console.log("delete");
-                          }}
-                        >
-                          <Trash size={18} />
-                          Supprimer l'événement
-                        </Button>
-                      </div>
-                    </PopoverContent>
-                  </Popover>
+                  <PopoverManagementEvents event={event} />
                 </div>
                 <div>
                   <h3 className="text-sm font-medium">{event.title}</h3>

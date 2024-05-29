@@ -23,9 +23,7 @@ export default async function RouteLayout(props: LayoutParams<{}>) {
         </div>
       </div>
       <div className="w-full h-full flex justify-between ">
-        <section className="mt-5 pt-2 w-full h-full border-t">
-          {props.children}
-        </section>
+        <section className="mt-2 w-full h-full">{props.children}</section>
       </div>
     </div>
   );

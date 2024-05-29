@@ -33,7 +33,6 @@ import {
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useQueryState } from "nuqs";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import {
@@ -230,7 +229,7 @@ export default function Course() {
           <div className="flex items-center justify-between gap-5 w-full">
             <div className="flex items-center gap-3">
               <Link href="/dashboard">
-                <Button size="icon" variant="secondary">
+                <Button size="icon" variant="outline">
                   <Undo2 size={20} />
                 </Button>
               </Link>
@@ -252,7 +251,7 @@ export default function Course() {
               />
             </div>
           </div>
-          <div className="h-full w-full border-t pt-5 space-y-5">
+          <div className="h-full w-full space-y-5">
             <div className="flex gap-3">
               <Link href="/courses/new_course">
                 <Button className="flex items-center gap-2">
@@ -263,7 +262,7 @@ export default function Course() {
               </Link>
               <Popover>
                 <PopoverTrigger>
-                  <Button variant="secondary">
+                  <Button variant="outline">
                     <SlidersHorizontal size={20} />
                   </Button>
                 </PopoverTrigger>
@@ -300,7 +299,7 @@ export default function Course() {
                 .map((course) => (
                   <div
                     key={course.id}
-                    className="h-48 sm:max-w-80 grow flex flex-col p-4 justify-between border rounded-2xl shadow-lg hover:ring ring-primary/70 cursor-pointer transition-all hover:shadow-blue"
+                    className="h-48 sm:max-w-80 grow flex flex-col p-4 justify-between border rounded-2xl shadow-lg hover:ring ring-primary/70 cursor-pointer transition-all hover:shadow-blue bg-background"
                     onDoubleClick={() => {
                       router.push(`/courses/${course.id}`);
                     }}

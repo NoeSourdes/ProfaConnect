@@ -15,18 +15,20 @@ export default function TimeStamp() {
     <div
       className={`min-h-[calc(100vh-56px-64px-20px-24px-56px-48px)] h-full w-full flex gap-3 relative max-lg:flex-col`}
     >
-      <section
-        className={`flex flex-col gap-3 transition-all bg-background z-30 pt-3`}
-      >
+      <section className={`flex flex-col gap-3 transition-all z-30 pt-3`}>
         <ModalEventForm />
         <Calendar
           mode="single"
           selected={date}
           onSelect={setDate}
-          className="rounded-md border"
+          className="rounded-md border bg-background"
         />
-        <UpcomingEvents />
-        <Categories />
+        <div className="bg-background">
+          <UpcomingEvents />
+        </div>
+        <div className="bg-background">
+          <Categories />
+        </div>
         <div></div>
       </section>
       <section className={`h-full w-full transition-all z-10 pt-3`}>

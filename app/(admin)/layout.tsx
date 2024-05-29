@@ -19,7 +19,7 @@ export default function Layout({ children }: Props) {
   const [isSidebarOpen, setIsSidebarOpen] = React.useState(true);
   const sidebar = useStore(useSidebarToggle, (state) => state);
   return (
-    <>
+    <div className="">
       <Sidebar />
       <main
         className={cn(
@@ -42,6 +42,6 @@ export default function Layout({ children }: Props) {
       >
         <Footer />
       </footer>
-    </>
+    </div>
   );
 }
