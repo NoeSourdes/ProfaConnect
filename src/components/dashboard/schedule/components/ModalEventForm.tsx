@@ -65,7 +65,12 @@ import {
   categorySchema,
   categoryType,
 } from "../actions/category/category.schema";
-import { colorClasses, colors } from "../actions/color";
+import {
+  colorClasses,
+  colorClassesBorder,
+  colorClassesBorderClean,
+  colors,
+} from "../actions/color";
 import {
   createEventAction,
   updateEventAction,
@@ -355,22 +360,24 @@ export const ModalEventForm = (props: ModalEventFormProps) => {
                       <span className="text-destructive">*</span>
                     </FormLabel>
                     <FormControl>
-                      <div className="flex space-x-5">
+                      <div className="flex space-x-3">
                         {colors.map((color) => (
                           <div
                             key={color}
-                            className={`w-6 h-6 rounded-full cursor-pointer hover:ring-[3px] hover:ring-border transition-all ${
-                              colorClasses[color]
-                            } ${
+                            className={`flex items-center justify-center border-[3px] p-[2px] rounded-full ${
                               selectedColor === color
-                                ? "ring-[3px] ring-border"
-                                : ""
+                                ? `${colorClassesBorder[color]}`
+                                : "border-transparent"
                             }`}
-                            onClick={() => {
-                              field.onChange(color);
-                              setSelectedColor(color);
-                            }}
-                          />
+                          >
+                            <div
+                              className={`w-6 h-6 rounded-full cursor-pointer  transition-all border-[3px] ${colorClassesBorderClean[color]} ${colorClasses[color]}`}
+                              onClick={() => {
+                                field.onChange(color);
+                                setSelectedColor(color);
+                              }}
+                            />
+                          </div>
                         ))}
                       </div>
                     </FormControl>

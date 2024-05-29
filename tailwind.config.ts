@@ -83,8 +83,8 @@ export default withUt({
         "novel-highlight-red": {
           DEFAULT: "hsl(var(--novel-highlight-red-var))",
         },
-        "novel-highlight-yellow": {
-          DEFAULT: "hsl(var(--novel-highlight-yellow-var))",
+        "novel-highlight-gray": {
+          DEFAULT: "hsl(var(--novel-highlight-gray-var))",
         },
         "novel-highlight-blue": {
           DEFAULT: "hsl(var(--novel-highlight-blue-var))",
