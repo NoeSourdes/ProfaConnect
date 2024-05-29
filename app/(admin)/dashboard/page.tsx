@@ -8,8 +8,10 @@ export default async function Page() {
     <>
       <BreadcrumbComponent
         array={[
-          { item: "Home", link: "/" },
-          { item: "Dashboard", link: "/dashboard" },
+          {
+            item: "Dashboard",
+            link: "/dashboard",
+          },
         ]}
       />
       <div className="w-full h-full flex justify-between">

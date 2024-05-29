@@ -10,15 +10,12 @@ export default async function RouteLayout(props: LayoutParams<{}>) {
       <div className="flex items-center justify-between gap-5 w-full">
         <div className="flex items-center gap-3">
           <Link href="/dashboard">
-            <Button size="icon" variant="secondary">
+            <Button size="icon" variant="outline">
               <Undo2 size={20} />
             </Button>
           </Link>
           <BreadcrumbComponent
-            array={[
-              { item: "Home", link: "/" },
-              { item: "Calendrier", link: "/schedule" },
-            ]}
+            array={[{ item: "Calendrier", link: "/schedule" }]}
           />
         </div>
       </div>

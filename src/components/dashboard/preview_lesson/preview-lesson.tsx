@@ -17,14 +17,12 @@ export const PreviewLesson = (props: previewProps) => {
     <div>
       <div className="flex items-center gap-3 w-full">
         <Link href={`/courses/${props.courseId}`}>
-          <Button size="icon" variant="secondary">
+          <Button size="icon" variant="outline">
             <Undo2 size={20} />
           </Button>
         </Link>
         <BreadcrumbComponent
           array={[
-            { item: "Home", link: "/" },
-            { item: "Dashboard", link: "/dashboard" },
             { item: "Cours", link: "/courses" },
             { item: "Leçons", link: `/courses/${props.courseId}` },
             {
