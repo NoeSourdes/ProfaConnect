@@ -72,6 +72,32 @@ export const PopoverManagementEvents = (
           )}
         </PopoverTrigger>
         <PopoverContent className="max-w-56 p-2 space-y-2 z-50">
+          <div className="px-1">
+            <div className="flex items-center gap-1 ">
+              <span
+                className={`w-1 h-4 ${
+                  colorClassesClean[
+                    props.event.color as keyof typeof colorClassesClean
+                  ]
+                }`}
+              ></span>
+
+              <p className="font-medium">{props.event.title}</p>
+            </div>
+            <p className="text-muted-foreground font-semibold text-xs">
+              {checkHour(props.event.startTime)} -{" "}
+              {checkHour(props.event.endTime)}
+            </p>
+            <p
+              className="
+            text-muted-foreground text-sm
+            "
+            >
+              {props.event.description
+                ? props.event.description
+                : "Pas de description"}
+            </p>
+          </div>
           <ModalEventForm
             defaultValues={{
               ...props.event,
