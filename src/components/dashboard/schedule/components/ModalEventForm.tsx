@@ -2,14 +2,6 @@
 
 import { Button } from "@/src/components/ui/button";
 import {
-  Credenza,
-  CredenzaBody,
-  CredenzaContent,
-  CredenzaHeader,
-  CredenzaTitle,
-  CredenzaTrigger,
-} from "@/src/components/ui/credenza";
-import {
   Form,
   FormControl,
   FormField,
@@ -32,6 +24,13 @@ import {
 import { eventSchema, eventType } from "../actions/events/event.schema";
 
 import { Calendar } from "@/src/components/ui/calendar";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/src/components/ui/dialog";
 import {
   Popover,
   PopoverContent,
@@ -198,8 +197,8 @@ export const ModalEventForm = (props: ModalEventFormProps) => {
   });
 
   return (
-    <Credenza>
-      <CredenzaTrigger asChild>
+    <Dialog>
+      <DialogTrigger asChild>
         <Button
           size={isCreate ? (props.icon ? "icon_sm" : "default") : "sm"}
           variant={isCreate ? (props.icon ? "secondary" : "default") : "ghost"}
@@ -224,234 +223,232 @@ export const ModalEventForm = (props: ModalEventFormProps) => {
             </>
           )}
         </Button>
-      </CredenzaTrigger>
-      <CredenzaContent>
-        <CredenzaHeader>
-          <CredenzaTitle>Créer un événement</CredenzaTitle>
-        </CredenzaHeader>
-        <CredenzaBody>
-          <Form
-            className="flex flex-col gap-4"
-            form={form}
-            onSubmit={async (values) => {
-              mutation.mutate(values);
-            }}
-          >
+      </DialogTrigger>
+      <DialogContent className="overflow-auto">
+        <DialogHeader>
+          <DialogTitle>Créer un événement</DialogTitle>
+        </DialogHeader>
+        <Form
+          className="flex flex-col gap-4"
+          form={form}
+          onSubmit={async (values) => {
+            mutation.mutate(values);
+          }}
+        >
+          <FormField
+            control={form.control}
+            name="title"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>
+                  Titre de l'événement{" "}
+                  <span className="text-destructive">*</span>
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="
+                  Entrez le titre de l'événement"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="date"
+            render={({ field }) => (
+              <FormItem className="flex flex-col">
+                <FormLabel>
+                  Date de l'événement{" "}
+                  <span className="text-destructive">*</span>
+                </FormLabel>
+                <FormControl>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant={"outline"}
+                        className={cn(
+                          "w-full justify-start text-left font-normal",
+                          !date && "text-muted-foreground"
+                        )}
+                      >
+                        <CalendarIcon className="mr-2 h-4 w-4" />
+                        {field.value ? (
+                          format(field.value, "PPP", { locale: fr })
+                        ) : (
+                          <span>Choisissez une date</span>
+                        )}
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar
+                        mode="single"
+                        selected={field.value}
+                        onSelect={(date) => {
+                          field.onChange(date);
+                          setDate(date);
+                        }}
+                      />
+                    </PopoverContent>
+                  </Popover>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <div className="flex items-center gap-4 w-full justify-between">
             <FormField
               control={form.control}
-              name="title"
+              name="start"
               render={({ field }) => (
-                <FormItem>
+                <FormItem className="w-full">
                   <FormLabel>
-                    Titre de l'événement{" "}
+                    Heure de début
                     <span className="text-destructive">*</span>
                   </FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="
-                  Entrez le titre de l'événement"
-                      {...field}
+                  <FormControl className="w-full">
+                    <TimePicker
+                      granularity="minute"
+                      value={
+                        field.value as unknown as TimeValue | null | undefined
+                      }
+                      onChange={field.onChange}
                     />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
+            <ArrowRight size={50} className="mt-7" />
             <FormField
               control={form.control}
-              name="date"
+              name="end"
               render={({ field }) => (
-                <FormItem className="flex flex-col">
+                <FormItem className="w-full">
                   <FormLabel>
-                    Date de l'événement{" "}
+                    Heure de fin
                     <span className="text-destructive">*</span>
                   </FormLabel>
-                  <FormControl>
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <Button
-                          variant={"outline"}
-                          className={cn(
-                            "w-full justify-start text-left font-normal",
-                            !date && "text-muted-foreground"
-                          )}
-                        >
-                          <CalendarIcon className="mr-2 h-4 w-4" />
-                          {field.value ? (
-                            format(field.value, "PPP", { locale: fr })
-                          ) : (
-                            <span>Choisissez une date</span>
-                          )}
-                        </Button>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0" align="start">
-                        <Calendar
-                          mode="single"
-                          selected={field.value}
-                          onSelect={(date) => {
-                            field.onChange(date);
-                            setDate(date);
-                          }}
-                        />
-                      </PopoverContent>
-                    </Popover>
+                  <FormControl className="w-full">
+                    <TimePicker
+                      value={
+                        field.value as unknown as TimeValue | null | undefined
+                      }
+                      onChange={field.onChange}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <div className="flex items-center gap-4 w-full justify-between">
-              <FormField
-                control={form.control}
-                name="start"
-                render={({ field }) => (
-                  <FormItem className="w-full">
-                    <FormLabel>
-                      Heure de début
-                      <span className="text-destructive">*</span>
-                    </FormLabel>
-                    <FormControl className="w-full">
-                      <TimePicker
-                        granularity="minute"
-                        value={
-                          field.value as unknown as TimeValue | null | undefined
-                        }
-                        onChange={field.onChange}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <ArrowRight size={50} className="mt-7" />
-              <FormField
-                control={form.control}
-                name="end"
-                render={({ field }) => (
-                  <FormItem className="w-full">
-                    <FormLabel>
-                      Heure de fin
-                      <span className="text-destructive">*</span>
-                    </FormLabel>
-                    <FormControl className="w-full">
-                      <TimePicker
-                        value={
-                          field.value as unknown as TimeValue | null | undefined
-                        }
-                        onChange={field.onChange}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className="flex flex-row-reverse max-sm:flex-col-reverse items-center gap-4 w-full justify-between">
-              <FormField
-                control={form.control}
-                name="color"
-                render={({ field }) => (
-                  <FormItem className="w-full">
-                    <FormLabel>
-                      Couleur de l'événement{" "}
-                      <span className="text-destructive">*</span>
-                    </FormLabel>
-                    <FormControl>
-                      <div className="flex space-x-3">
-                        {colors.map((color) => (
+          </div>
+          <div className="flex flex-row-reverse max-sm:flex-col-reverse items-center gap-4 w-full justify-between">
+            <FormField
+              control={form.control}
+              name="color"
+              render={({ field }) => (
+                <FormItem className="w-full">
+                  <FormLabel>
+                    Couleur de l'événement{" "}
+                    <span className="text-destructive">*</span>
+                  </FormLabel>
+                  <FormControl>
+                    <div className="flex space-x-3">
+                      {colors.map((color) => (
+                        <div
+                          key={color}
+                          className={`flex items-center justify-center border-[3px] p-[2px] rounded-full ${
+                            selectedColor === color
+                              ? `${colorClassesBorder[color]}`
+                              : "border-transparent"
+                          }`}
+                        >
                           <div
-                            key={color}
-                            className={`flex items-center justify-center border-[3px] p-[2px] rounded-full ${
-                              selectedColor === color
-                                ? `${colorClassesBorder[color]}`
-                                : "border-transparent"
+                            className={`w-6 h-6 rounded-full cursor-pointer  transition-all border-[3px] ${colorClassesBorderClean[color]} ${colorClasses[color]}`}
+                            onClick={() => {
+                              field.onChange(color);
+                              setSelectedColor(color);
+                            }}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="categoryId"
+              render={({ field }) => (
+                <FormItem className="w-full">
+                  <FormLabel>Catégorie de l'événement </FormLabel>
+                  <FormControl>
+                    <Select onValueChange={field.onChange}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Selectionner" />
+                      </SelectTrigger>
+                      <SelectContent position="popper">
+                        <SelectGroup className="space-y-2">
+                          {categories?.map((category) => (
+                            <SelectItem
+                              key={category.id}
+                              value={String(category.id)}
+                            >
+                              {category.name}
+                            </SelectItem>
+                          ))}
+
+                          <div
+                            className={`flex items-center justify-center gap-3 py-2 text-muted-foreground text-sm font-medium ${
+                              categories?.length === 0 ? "" : "border-t"
                             }`}
                           >
-                            <div
-                              className={`w-6 h-6 rounded-full cursor-pointer  transition-all border-[3px] ${colorClassesBorderClean[color]} ${colorClasses[color]}`}
-                              onClick={() => {
-                                field.onChange(color);
-                                setSelectedColor(color);
-                              }}
+                            <ButtonCreateCategoryPopover
+                              categories={categories}
+                              formCategory={formCategory}
+                              mutationCategory={mutationCategory}
                             />
                           </div>
-                        ))}
-                      </div>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="categoryId"
-                render={({ field }) => (
-                  <FormItem className="w-full">
-                    <FormLabel>Catégorie de l'événement </FormLabel>
-                    <FormControl>
-                      <Select onValueChange={field.onChange}>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Selectionner" />
-                        </SelectTrigger>
-                        <SelectContent position="popper">
-                          <SelectGroup className="space-y-2">
-                            {categories?.map((category) => (
-                              <SelectItem
-                                key={category.id}
-                                value={String(category.id)}
-                              >
-                                {category.name}
-                              </SelectItem>
-                            ))}
-
-                            <div
-                              className={`flex items-center justify-center gap-3 py-2 text-muted-foreground text-sm font-medium ${
-                                categories?.length === 0 ? "" : "border-t"
-                              }`}
-                            >
-                              <ButtonCreateCategoryPopover
-                                categories={categories}
-                                formCategory={formCategory}
-                                mutationCategory={mutationCategory}
-                              />
-                            </div>
-                          </SelectGroup>
-                        </SelectContent>
-                      </Select>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <FormField
-              control={form.control}
-              name="description"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Description de l'événement</FormLabel>
-                  <FormControl>
-                    <Textarea
-                      className="resize-none"
-                      placeholder="
-                  Entrez la description de l'événement"
-                      {...field}
-                      onChange={(e) => field.onChange(e.target.value)}
-                    />
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <Button type="submit" disabled={mutation.isPending}>
-              {isCreate ? "Créer l'événement" : "Mettre à jour l'événement"}
-              {mutation.isPending && (
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              )}
-            </Button>
-          </Form>
-        </CredenzaBody>
-      </CredenzaContent>
-    </Credenza>
+          </div>
+          <FormField
+            control={form.control}
+            name="description"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Description de l'événement</FormLabel>
+                <FormControl>
+                  <Textarea
+                    className="resize-none"
+                    placeholder="
+                  Entrez la description de l'événement"
+                    {...field}
+                    onChange={(e) => field.onChange(e.target.value)}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <Button type="submit" disabled={mutation.isPending}>
+            {isCreate ? "Créer l'événement" : "Mettre à jour l'événement"}
+            {mutation.isPending && (
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            )}
+          </Button>
+        </Form>
+      </DialogContent>
+    </Dialog>
   );
 };
