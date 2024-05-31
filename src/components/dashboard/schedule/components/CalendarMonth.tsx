@@ -5,6 +5,11 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/src/components/ui/popover";
+import {
+  Tooltip,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/src/components/ui/tooltip";
 import { Ellipsis } from "lucide-react";
 import moment from "moment";
 import "moment/locale/fr";
@@ -112,29 +117,37 @@ export const CalendarMonth = (props: CalendarMonthProps) => {
                       <PopoverContent className="w-80 h-80 overflow-y-auto p-3 z-40">
                         <div className="grid gap-3">
                           {sortEvents(eventsForDay).map((event: EventType) => (
-                            <div
-                              key={event.id}
-                              className={`flex items-center border-2 p-2 rounded-md justify-between ${
-                                colorClassesBorderClean[
-                                  event.color as keyof typeof colorClassesBorderClean
-                                ]
-                              } ${
-                                colorClasses15[
-                                  event.color as keyof typeof colorClasses15
-                                ]
-                              }`}
-                            >
-                              <div className="flex flex-col gap-1">
-                                <p className="text-muted-foreground text-sm">
-                                  {event.title}
-                                </p>
-                                <p className="text-muted-foreground text-xs">
-                                  {checkHour(event.startTime)} -{" "}
-                                  {checkHour(event.endTime)}
-                                </p>
-                              </div>
-                              <PopoverManagementEvents event={event} />
-                            </div>
+                            <>
+                              <TooltipProvider>
+                                <Tooltip>
+                                  <TooltipTrigger asChild>
+                                    <div
+                                      key={event.id}
+                                      className={`flex items-center border-2 p-2 rounded-md justify-between ${
+                                        colorClassesBorderClean[
+                                          event.color as keyof typeof colorClassesBorderClean
+                                        ]
+                                      } ${
+                                        colorClasses15[
+                                          event.color as keyof typeof colorClasses15
+                                        ]
+                                      }`}
+                                    >
+                                      <div className="flex flex-col gap-1">
+                                        <p className="text-muted-foreground text-sm">
+                                          {event.title}
+                                        </p>
+                                        <p className="text-muted-foreground text-xs">
+                                          {checkHour(event.startTime)} -{" "}
+                                          {checkHour(event.endTime)}
+                                        </p>
+                                      </div>
+                                      <PopoverManagementEvents event={event} />
+                                    </div>
+                                  </TooltipTrigger>
+                                </Tooltip>
+                              </TooltipProvider>
+                            </>
                           ))}
                         </div>
                       </PopoverContent>
