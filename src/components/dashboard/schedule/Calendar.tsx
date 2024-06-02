@@ -26,6 +26,7 @@ import { useState } from "react";
 import { monthNames } from "./actions/calendar/calendar";
 import { getEventAction } from "./actions/events/event.action";
 import { CalendarMonth } from "./components/CalendarMonth";
+import { CalendarWeek } from "./components/CalendarWeek";
 
 export type CalendarProps = {
   sidebarIsOpen: boolean;
@@ -37,8 +38,10 @@ export const FullCalendarComponent = (props: CalendarProps) => {
   const [currentView, setCurrentView] = useState("month");
   const [years, setYears] = useState<number>(new Date().getFullYear());
   const [months, setMonths] = useState<number>(new Date().getMonth() + 1);
+
   const { data: session } = useSession();
 
+  // month
   const handlePrevMonth = () => {
     setDate(new Date(date.setMonth(date.getMonth() - 1)));
     setMonths(months - 1);
@@ -54,6 +57,22 @@ export const FullCalendarComponent = (props: CalendarProps) => {
     if (months === 12) {
       setYears(years + 1);
       setMonths(1);
+    }
+  };
+
+  // week
+
+  const handlePrevWeek = () => {
+    setDate(new Date(date.setDate(date.getDate() - 7)));
+    if (date.getMonth() + 1 !== months) {
+      setMonths(date.getMonth() + 1);
+    }
+  };
+
+  const handleNextWeek = () => {
+    setDate(new Date(date.setDate(date.getDate() + 7)));
+    if (date.getMonth() + 1 !== months) {
+      setMonths(date.getMonth() + 1);
     }
   };
 
@@ -86,7 +105,13 @@ export const FullCalendarComponent = (props: CalendarProps) => {
               </Button>
               <div className="flex items-center gap-3">
                 <Button
-                  onClick={handlePrevMonth}
+                  onClick={() => {
+                    if (currentView === "month") {
+                      handlePrevMonth();
+                    } else if (currentView === "week") {
+                      handlePrevWeek();
+                    }
+                  }}
                   size="icon_sm"
                   variant="ghost"
                 >
@@ -100,8 +125,15 @@ export const FullCalendarComponent = (props: CalendarProps) => {
                   )}
                   {currentView === "week" && (
                     <span className="font-medium">
-                      {format(startOfWeek(date), "MMMM d", { locale: fr })} -{" "}
-                      {format(endOfWeek(date), "d, yyyy", { locale: fr })}
+                      {format(
+                        startOfWeek(date, { weekStartsOn: 1 }),
+                        "MMMM d",
+                        { locale: fr }
+                      )}{" "}
+                      -{" "}
+                      {format(endOfWeek(date, { weekStartsOn: 1 }), "d, yyyy", {
+                        locale: fr,
+                      })}
                     </span>
                   )}
                   {currentView === "day" && (
@@ -116,7 +148,14 @@ export const FullCalendarComponent = (props: CalendarProps) => {
                   )}
                 </div>
                 <Button
-                  onClick={handleNextMonth}
+                  onClick={() => {
+                    console.log("currentView", currentView);
+                    if (currentView === "month") {
+                      handleNextMonth();
+                    } else if (currentView === "week") {
+                      handleNextWeek();
+                    }
+                  }}
                   size="icon_sm"
                   variant="ghost"
                 >
@@ -148,27 +187,9 @@ export const FullCalendarComponent = (props: CalendarProps) => {
           </Card>
         </TabsContent>
         <TabsContent value="week" className="mt-3 max-md:mt-[68px]">
-          <Card className="border-none shadow-none">
-            <CardHeader>
-              <CardTitle>Password</CardTitle>
-              <CardDescription>
-                Change your password here. After saving, you'll be logged out.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-2">
-              <div className="space-y-1">
-                <Label htmlFor="current">Current password</Label>
-                <Input id="current" type="password" />
-              </div>
-              <div className="space-y-1">
-                <Label htmlFor="new">New password</Label>
-                <Input id="new" type="password" />
-              </div>
-            </CardContent>
-            <CardFooter>
-              <Button>Save password</Button>
-            </CardFooter>
-          </Card>
+          <div className="w-full h-full">
+            <CalendarWeek date={date} events={events} />
+          </div>
         </TabsContent>
         <TabsContent value="day" className="mt-3 max-md:mt-[68px]">
           <Card className="border-none shadow-none">
