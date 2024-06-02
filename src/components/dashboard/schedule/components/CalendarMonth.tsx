@@ -93,7 +93,7 @@ export const CalendarMonth = (props: CalendarMonthProps) => {
                 } ${borderRadiusClass}`}
               >
                 <div
-                  className={`${isTodayClass} mt-1 rounded cursor-pointer w-5 h-5 flex items-center justify-center ${
+                  className={`${isTodayClass} mt-1 rounded cursor-pointer w-5 h-5 flex items-center justify-center transition-all ${
                     !isToday(day) ? "hover:bg-secondary" : ""
                   }`}
                 >
