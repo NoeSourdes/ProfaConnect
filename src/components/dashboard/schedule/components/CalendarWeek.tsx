@@ -1,6 +1,21 @@
-import { colorClasses15, colorClassesBorderClean } from "../actions/color";
+import { Button } from "@/src/components/ui/button";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/src/components/ui/popover";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { Trash } from "lucide-react";
+import { toast } from "sonner";
+import {
+  colorClasses15,
+  colorClassesBorderClean,
+  colorClassesClean,
+} from "../actions/color";
+import { deleteEventAction } from "../actions/events/event.action";
 import { checkHour } from "../actions/hour";
 import { EventType } from "../actions/types/events-type";
+import { ModalEventForm } from "./ModalEventForm";
 
 export type CalendarWeekProps = {
   date: Date;
@@ -44,15 +59,29 @@ export const CalendarWeek = (props: CalendarWeekProps) => {
 
     return { dayIndex, top, height, startHours, endHours };
   };
+  const queryClient = useQueryClient();
+  const deleteMutation = useMutation({
+    mutationFn: (idEvent: { id: string }) => deleteEventAction(idEvent.id),
+    onSuccess: ({ data, serverError }) => {
+      if (serverError || !data) {
+        throw new Error(serverError);
+      }
+      toast.success("Événement supprimé avec succès");
+
+      queryClient.invalidateQueries({
+        queryKey: ["events", props.events[0].userId],
+      });
+    },
+  });
 
   return (
     <div className="w-full h-full">
       <section className="pb-2">
-        <div className="flex justify-between ml-10">
+        <div className="flex justify-between ml-10 max-sm:ml-9">
           {weekDates.map((date, index) => (
             <div
               key={listDays[index]}
-              className={`text-xs font-medium text-muted-foreground w-full h-full flex items-center justify-center ${
+              className={`text-xs max-sm:text-[10px] font-medium text-muted-foreground w-full h-full flex items-center justify-center ${
                 new Date().toDateString() === date.toDateString()
                   ? "text-primary"
                   : ""
@@ -63,12 +92,12 @@ export const CalendarWeek = (props: CalendarWeekProps) => {
           ))}
         </div>
       </section>
-      <section className="flex max-h-[700px] h-full w-full overflow-y-auto border rounded-lg">
+      <section className="flex max-h-[700px] h-full w-full overflow-y-auto border rounded-lg overflow-x-hidden">
         <div className="h-full ml-1">
           {listHours.map((hour) => (
             <div
               key={hour}
-              className="text-xs font-medium text-muted-foreground h-10 flex items-center justify-center"
+              className="text-xs max-sm:text-[10px] font-medium text-muted-foreground h-10 flex items-center justify-center"
             >
               {hour}
             </div>
@@ -122,31 +151,93 @@ export const CalendarWeek = (props: CalendarWeekProps) => {
             }%)`;
 
             return (
-              <div
-                key={event.id}
-                className={`absolute rounded mt-[20px] p-[1px] pl-[2px]`}
-                style={{
-                  top: `${position.startHours * 40}px`,
-                  height: `calc(${position.height}% + 1px)`,
-                  left: eventLeft,
-                  width: eventWidth,
-                }}
-              >
-                <div
-                  className={`w-full h-full border-2 rounded overflow-hidden ${
-                    colorClasses15[event.color as keyof typeof colorClasses15]
-                  } ${
-                    colorClassesBorderClean[
-                      event.color as keyof typeof colorClassesBorderClean
-                    ]
-                  }`}
-                >
-                  <p className="font-medium text-sm">{event.title}</p>
-                  <p className="text-xs font-medium text-muted-foreground">
-                    {checkHour(event.startTime)} - {checkHour(event.endTime)}
-                  </p>
-                </div>
-              </div>
+              <>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <div
+                      key={event.id}
+                      className={`absolute rounded mt-[20px]`}
+                      style={{
+                        top: `${position.startHours * 40}px`,
+                        height: `calc(${position.height}% + 1px)`,
+                        left: eventLeft,
+                        width: `calc(${eventWidth} - 1px)`,
+                      }}
+                    >
+                      <div
+                        className={`w-full h-full border-2 rounded overflow-hidden px-1 cursor-pointer ${
+                          colorClasses15[
+                            event.color as keyof typeof colorClasses15
+                          ]
+                        } ${
+                          colorClassesBorderClean[
+                            event.color as keyof typeof colorClassesBorderClean
+                          ]
+                        }`}
+                      >
+                        <p className="font-medium text-sm overflow-hidden text-nowrap">
+                          {event.title}
+                        </p>
+                        <p className="text-[10px] font-medium text-muted-foreground text-nowrap">
+                          {checkHour(event.startTime)} -{" "}
+                          {checkHour(event.endTime)}
+                        </p>
+                      </div>
+                    </div>
+                  </PopoverTrigger>
+                  <PopoverContent className="max-w-56 p-2 space-y-2 z-50">
+                    <div className="px-1">
+                      <div className="flex items-center gap-1 ">
+                        <span
+                          className={`w-1 h-4 ${
+                            colorClassesClean[
+                              event.color as keyof typeof colorClassesClean
+                            ]
+                          }`}
+                        ></span>
+
+                        <p className="font-medium">{event.title}</p>
+                      </div>
+                      <p className="text-muted-foreground font-semibold text-xs">
+                        {checkHour(event.startTime)} -{" "}
+                        {checkHour(event.endTime)}
+                      </p>
+                      <p
+                        className="
+            text-muted-foreground text-sm
+            "
+                      >
+                        {event.description
+                          ? event.description
+                          : "Pas de description"}
+                      </p>
+                    </div>
+                    <ModalEventForm
+                      defaultValues={{
+                        ...event,
+                        description: event.description ?? undefined,
+                        categoryId: event.categoryId ?? undefined,
+                        start: JSON.parse(event.start),
+                        end: JSON.parse(event.end),
+                      }}
+                      id={event.id}
+                    />
+                    <div className="flex flex-col gap-3">
+                      <Button
+                        size="sm"
+                        className="w-full flex items-center justify-start gap-2 hover:text-destructive tramsition-colors"
+                        variant="ghost"
+                        onClick={() => {
+                          deleteMutation.mutate({ id: event.id });
+                        }}
+                      >
+                        <Trash size={18} />
+                        Supprimer l'événement
+                      </Button>
+                    </div>
+                  </PopoverContent>
+                </Popover>
+              </>
             );
           })}
         </div>
