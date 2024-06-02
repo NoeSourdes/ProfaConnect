@@ -92,7 +92,7 @@ export const CalendarWeek = (props: CalendarWeekProps) => {
           ))}
         </div>
       </section>
-      <section className="flex max-h-[700px] max-sm:max-h-[500px] h-full w-full overflow-y-auto border rounded-lg overflow-x-hidden">
+      <section className="flex max-h-[700px] h-full w-full overflow-y-auto border rounded-lg overflow-x-hidden">
         <div className="h-full ml-1">
           {listHours.map((hour) => (
             <div
