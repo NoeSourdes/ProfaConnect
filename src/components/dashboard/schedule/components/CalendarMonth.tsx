@@ -86,7 +86,7 @@ export const CalendarMonth = (props: CalendarMonthProps) => {
             return (
               <div
                 key={day.toISOString()}
-                className={`text-xs font-medium w-full h-[140px] flex items-center justify-start border-t border-l flex-col gap-1 px-2 ${
+                className={`text-xs font-medium w-full h-32 flex items-center justify-start border-t border-l flex-col gap-1 px-2 ${
                   isCurrentMonth ? "" : "text-muted-foreground/50"
                 } ${index % 7 === 6 ? "border-r" : ""} ${
                   index >= allDays.length - 7 ? "border-b" : ""
@@ -100,7 +100,7 @@ export const CalendarMonth = (props: CalendarMonthProps) => {
                   {day.format("D")}
                 </div>
                 {sortEvents(eventsForDay)
-                  .slice(0, 4)
+                  .slice(0, 3)
                   .map((event: EventType) => (
                     <div key={event.id} className={`w-full`}>
                       <PopoverManagementEvents event={event} onCalendar />
