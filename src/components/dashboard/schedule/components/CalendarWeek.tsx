@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/src/components/ui/button";
 import {
   Popover,
@@ -6,6 +8,7 @@ import {
 } from "@/src/components/ui/popover";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Trash } from "lucide-react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import {
   colorClasses15,
@@ -16,6 +19,7 @@ import { deleteEventAction } from "../actions/events/event.action";
 import { checkHour } from "../actions/hour";
 import { EventType } from "../actions/types/events-type";
 import { ModalEventForm } from "./ModalEventForm";
+import { Time } from "./time/time";
 
 export type CalendarWeekProps = {
   date: Date;
@@ -25,7 +29,7 @@ export type CalendarWeekProps = {
 export const CalendarWeek = (props: CalendarWeekProps) => {
   const listDays = ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"];
   const listHours = Array.from(
-    { length: 24 },
+    { length: 25 },
     (_, i) => `${i.toString().padStart(2, "0")}:00`
   );
 
@@ -74,6 +78,33 @@ export const CalendarWeek = (props: CalendarWeekProps) => {
     },
   });
 
+  const [currentTime, setCurrentTime] = useState(new Date());
+  const [topBlockTime, setTopBlockTime] = useState(0);
+
+  const transformDate = (date: string) => {
+    const hours = date.slice(0, 2);
+    const minutes = date.slice(3, 5);
+    const newMinutes = Math.floor((parseInt(minutes) * 100) / 60);
+    const string = `${hours}.${newMinutes}`;
+    setTopBlockTime(parseFloat(string));
+    return parseFloat(string);
+  };
+
+  useEffect(() => {
+    const new_date = new Date();
+    transformDate(new_date.toLocaleTimeString().slice(0, 5));
+  });
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      const new_date = new Date();
+      setCurrentTime(new_date);
+      const time = transformDate(new_date.toLocaleTimeString().slice(0, 5));
+      setTopBlockTime(time);
+    }, 10000);
+    return () => clearInterval(intervalId);
+  }, []);
+
   return (
     <div className="w-full h-full">
       <section className="pb-2">
@@ -92,19 +123,36 @@ export const CalendarWeek = (props: CalendarWeekProps) => {
           ))}
         </div>
       </section>
-      <section className="flex max-h-[700px] h-full w-full overflow-y-auto border rounded-lg overflow-x-hidden">
+      <section className="flex max-h-[640px] h-full w-full overflow-y-auto border rounded-lg overflow-x-hidden relative">
+        <div
+          className={`absolute left-1 right-0`}
+          style={{
+            top: `${topBlockTime * 40 + 12}px`,
+          }}
+        >
+          <Time currentTime={currentTime} setCurrentTime={setCurrentTime} />
+        </div>
+        {/* <div
+          className=" absolute right-0"
+          style={{
+            top: `${topBlockTime * 40 + 20}px`,
+            height: "1px",
+            left: "0",
+            backgroundColor: "#ff0000",
+          }}
+        ></div> */}
         <div className="h-full ml-1">
-          {listHours.map((hour) => (
+          {listHours.map((hour, index) => (
             <div
               key={hour}
               className="text-xs max-sm:text-[10px] font-medium text-muted-foreground h-10 flex items-center justify-center"
             >
-              {hour}
+              {index === 24 ? "00:00" : hour}
             </div>
           ))}
         </div>
         <div className="h-full grow pt-5 ml-1 relative">
-          {Array.from({ length: 23 }).map((_, index) => (
+          {Array.from({ length: 24 }).map((_, index) => (
             <div
               key={index}
               className={`h-10 border-b flex ${index == 0 ? "border-t " : ""}`}
