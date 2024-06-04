@@ -8,7 +8,7 @@ import {
 } from "@/src/components/ui/popover";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Trash } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import {
   colorClasses15,
@@ -67,6 +67,7 @@ export const CalendarWeek = (props: CalendarWeekProps) => {
 
     return { dayIndex, top, height, startHours, endHours };
   };
+
   const queryClient = useQueryClient();
   const deleteMutation = useMutation({
     mutationFn: (idEvent: { id: string }) => deleteEventAction(idEvent.id),
@@ -85,6 +86,8 @@ export const CalendarWeek = (props: CalendarWeekProps) => {
   const [currentTime, setCurrentTime] = useState(new Date());
   const [topBlockTime, setTopBlockTime] = useState(0);
 
+  const sectionRef = useRef(null);
+
   const transformDate = (date: string) => {
     const hours = date.slice(0, 2);
     const minutes = date.slice(3, 5);
@@ -97,7 +100,7 @@ export const CalendarWeek = (props: CalendarWeekProps) => {
   useEffect(() => {
     const new_date = new Date();
     transformDate(new_date.toLocaleTimeString().slice(0, 5));
-  });
+  }, []);
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -108,6 +111,32 @@ export const CalendarWeek = (props: CalendarWeekProps) => {
     }, 10000);
     return () => clearInterval(intervalId);
   }, []);
+
+  useEffect(() => {
+    const sectionRefCurrent = sectionRef.current;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (sectionRefCurrent && !entry.isIntersecting) {
+          (sectionRefCurrent as HTMLElement).scrollIntoView({
+            behavior: "smooth",
+            block: "center",
+          });
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (sectionRefCurrent) {
+      observer.observe(sectionRefCurrent);
+    }
+
+    return () => {
+      if (sectionRefCurrent) {
+        observer.unobserve(sectionRefCurrent);
+      }
+    };
+  }, [sectionRef]);
 
   return (
     <div className="w-full h-full">
@@ -129,6 +158,7 @@ export const CalendarWeek = (props: CalendarWeekProps) => {
       </section>
       <section className="flex max-h-[640px] h-full w-full overflow-y-auto border rounded-lg overflow-x-hidden relative">
         <div
+          ref={sectionRef}
           className={`absolute left-1 max-sm:left-[2px] right-0`}
           style={{
             top: `${topBlockTime * 40 + 12}px`,
@@ -215,93 +245,90 @@ export const CalendarWeek = (props: CalendarWeekProps) => {
             }%)`;
 
             return (
-              <>
-                <Popover>
-                  <PopoverTrigger asChild>
+              <Popover key={event.id}>
+                <PopoverTrigger asChild>
+                  <div
+                    key={event.id}
+                    className={`absolute rounded mt-[20px]`}
+                    style={{
+                      top: `${position.startHours * 40}px`,
+                      height: `calc(${position.height}% + 1px)`,
+                      left: eventLeft,
+                      width: `calc(${eventWidth} - 1px)`,
+                    }}
+                  >
                     <div
-                      key={event.id}
-                      className={`absolute rounded mt-[20px]`}
-                      style={{
-                        top: `${position.startHours * 40}px`,
-                        height: `calc(${position.height}% + 1px)`,
-                        left: eventLeft,
-                        width: `calc(${eventWidth} - 1px)`,
-                      }}
+                      className={`w-full h-full border-2 rounded overflow-hidden px-1 cursor-pointer ${
+                        colorClasses15[
+                          event.color as keyof typeof colorClasses15
+                        ]
+                      } ${
+                        colorClassesBorderClean[
+                          event.color as keyof typeof colorClassesBorderClean
+                        ]
+                      }`}
                     >
-                      <div
-                        className={`w-full h-full border-2 rounded overflow-hidden px-1 cursor-pointer ${
-                          colorClasses15[
-                            event.color as keyof typeof colorClasses15
-                          ]
-                        } ${
-                          colorClassesBorderClean[
-                            event.color as keyof typeof colorClassesBorderClean
-                          ]
-                        }`}
-                      >
-                        <p className="font-medium text-sm overflow-hidden text-nowrap">
-                          {event.title}
-                        </p>
-                        <p className="text-[10px] font-medium text-muted-foreground text-nowrap">
-                          {checkHour(event.startTime)} -{" "}
-                          {checkHour(event.endTime)}
-                        </p>
-                      </div>
-                    </div>
-                  </PopoverTrigger>
-                  <PopoverContent className="max-w-56 p-2 space-y-2 z-50">
-                    <div className="px-1">
-                      <div className="flex items-center gap-1 ">
-                        <span
-                          className={`w-1 h-4 ${
-                            colorClassesClean[
-                              event.color as keyof typeof colorClassesClean
-                            ]
-                          }`}
-                        ></span>
-
-                        <p className="font-medium">{event.title}</p>
-                      </div>
-                      <p className="text-muted-foreground font-semibold text-xs">
+                      <p className="font-medium text-sm overflow-hidden text-nowrap">
+                        {event.title}
+                      </p>
+                      <p className="text-[10px] font-medium text-muted-foreground text-nowrap">
                         {checkHour(event.startTime)} -{" "}
                         {checkHour(event.endTime)}
                       </p>
-                      <p
-                        className="
+                    </div>
+                  </div>
+                </PopoverTrigger>
+                <PopoverContent className="max-w-56 p-2 space-y-2 z-50">
+                  <div className="px-1">
+                    <div className="flex items-center gap-1 ">
+                      <span
+                        className={`w-1 h-4 ${
+                          colorClassesClean[
+                            event.color as keyof typeof colorClassesClean
+                          ]
+                        }`}
+                      ></span>
+
+                      <p className="font-medium">{event.title}</p>
+                    </div>
+                    <p className="text-muted-foreground font-semibold text-xs">
+                      {checkHour(event.startTime)} - {checkHour(event.endTime)}
+                    </p>
+                    <p
+                      className="
             text-muted-foreground text-sm
             "
-                      >
-                        {event.description
-                          ? event.description
-                          : "Pas de description"}
-                      </p>
-                    </div>
-                    <ModalEventForm
-                      defaultValues={{
-                        ...event,
-                        description: event.description ?? undefined,
-                        categoryId: event.categoryId ?? undefined,
-                        start: JSON.parse(event.start),
-                        end: JSON.parse(event.end),
+                    >
+                      {event.description
+                        ? event.description
+                        : "Pas de description"}
+                    </p>
+                  </div>
+                  <ModalEventForm
+                    defaultValues={{
+                      ...event,
+                      description: event.description ?? undefined,
+                      categoryId: event.categoryId ?? undefined,
+                      start: JSON.parse(event.start),
+                      end: JSON.parse(event.end),
+                    }}
+                    id={event.id}
+                  />
+                  <div className="flex flex-col gap-3">
+                    <Button
+                      size="sm"
+                      className="w-full flex items-center justify-start gap-2 hover:text-destructive tramsition-colors"
+                      variant="ghost"
+                      onClick={() => {
+                        deleteMutation.mutate({ id: event.id });
                       }}
-                      id={event.id}
-                    />
-                    <div className="flex flex-col gap-3">
-                      <Button
-                        size="sm"
-                        className="w-full flex items-center justify-start gap-2 hover:text-destructive tramsition-colors"
-                        variant="ghost"
-                        onClick={() => {
-                          deleteMutation.mutate({ id: event.id });
-                        }}
-                      >
-                        <Trash size={18} />
-                        Supprimer l'événement
-                      </Button>
-                    </div>
-                  </PopoverContent>
-                </Popover>
-              </>
+                    >
+                      <Trash size={18} />
+                      Supprimer l'événement
+                    </Button>
+                  </div>
+                </PopoverContent>
+              </Popover>
             );
           })}
         </div>
