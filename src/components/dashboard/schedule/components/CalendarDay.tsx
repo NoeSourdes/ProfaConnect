@@ -121,7 +121,7 @@ export const CalendarDay = (props: CalendarDayProps) => {
         observer.unobserve(sectionRefCurrent);
       }
     };
-  }, [sectionRef]);
+  }, []);
 
   return (
     <div className="w-full h-full">
