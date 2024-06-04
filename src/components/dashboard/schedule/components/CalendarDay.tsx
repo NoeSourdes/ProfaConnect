@@ -102,7 +102,7 @@ export const CalendarDay = (props: CalendarDayProps) => {
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (sectionRefCurrent && !entry.isIntersecting) {
+        if (sectionRefCurrent) {
           (sectionRefCurrent as HTMLElement).scrollIntoView({
             behavior: "smooth",
             block: "center",
