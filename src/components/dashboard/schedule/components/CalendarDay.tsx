@@ -49,7 +49,7 @@ export const CalendarDay = (props: CalendarDayProps) => {
 
   const [currentTime, setCurrentTime] = useState(new Date());
   const [topBlockTime, setTopBlockTime] = useState(0);
-  const options = {
+  const options: Intl.DateTimeFormatOptions = {
     weekday: "long",
     year: "numeric",
     month: "long",
@@ -100,7 +100,7 @@ export const CalendarDay = (props: CalendarDayProps) => {
       <section className="pb-2">
         <div className="flex justify-center ml-10 max-sm:ml-9">
           <div
-            className={`text-sm font-medium text-muted-foreground w-full h-full flex items-center justify-center ${
+            className={`text-xs font-medium text-muted-foreground w-full h-full flex items-center justify-center ${
               new Date().toDateString() === props.date.toDateString()
                 ? "text-primary"
                 : ""
@@ -157,6 +157,30 @@ export const CalendarDay = (props: CalendarDayProps) => {
             const position = getEventPosition(event);
             if (!position) return null;
 
+            const eventsSameDay = props.events.filter(
+              (e) =>
+                new Date(e.date).getTime() === new Date(event.date).getTime()
+            );
+
+            const eventsOverlapping = eventsSameDay.filter((e) => {
+              const eventPos = getEventPosition(e);
+              if (!eventPos) return false;
+              return (
+                (eventPos.startHours < position.endHours &&
+                  eventPos.startHours >= position.startHours) ||
+                (position.startHours < eventPos.endHours &&
+                  position.startHours >= eventPos.startHours)
+              );
+            });
+
+            const eventIndex = eventsOverlapping.findIndex(
+              (e) => e.id === event.id
+            );
+            const eventCount = eventsOverlapping.length;
+
+            const eventWidth = `calc(${100 / eventCount}%)`;
+            const eventLeft = `calc(${eventIndex * (100 / eventCount)}%)`;
+
             return (
               <Popover key={event.id}>
                 <PopoverTrigger asChild>
@@ -165,8 +189,8 @@ export const CalendarDay = (props: CalendarDayProps) => {
                     style={{
                       top: `${position.startHours * 40}px`,
                       height: `calc(${position.height}% + 1px)`,
-                      left: "5%",
-                      width: "90%",
+                      left: eventLeft,
+                      width: eventWidth,
                     }}
                   >
                     <div

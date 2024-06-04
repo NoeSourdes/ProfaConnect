@@ -1,16 +1,7 @@
 "use client";
 
 import { Button } from "@/src/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/src/components/ui/card";
-import { Input } from "@/src/components/ui/input";
-import { Label } from "@/src/components/ui/label";
+import { Card, CardContent } from "@/src/components/ui/card";
 import {
   Tabs,
   TabsContent,
@@ -28,6 +19,7 @@ import { getEventAction } from "./actions/events/event.action";
 import { CalendarDay } from "./components/CalendarDay";
 import { CalendarMonth } from "./components/CalendarMonth";
 import { CalendarWeek } from "./components/CalendarWeek";
+import { ListEvents } from "./components/ListEvents";
 
 export type CalendarProps = {
   sidebarIsOpen: boolean;
@@ -77,7 +69,27 @@ export const FullCalendarComponent = (props: CalendarProps) => {
     }
   };
 
-  const { data: events = [] } = useQuery({
+  // day
+
+  const handlePrevDay = () => {
+    setDate(new Date(date.setDate(date.getDate() - 1)));
+    if (date.getMonth() + 1 !== months) {
+      setMonths(date.getMonth() + 1);
+    }
+  };
+
+  const handleNextDay = () => {
+    setDate(new Date(date.setDate(date.getDate() + 1)));
+    if (date.getMonth() + 1 !== months) {
+      setMonths(date.getMonth() + 1);
+    }
+  };
+
+  const {
+    data: events = [],
+    isLoading,
+    isError,
+  } = useQuery({
     queryKey: ["events", session?.user?.id],
     queryFn: async () => {
       const events = await getEventAction(session?.user?.id as string);
@@ -111,6 +123,12 @@ export const FullCalendarComponent = (props: CalendarProps) => {
                       handlePrevMonth();
                     } else if (currentView === "week") {
                       handlePrevWeek();
+                    }
+                    if (currentView === "day") {
+                      handlePrevDay();
+                    }
+                    if (currentView === "list") {
+                      handlePrevMonth();
                     }
                   }}
                   size="icon_sm"
@@ -156,6 +174,12 @@ export const FullCalendarComponent = (props: CalendarProps) => {
                     } else if (currentView === "week") {
                       handleNextWeek();
                     }
+                    if (currentView === "day") {
+                      handleNextDay();
+                    }
+                    if (currentView === "list") {
+                      handleNextMonth();
+                    }
                   }}
                   size="icon_sm"
                   variant="ghost"
@@ -198,25 +222,14 @@ export const FullCalendarComponent = (props: CalendarProps) => {
           </div>
         </TabsContent>
         <TabsContent value="list" className="mt-3 max-md:mt-[68px]">
-          <Card className="border-none shadow-none">
-            <CardHeader>
-              <CardTitle>Password</CardTitle>
-              <CardDescription>Change your</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-2">
-              <div className="space-y-1">
-                <Label htmlFor="current">Current password</Label>
-                <Input id="current" type="password" />
-              </div>
-              <div className="space-y-1">
-                <Label htmlFor="new">New password</Label>
-                <Input id="new" type="password" />
-              </div>
-            </CardContent>
-            <CardFooter>
-              <Button>Save password</Button>
-            </CardFooter>
-          </Card>
+          <div className="w-full h-full">
+            <ListEvents
+              events={events}
+              isLoading={isLoading}
+              isError={isError}
+              date={date}
+            />
+          </div>
         </TabsContent>
       </Tabs>
     </div>
