@@ -22,3 +22,18 @@ export const sortEvents = (events: EventType[]) => {
   });
   return liste;
 };
+
+export const sortEventsByDate = (events: EventType[]) => {
+  const liste: any = [];
+  events.map((event) => {
+    const startTime = checkHour(event.startTime);
+    const endTime = checkHour(event.endTime);
+    liste.push({ ...event, startTime, endTime });
+  });
+  liste.sort((a: any, b: any) => {
+    const dateA = new Date(a.date);
+    const dateB = new Date(b.date);
+    return dateA.getTime() - dateB.getTime();
+  });
+  return liste;
+};
