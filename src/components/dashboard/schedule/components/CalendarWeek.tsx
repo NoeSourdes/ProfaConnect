@@ -36,6 +36,10 @@ export const CalendarWeek = (props: CalendarWeekProps) => {
   const startingDayOfWeek = props.date.getDay();
   const adjustedStartingDayOfWeek = (startingDayOfWeek + 6) % 7;
 
+  const indexWeek = listDays.findIndex(
+    (day) => day === listDays[adjustedStartingDayOfWeek]
+  );
+
   const addDays = (date: Date, days: number): Date => {
     const result = new Date(date);
     result.setDate(result.getDate() + days);
@@ -125,22 +129,35 @@ export const CalendarWeek = (props: CalendarWeekProps) => {
       </section>
       <section className="flex max-h-[640px] h-full w-full overflow-y-auto border rounded-lg overflow-x-hidden relative">
         <div
-          className={`absolute left-1 right-0`}
+          className={`absolute left-1 max-sm:left-[2px] right-0`}
           style={{
             top: `${topBlockTime * 40 + 12}px`,
           }}
         >
           <Time currentTime={currentTime} setCurrentTime={setCurrentTime} />
         </div>
-        {/* <div
-          className=" absolute right-0"
+        <div
+          className=" absolute right-0 left-[43px] max-sm:left-[37.5px] z-50"
           style={{
-            top: `${topBlockTime * 40 + 20}px`,
+            top: `${topBlockTime * 40 + 19.5}px`,
             height: "1px",
-            left: "0",
-            backgroundColor: "#ff0000",
           }}
-        ></div> */}
+        >
+          <div className="h-full w-full flex">
+            {Array.from({ length: 7 }).map((_, index) => (
+              <div
+                key={index}
+                className={`h-full w-full relative ${
+                  index === indexWeek && "bg-destructive"
+                }`}
+              >
+                {index === indexWeek && (
+                  <span className="absolute h-2 w-2 rounded-full -top-[3.5px] left-[1px] bg-destructive"></span>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
         <div className="h-full ml-1">
           {listHours.map((hour, index) => (
             <div
@@ -179,7 +196,6 @@ export const CalendarWeek = (props: CalendarWeekProps) => {
             const eventsOverlapping = eventsSameDay.filter((e) => {
               const eventPos = getEventPosition(e);
               if (!eventPos) return false;
-              // Check if events overlap
               return (
                 (eventPos.startHours < position.endHours &&
                   eventPos.startHours >= position.startHours) ||

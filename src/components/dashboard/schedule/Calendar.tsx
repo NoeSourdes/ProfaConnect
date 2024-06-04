@@ -25,6 +25,7 @@ import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { monthNames } from "./actions/calendar/calendar";
 import { getEventAction } from "./actions/events/event.action";
+import { CalendarDay } from "./components/CalendarDay";
 import { CalendarMonth } from "./components/CalendarMonth";
 import { CalendarWeek } from "./components/CalendarWeek";
 
@@ -192,28 +193,9 @@ export const FullCalendarComponent = (props: CalendarProps) => {
           </div>
         </TabsContent>
         <TabsContent value="day" className="mt-3 max-md:mt-[68px]">
-          <Card className="border-none shadow-none">
-            <CardHeader>
-              <CardTitle>Password</CardTitle>
-              <CardDescription>
-                Change your password here. After saving, you'll be logged
-                out.dwqdqergreege
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-2">
-              <div className="space-y-1">
-                <Label htmlFor="current">Current password</Label>
-                <Input id="current" type="password" />
-              </div>
-              <div className="space-y-1">
-                <Label htmlFor="new">New password</Label>
-                <Input id="new" type="password" />
-              </div>
-            </CardContent>
-            <CardFooter>
-              <Button>Save password</Button>
-            </CardFooter>
-          </Card>
+          <div className="w-full h-full">
+            <CalendarDay date={date} events={events} />
+          </div>
         </TabsContent>
         <TabsContent value="list" className="mt-3 max-md:mt-[68px]">
           <Card className="border-none shadow-none">
