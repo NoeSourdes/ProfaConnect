@@ -136,7 +136,7 @@ export const CalendarWeek = (props: CalendarWeekProps) => {
         observer.unobserve(sectionRefCurrent);
       }
     };
-  }, [sectionRef]);
+  }, []);
 
   return (
     <div className="w-full h-full">
