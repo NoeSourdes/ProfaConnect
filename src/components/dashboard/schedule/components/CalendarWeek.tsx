@@ -86,8 +86,7 @@ export const CalendarWeek = (props: CalendarWeekProps) => {
   const [currentTime, setCurrentTime] = useState(new Date());
   const [topBlockTime, setTopBlockTime] = useState(0);
 
-  const [hasScrolled, setHasScrolled] = useState(false);
-  const timeRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef(null);
 
   const transformDate = (date: string) => {
     const hours = date.slice(0, 2);
@@ -114,11 +113,30 @@ export const CalendarWeek = (props: CalendarWeekProps) => {
   }, []);
 
   useEffect(() => {
-    if (timeRef.current && !hasScrolled) {
-      timeRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
-      setHasScrolled(true);
+    const sectionRefCurrent = sectionRef.current;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (sectionRefCurrent && !entry.isIntersecting) {
+          (sectionRefCurrent as HTMLElement).scrollIntoView({
+            behavior: "smooth",
+            block: "center",
+          });
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (sectionRefCurrent) {
+      observer.observe(sectionRefCurrent);
     }
-  }, [hasScrolled]);
+
+    return () => {
+      if (sectionRefCurrent) {
+        observer.unobserve(sectionRefCurrent);
+      }
+    };
+  }, []);
 
   return (
     <div className="w-full h-full">
@@ -140,7 +158,7 @@ export const CalendarWeek = (props: CalendarWeekProps) => {
       </section>
       <section className="flex max-h-[640px] h-full w-full overflow-y-auto border rounded-lg overflow-x-hidden relative">
         <div
-          ref={timeRef}
+          ref={sectionRef}
           className={`absolute left-1 max-sm:left-[2px] right-0`}
           style={{
             top: `${topBlockTime * 40 + 12}px`,
@@ -148,7 +166,6 @@ export const CalendarWeek = (props: CalendarWeekProps) => {
         >
           <Time currentTime={currentTime} setCurrentTime={setCurrentTime} />
         </div>
-
         <div
           className=" absolute right-0 left-[43px] max-sm:left-[37.5px] z-50"
           style={{

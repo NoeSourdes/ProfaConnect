@@ -95,15 +95,33 @@ export const CalendarDay = (props: CalendarDayProps) => {
     return { top, height, startHours, endHours };
   };
 
-  const [hasScrolled, setHasScrolled] = useState(false);
-  const timeRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef(null);
 
   useEffect(() => {
-    if (timeRef.current && !hasScrolled) {
-      timeRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
-      setHasScrolled(true);
+    const sectionRefCurrent = sectionRef.current;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (sectionRefCurrent && !entry.isIntersecting) {
+          (sectionRefCurrent as HTMLElement).scrollIntoView({
+            behavior: "smooth",
+            block: "center",
+          });
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (sectionRefCurrent) {
+      observer.observe(sectionRefCurrent);
     }
-  }, [hasScrolled]);
+
+    return () => {
+      if (sectionRefCurrent) {
+        observer.unobserve(sectionRefCurrent);
+      }
+    };
+  }, []);
 
   return (
     <div className="w-full h-full">
@@ -122,7 +140,7 @@ export const CalendarDay = (props: CalendarDayProps) => {
       </section>
       <section className="flex max-h-[640px] h-full w-full overflow-y-auto border rounded-lg overflow-x-hidden relative">
         <div
-          ref={timeRef}
+          ref={sectionRef}
           className={`absolute left-1 max-sm:left-[2px] right-0`}
           style={{
             top: `${topBlockTime * 40 + 12}px`,
