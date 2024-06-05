@@ -186,12 +186,12 @@ export async function pagesUrl(pathname: string): Promise<Group[]> {
             },
             {
               href: "/courses/:id/:id",
-              label: "Details de la leçon : " + lessonName,
+              label: "Details de la leçon ",
               active: /\/courses\/[a-z0-9]+\/[a-z0-9]+/.test(pathname),
             },
             {
               href: "/courses/:id",
-              label: "Details du cours : " + courseName,
+              label: "Details du cours ",
               active: /\/courses\/[a-z0-9]+/.test(pathname),
             },
           ],
