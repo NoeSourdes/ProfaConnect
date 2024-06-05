@@ -420,7 +420,11 @@ export default function Course() {
                               </TableCell>
                               <TableCell className="flex items-center gap-1 text-muted-foreground">
                                 <Image
-                                  src={course.userImage}
+                                  src={
+                                    course.userImage
+                                      ? course.userImage
+                                      : "/user.png"
+                                  }
                                   alt={"user image"}
                                   width={20}
                                   height={20}
