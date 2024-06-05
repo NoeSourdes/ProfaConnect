@@ -2,6 +2,7 @@
 
 import { getNameCourse } from "@/actions/courses/courses";
 import { BreadcrumbComponent } from "@/src/components/dashboard/Breadcrumb";
+import { ViewSelect } from "@/src/components/dashboard/courses/ViewSelect";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -260,24 +261,27 @@ export default function RoutePage(
         </>
       ) : (
         <main className="flex flex-1 flex-col gap-4 lg:gap-5 h-full">
-          <div className="flex items-center gap-3">
-            <Link href={`/courses`}>
-              <Button size="icon" variant="outline">
-                <Undo2 size={20} />
-              </Button>
-            </Link>
-            <BreadcrumbComponent
-              array={[
-                {
-                  item: "Cours ",
-                  link: "/courses",
-                },
-                {
-                  item: nameCourse ? nameCourse : "inconnu",
-                  link: `/courses/${props.params.coursId}`,
-                },
-              ]}
-            />
+          <div className="w-full flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <Link href={`/courses`}>
+                <Button size="icon" variant="outline">
+                  <Undo2 size={20} />
+                </Button>
+              </Link>
+              <BreadcrumbComponent
+                array={[
+                  {
+                    item: "Cours ",
+                    link: "/courses",
+                  },
+                  {
+                    item: nameCourse ? nameCourse : "inconnu",
+                    link: `/courses/${props.params.coursId}`,
+                  },
+                ]}
+              />
+            </div>
+            <ViewSelect />
           </div>
           <div className="h-full w-full" x-chunk="dashboard-02-chunk-1">
             <div className="flex gap-3 pb-5">

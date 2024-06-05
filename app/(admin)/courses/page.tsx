@@ -1,6 +1,7 @@
 "use client";
 
 import { BreadcrumbComponent } from "@/src/components/dashboard/Breadcrumb";
+import { ViewSelect } from "@/src/components/dashboard/courses/ViewSelect";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -218,6 +219,7 @@ export default function Course() {
                 ]}
               />
             </div>
+            <ViewSelect />
           </div>
           <div className="h-full w-full space-y-5">
             <div className="flex gap-3">
