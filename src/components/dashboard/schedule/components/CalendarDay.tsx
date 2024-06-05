@@ -8,7 +8,7 @@ import {
 } from "@/src/components/ui/popover";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Trash } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import {
   colorClasses15,
@@ -95,34 +95,6 @@ export const CalendarDay = (props: CalendarDayProps) => {
     return { top, height, startHours, endHours };
   };
 
-  const sectionRef = useRef(null);
-
-  useEffect(() => {
-    const sectionRefCurrent = sectionRef.current;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (sectionRefCurrent && !entry.isIntersecting) {
-          (sectionRefCurrent as HTMLElement).scrollIntoView({
-            behavior: "smooth",
-            block: "center",
-          });
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    if (sectionRefCurrent) {
-      observer.observe(sectionRefCurrent);
-    }
-
-    return () => {
-      if (sectionRefCurrent) {
-        observer.unobserve(sectionRefCurrent);
-      }
-    };
-  }, []);
-
   return (
     <div className="w-full h-full">
       <section className="pb-2">
@@ -140,7 +112,6 @@ export const CalendarDay = (props: CalendarDayProps) => {
       </section>
       <section className="flex max-h-[640px] h-full w-full overflow-y-auto border rounded-lg overflow-x-hidden relative">
         <div
-          ref={sectionRef}
           className={`absolute left-1 max-sm:left-[2px] right-0`}
           style={{
             top: `${topBlockTime * 40 + 12}px`,

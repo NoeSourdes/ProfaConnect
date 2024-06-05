@@ -8,7 +8,7 @@ import {
 } from "@/src/components/ui/popover";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Trash } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import {
   colorClasses15,
@@ -86,8 +86,6 @@ export const CalendarWeek = (props: CalendarWeekProps) => {
   const [currentTime, setCurrentTime] = useState(new Date());
   const [topBlockTime, setTopBlockTime] = useState(0);
 
-  const sectionRef = useRef(null);
-
   const transformDate = (date: string) => {
     const hours = date.slice(0, 2);
     const minutes = date.slice(3, 5);
@@ -112,32 +110,6 @@ export const CalendarWeek = (props: CalendarWeekProps) => {
     return () => clearInterval(intervalId);
   }, []);
 
-  useEffect(() => {
-    const sectionRefCurrent = sectionRef.current;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (sectionRefCurrent && !entry.isIntersecting) {
-          (sectionRefCurrent as HTMLElement).scrollIntoView({
-            behavior: "smooth",
-            block: "center",
-          });
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    if (sectionRefCurrent) {
-      observer.observe(sectionRefCurrent);
-    }
-
-    return () => {
-      if (sectionRefCurrent) {
-        observer.unobserve(sectionRefCurrent);
-      }
-    };
-  }, []);
-
   return (
     <div className="w-full h-full">
       <section className="pb-2">
@@ -158,7 +130,6 @@ export const CalendarWeek = (props: CalendarWeekProps) => {
       </section>
       <section className="flex max-h-[640px] h-full w-full overflow-y-auto border rounded-lg overflow-x-hidden relative">
         <div
-          ref={sectionRef}
           className={`absolute left-1 max-sm:left-[2px] right-0`}
           style={{
             top: `${topBlockTime * 40 + 12}px`,
@@ -182,7 +153,7 @@ export const CalendarWeek = (props: CalendarWeekProps) => {
                 }`}
               >
                 {index === indexWeek && (
-                  <span className="absolute h-2 w-2 rounded-full -top-[3.5px] left-[1px] bg-destructive"></span>
+                  <span className="absolute h-2 w-2 rounded-full -top-[3.5px] -left-1 bg-destructive"></span>
                 )}
               </div>
             ))}
