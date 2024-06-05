@@ -42,9 +42,9 @@ export function CommandBar() {
         onClick={() => {
           setOpen(true);
         }}
-        className="text-sm text-muted-foreground border rounded-[6px] sm:w-full max-w-44 p-1 flex items-center justify-between hover:bg-secondary transition-all cursor-pointer group"
+        className="text-sm text-muted-foreground border rounded-[6px] w-full sm:max-w-44 p-1 flex items-center justify-between hover:bg-secondary transition-all cursor-pointer group"
       >
-        <span className="text-smt group-hover:text-accent-foreground transition-all max-sm:hidden">
+        <span className="text-smt group-hover:text-accent-foreground transition-all">
           Rechercher
         </span>
         <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100 group-hover:text-accent-foreground transition-all">

@@ -14,16 +14,24 @@ export function Navbar() {
         isFullScreen ? "z-30" : "z-[4000]"
       }`}
     >
-      <div className="mx-4 flex h-14 items-center gap-5">
-        <div className="flex items-center max-[1200px]:space-x-4 space-x-0 transition-all max-[1200px]:ml-0 ml-4">
+      <div className="mx-4 flex h-14 items-center gap-4">
+        <div className="flex items-center max-[1200px]:space-x-4 transition-all max-[1200px]:ml-0 ml-4">
           <SheetMenu />
-          <PageTitle />
+          <div className="max-sm:hidden">
+            <PageTitle />
+          </div>
         </div>
         <div className="flex flex-1 items-center space-x-2 justify-end">
           <CommandBar />
-          <UserNotification />
-          <ModeToggle />
-          <UserNav />
+          <div className="h-8 w-8">
+            <UserNotification />
+          </div>
+          <div className="h-8 w-8">
+            <ModeToggle />
+          </div>
+          <div className="h-8 w-8">
+            <UserNav />
+          </div>
         </div>
       </div>
     </header>
