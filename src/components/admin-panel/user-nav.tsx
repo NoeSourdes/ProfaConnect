@@ -18,12 +18,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/src/components/ui/dropdown-menu";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/src/components/ui/tooltip";
 import { signOut, useSession } from "next-auth/react";
 
 export function UserNav() {
@@ -31,33 +25,23 @@ export function UserNav() {
 
   return (
     <DropdownMenu>
-      <TooltipProvider disableHoverableContent>
-        <Tooltip delayDuration={100}>
-          <TooltipTrigger asChild>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="outline"
-                className="relative h-8 w-8 rounded-full"
-              >
-                <Avatar className="h-8 w-8">
-                  <AvatarImage
-                    src={
-                      user?.user?.image
-                        ? user?.user?.image
-                        : "https://ui-avatars.com/api/?name=" + user?.user?.name
-                    }
-                    alt="Avatar"
-                  />
-                  <AvatarFallback className="bg-transparent">
-                    <User className="w-4 h-4" />
-                  </AvatarFallback>
-                </Avatar>
-              </Button>
-            </DropdownMenuTrigger>
-          </TooltipTrigger>
-          <TooltipContent side="bottom">Profile</TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
+      <DropdownMenuTrigger asChild>
+        <Button variant="outline" className="relative h-8 w-8 rounded-full">
+          <Avatar className="h-8 w-8">
+            <AvatarImage
+              src={
+                user?.user?.image
+                  ? user?.user?.image
+                  : "https://ui-avatars.com/api/?name=" + user?.user?.name
+              }
+              alt="Avatar"
+            />
+            <AvatarFallback className="bg-transparent">
+              <User className="w-4 h-4" />
+            </AvatarFallback>
+          </Avatar>
+        </Button>
+      </DropdownMenuTrigger>
 
       <DropdownMenuContent className="w-56" align="end" forceMount>
         <DropdownMenuLabel className="font-normal">
