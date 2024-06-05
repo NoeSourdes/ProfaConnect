@@ -238,7 +238,7 @@ export default function RoutePage(
               ]}
             />
           </div>
-          <Card className="rounded-lg shadow-none border-dashed mt-5">
+          <Card className="rounded-lg shadow-none border-dashed mt-5 bg-transparent">
             <CardContent className="p-6">
               <div className="flex justify-center items-center min-h-[calc(100vh-56px-64px-20px-24px-56px-48px)]">
                 <div className="flex flex-col relative">

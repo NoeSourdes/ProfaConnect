@@ -30,7 +30,10 @@ export default function Layout({ children }: Props) {
         )}
       >
         <Navbar />
-        <div className="container py-5 px-5 max-[1200px]:p-4">{children}</div>
+
+        <div className="container py-5 px-5 max-[1200px]:p-4 z-50">
+          {children}
+        </div>
       </main>
       <footer
         className={cn(
