@@ -2,6 +2,7 @@
 
 import { BreadcrumbComponent } from "@/src/components/dashboard/Breadcrumb";
 import { ViewSelect } from "@/src/components/dashboard/courses/ViewSelect";
+import { useViewSelect } from "@/src/components/dashboard/courses/viewSelect.store";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -22,9 +23,18 @@ import {
   PopoverTrigger,
 } from "@/src/components/ui/popover";
 import { Skeleton } from "@/src/components/ui/skeleton";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/src/components/ui/table";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   CirclePlus,
+  EllipsisVertical,
   FolderOpen,
   Pencil,
   SlidersHorizontal,
@@ -32,6 +42,7 @@ import {
   Undo2,
 } from "lucide-react";
 import { useSession } from "next-auth/react";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -40,6 +51,7 @@ import {
   deleteCourseAction,
   getUserCourses,
 } from "./[coursId]/edit/course.actions";
+import { getUserData } from "./action/user";
 
 function useDebounce(value: string, delay: number) {
   const [debouncedValue, setDebouncedValue] = useState(value);
@@ -65,6 +77,7 @@ export default function Course() {
   const [search, setSearch] = useState("");
 
   const debouncedSearch = useDebounce(search, 100);
+  const { view } = useViewSelect();
 
   const {
     data: courses,
@@ -77,6 +90,8 @@ export default function Course() {
       return courses;
     },
   });
+
+  console.log(courses);
 
   const deleteMutation = useMutation({
     mutationFn: (idCourse: { id: string }) => deleteCourseAction(idCourse.id),
@@ -91,6 +106,10 @@ export default function Course() {
       });
     },
   });
+
+  const getUserDataFunction = async (userId: string) => {
+    return await getUserData(userId);
+  };
 
   if (isLoading) {
     return (
@@ -260,97 +279,180 @@ export default function Course() {
                   </h3>
                 </div>
               )}
-              {courses
-                ?.filter((course) =>
-                  course.title
-                    .toLowerCase()
-                    .includes(search?.toLowerCase() ?? "")
-                )
-                .map((course) => (
-                  <div
-                    key={course.id}
-                    className="h-48 sm:max-w-80 grow flex flex-col p-4 justify-between border rounded-2xl shadow-lg hover:ring ring-primary/70 cursor-pointer transition-all hover:shadow-blue bg-background"
-                    onDoubleClick={() => {
-                      router.push(`/courses/${course.id}`);
-                    }}
-                  >
-                    <div>
-                      <div className="flex flex-col gap-1">
-                        <div className="flex items-center gap-2">
-                          <div className="">
-                            <FolderOpen />
+              <div className="w-full">
+                {view === "grid_view" ? (
+                  <div className="w-full flex flex-wrap gap-4">
+                    {courses
+                      ?.filter((course) =>
+                        course.title
+                          .toLowerCase()
+                          .includes(search?.toLowerCase() ?? "")
+                      )
+                      .map((course) => (
+                        <div
+                          key={course.id}
+                          className="h-48 sm:max-w-80 grow flex flex-col p-4 justify-between border rounded-2xl shadow-lg hover:ring ring-primary/70 cursor-pointer transition-all hover:shadow-blue bg-background"
+                          onDoubleClick={() => {
+                            router.push(`/courses/${course.id}`);
+                          }}
+                        >
+                          <div>
+                            <div className="flex flex-col gap-1">
+                              <div className="flex items-center gap-2">
+                                <div className="">
+                                  <FolderOpen />
+                                </div>
+                                <h2 className="text-lg font-semibold">
+                                  {course.title.length > 20
+                                    ? course.title.slice(0, 20) + "..."
+                                    : course.title}
+                                </h2>
+                              </div>
+                              <p className="text-sm text-muted-foreground">
+                                {course.description.length > 80
+                                  ? course.description.slice(0, 80) + "..."
+                                  : course.description}
+                              </p>
+                            </div>
                           </div>
-                          <h2 className="text-lg font-semibold">
-                            {course.title.length > 20
-                              ? course.title.slice(0, 20) + "..."
-                              : course.title}
-                          </h2>
+                          <div className="space-y-1">
+                            <div className="flex justify-end">
+                              <p className="text-sm text-muted-foreground">
+                                mis à jour le :{" "}
+                                {new Date(
+                                  course.updatedAt
+                                ).toLocaleDateString()}
+                              </p>
+                            </div>
+                            <div className="flex flex-row-reverse gap-1 items-center justify-between">
+                              <div className="flex flex-row-reverse items-center gap-1">
+                                <Link
+                                  className="w-full grow"
+                                  href={`courses/${course.id}`}
+                                >
+                                  <Button>Voir le cours</Button>
+                                </Link>
+                                <Link href={`courses/${course.id}/edit`}>
+                                  <Button
+                                    variant="secondary"
+                                    size="icon"
+                                    className="p-3"
+                                  >
+                                    <Pencil />
+                                  </Button>
+                                </Link>
+                              </div>
+                              <AlertDialog>
+                                <AlertDialogTrigger asChild>
+                                  <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    className="p-3"
+                                  >
+                                    <Trash2 />
+                                  </Button>
+                                </AlertDialogTrigger>
+                                <AlertDialogContent>
+                                  <AlertDialogHeader>
+                                    <AlertDialogTitle>
+                                      Supprimer le cours
+                                    </AlertDialogTitle>
+                                    <AlertDialogDescription>
+                                      Êtes-vous sûr de vouloir supprimer le
+                                      cours, et toutes les leçons associées à{" "}
+                                      {course.title} ?
+                                    </AlertDialogDescription>
+                                  </AlertDialogHeader>
+                                  <AlertDialogFooter>
+                                    <AlertDialogCancel>
+                                      Annuler
+                                    </AlertDialogCancel>
+                                    <AlertDialogAction
+                                      className="bg-destructive hover:bg-destructive/90"
+                                      onClick={() => {
+                                        deleteMutation.mutate({
+                                          id: course.id,
+                                        });
+                                      }}
+                                    >
+                                      Supprimer
+                                    </AlertDialogAction>
+                                  </AlertDialogFooter>
+                                </AlertDialogContent>
+                              </AlertDialog>
+                            </div>
+                          </div>
                         </div>
-                        <p className="text-sm text-muted-foreground">
-                          {course.description.length > 80
-                            ? course.description.slice(0, 80) + "..."
-                            : course.description}
-                        </p>
-                      </div>
-                    </div>
-                    <div className="space-y-1">
-                      <div className="flex justify-end">
-                        <p className="text-sm text-muted-foreground">
-                          mis à jour le :{" "}
-                          {new Date(course.updatedAt).toLocaleDateString()}
-                        </p>
-                      </div>
-                      <div className="flex flex-row-reverse gap-1 items-center justify-between">
-                        <div className="flex flex-row-reverse items-center gap-1">
-                          <Link
-                            className="w-full grow"
-                            href={`courses/${course.id}`}
-                          >
-                            <Button>Voir le cours</Button>
-                          </Link>
-                          <Link href={`courses/${course.id}/edit`}>
-                            <Button
-                              variant="secondary"
-                              size="icon"
-                              className="p-3"
-                            >
-                              <Pencil />
-                            </Button>
-                          </Link>
-                        </div>
-                        <AlertDialog>
-                          <AlertDialogTrigger asChild>
-                            <Button variant="ghost" size="icon" className="p-3">
-                              <Trash2 />
-                            </Button>
-                          </AlertDialogTrigger>
-                          <AlertDialogContent>
-                            <AlertDialogHeader>
-                              <AlertDialogTitle>
-                                Supprimer le cours
-                              </AlertDialogTitle>
-                              <AlertDialogDescription>
-                                Êtes-vous sûr de vouloir supprimer le cours, et
-                                toutes les leçons associées à {course.title} ?
-                              </AlertDialogDescription>
-                            </AlertDialogHeader>
-                            <AlertDialogFooter>
-                              <AlertDialogCancel>Annuler</AlertDialogCancel>
-                              <AlertDialogAction
-                                className="bg-destructive hover:bg-destructive/90"
-                                onClick={() => {
-                                  deleteMutation.mutate({ id: course.id });
-                                }}
-                              >
-                                Supprimer
-                              </AlertDialogAction>
-                            </AlertDialogFooter>
-                          </AlertDialogContent>
-                        </AlertDialog>
-                      </div>
-                    </div>
+                      ))}{" "}
                   </div>
-                ))}
+                ) : (
+                  <div className="w-full">
+                    <Table className="w-full">
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>Nom</TableHead>
+                          <TableHead>Propriétaire</TableHead>
+                          <TableHead>Dernière modification</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {courses
+                          ?.filter((course) =>
+                            course.title
+                              .toLowerCase()
+                              .includes(search?.toLowerCase() ?? "")
+                          )
+                          .map((course) => (
+                            <TableRow
+                              key={course.id}
+                              onDoubleClick={() => {
+                                router.push(`/courses/${course.id}`);
+                              }}
+                            >
+                              <TableCell>
+                                <Link href={`/courses/${course.id}`}>
+                                  <span className="text-primary">
+                                    {course.title.length > 20
+                                      ? course.title.slice(0, 20) + "..."
+                                      : course.title}
+                                  </span>
+                                </Link>
+                              </TableCell>
+                              <TableCell className="flex items-center gap-1 text-muted-foreground">
+                                <Image
+                                  src={course.userImage}
+                                  alt={"user image"}
+                                  width={20}
+                                  height={20}
+                                  className="rounded-full"
+                                />
+
+                                {course.userId === user?.user?.id && "Moi"}
+                              </TableCell>
+                              <TableCell className="text-muted-foreground">
+                                {new Date(course.updatedAt).toLocaleDateString(
+                                  "fr-FR",
+                                  {
+                                    weekday: "long",
+                                    year: "numeric",
+                                    month: "long",
+                                    day: "numeric",
+                                  }
+                                )}
+                              </TableCell>
+                              <TableCell>
+                                <EllipsisVertical
+                                  size={20}
+                                  className="cursor-pointer"
+                                />
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                      </TableBody>
+                    </Table>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </main>
