@@ -168,7 +168,6 @@ export const FullCalendarComponent = (props: CalendarProps) => {
                 </div>
                 <Button
                   onClick={() => {
-                    console.log("currentView", currentView);
                     if (currentView === "month") {
                       handleNextMonth();
                     } else if (currentView === "week") {
