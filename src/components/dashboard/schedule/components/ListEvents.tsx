@@ -38,7 +38,7 @@ export const ListEvents = (props: ListEventsProps) => {
           </div>
         </div>
       </section>
-      <div className="border rounded-lg w-full overflow-hidden">
+      <div className="border rounded-lg w-full overflow-hidden bg-background">
         <div className=" max-h-[638px] min-h-[638px] overflow-y-auto">
           {props.isLoading && (
             <div className="flex flex-col gap-3 w-full p-2">

@@ -46,7 +46,7 @@ export const CalendarMonth = (props: CalendarMonthProps) => {
   };
 
   return (
-    <div className="w-full h-full space-y-2">
+    <div className="w-full h-full space-y-2 bg-transparent">
       <section>
         <div className="flex justify-between">
           {list_weeks_days.map((day, index) => (
@@ -61,7 +61,7 @@ export const CalendarMonth = (props: CalendarMonthProps) => {
           ))}
         </div>
       </section>
-      <section>
+      <section className="bg-background">
         <div className="grid grid-cols-7 gap-0">
           {allDays.map((day, index) => {
             const isCurrentMonth = day.month() === props.month - 1;

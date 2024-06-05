@@ -128,7 +128,7 @@ export const CalendarWeek = (props: CalendarWeekProps) => {
           ))}
         </div>
       </section>
-      <section className="flex max-h-[640px] h-full w-full overflow-y-auto border rounded-lg overflow-x-hidden relative">
+      <section className="flex max-h-[640px] h-full w-full overflow-y-auto border rounded-lg overflow-x-hidden relative bg-background">
         <div
           className={`absolute left-1 max-sm:left-[2px] right-0`}
           style={{
