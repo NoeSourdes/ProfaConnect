@@ -1,13 +1,18 @@
 "use client";
 
 import {
-  Calculator,
-  Calendar,
-  CreditCard,
+  CalendarDays,
+  CircleHelp,
+  FolderOpenDot,
+  Gamepad2,
+  LayoutGrid,
+  MessageCircleMore,
+  MonitorIcon,
+  MoonIcon,
   Settings,
-  Smile,
-  User,
+  SunIcon,
 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import * as React from "react";
 
 import {
@@ -18,11 +23,13 @@ import {
   CommandItem,
   CommandList,
   CommandSeparator,
-  CommandShortcut,
 } from "@/src/components/ui/command";
+import { useTheme } from "next-themes";
 
 export function CommandBar() {
   const [open, setOpen] = React.useState(false);
+  const router = useRouter();
+  const { setTheme } = useTheme();
 
   React.useEffect(() => {
     const down = (e: KeyboardEvent) => {
@@ -35,6 +42,11 @@ export function CommandBar() {
     document.addEventListener("keydown", down);
     return () => document.removeEventListener("keydown", down);
   }, []);
+
+  const handleSelect = (url: string) => {
+    setOpen(false);
+    router.push(url);
+  };
 
   return (
     <>
@@ -52,43 +64,58 @@ export function CommandBar() {
         </kbd>
       </div>
       <CommandDialog open={open} onOpenChange={setOpen}>
-        <CommandInput placeholder="Type a command or search..." />
+        <CommandInput placeholder="Recherchez..." />
         <CommandList>
           <CommandEmpty>
             Aucun résultat trouvé pour votre recherche.
           </CommandEmpty>
-          <CommandGroup heading="Suggestions">
-            <CommandItem>
-              <Calendar className="mr-2 h-4 w-4" />
-              <span>Calendar</span>
+          <CommandGroup heading="Liens">
+            {[
+              { icon: LayoutGrid, label: "Tableau de bord", url: "/dashboard" },
+              { icon: FolderOpenDot, label: "Cours", url: "/courses" },
+              { icon: CalendarDays, label: "Calendrier", url: "/schedule" },
+              {
+                icon: MessageCircleMore,
+                label: "Messages",
+                url: "/communication",
+              },
+              { icon: Gamepad2, label: "Jeux", url: "/games" },
+              { icon: Settings, label: "Paramètres", url: "/settings" },
+              { icon: CircleHelp, label: "Aide", url: "/FAQ" },
+            ].map(({ icon: Icon, label, url }) => (
+              <CommandItem key={url} onSelect={() => handleSelect(url)}>
+                <Icon className="mr-2 h-4 w-4" />
+                <span>{label}</span>
+              </CommandItem>
+            ))}
+          </CommandGroup>
+          <CommandGroup heading="Actions">
+            <CommandItem onSelect={() => handleSelect("/courses/new_course")}>
+              Créer un cours
             </CommandItem>
-            <CommandItem>
-              <Smile className="mr-2 h-4 w-4" />
-              <span>Search Emoji</span>
+            <CommandItem onSelect={() => handleSelect("/schedule")}>
+              Créer un événement
             </CommandItem>
-            <CommandItem>
-              <Calculator className="mr-2 h-4 w-4" />
-              <span>Calculator</span>
-            </CommandItem>
+          </CommandGroup>
+          <CommandGroup heading="Thème">
+            {[
+              { icon: SunIcon, label: "Light", theme: "light" },
+              { icon: MoonIcon, label: "Dark", theme: "dark" },
+              { icon: MonitorIcon, label: "System", theme: "system" },
+            ].map(({ icon: Icon, label, theme }) => (
+              <CommandItem
+                key={theme}
+                onSelect={() => {
+                  setTheme(theme);
+                  setOpen(false);
+                }}
+              >
+                <Icon className="mr-2 h-4 w-4" />
+                <span>{label}</span>
+              </CommandItem>
+            ))}
           </CommandGroup>
           <CommandSeparator />
-          <CommandGroup heading="Settings">
-            <CommandItem>
-              <User className="mr-2 h-4 w-4" />
-              <span>Profile</span>
-              <CommandShortcut>⌘P</CommandShortcut>
-            </CommandItem>
-            <CommandItem>
-              <CreditCard className="mr-2 h-4 w-4" />
-              <span>Billing</span>
-              <CommandShortcut>⌘B</CommandShortcut>
-            </CommandItem>
-            <CommandItem>
-              <Settings className="mr-2 h-4 w-4" />
-              <span>Settings</span>
-              <CommandShortcut>⌘S</CommandShortcut>
-            </CommandItem>
-          </CommandGroup>
         </CommandList>
       </CommandDialog>
     </>

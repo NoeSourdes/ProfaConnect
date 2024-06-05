@@ -36,7 +36,7 @@ export function getPages(pathname: string): Group[] {
       menus: [
         {
           href: "/dashboard",
-          label: "Dashboard",
+          label: "Tableau de bord",
           active: pathname.includes("/dashboard"),
           icon: LayoutGrid,
           submenus: [],
