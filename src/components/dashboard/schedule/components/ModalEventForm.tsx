@@ -224,7 +224,7 @@ export const ModalEventForm = (props: ModalEventFormProps) => {
           )}
         </Button>
       </DialogTrigger>
-      <DialogContent className="overflow-auto p-6">
+      <DialogContent className="overflow-auto sm:p-6 p-3 max-h-[600px]">
         <DialogHeader>
           <DialogTitle>Créer un événement</DialogTitle>
         </DialogHeader>
