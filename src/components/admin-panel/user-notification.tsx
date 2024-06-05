@@ -22,22 +22,15 @@ export type notificationProps = {};
 export const UserNotification = (props: notificationProps) => {
   return (
     <DropdownMenu>
-      <TooltipProvider disableHoverableContent>
-        <Tooltip delayDuration={100}>
-          <TooltipTrigger asChild>
-            <DropdownMenuTrigger asChild>
-              <Button
-                className="rounded-full w-8 h-8 bg-background"
-                variant="outline"
-                size="icon"
-              >
-                <Bell className="w-[1.2rem] h-[1.2rem]" />
-              </Button>
-            </DropdownMenuTrigger>
-          </TooltipTrigger>
-          <TooltipContent side="bottom">Notifications</TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
+      <DropdownMenuTrigger asChild>
+        <Button
+          className="rounded-full w-8 h-8 bg-background"
+          variant="outline"
+          size="icon"
+        >
+          <Bell className="w-[1.2rem] h-[1.2rem]" />
+        </Button>
+      </DropdownMenuTrigger>
 
       <DropdownMenuContent className="w-56" align="end" forceMount>
         <DropdownMenuLabel className="font-normal">
