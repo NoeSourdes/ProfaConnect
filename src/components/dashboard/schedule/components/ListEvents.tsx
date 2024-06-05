@@ -78,7 +78,6 @@ export const ListEvents = (props: ListEventsProps) => {
                 if (showDate) {
                   lastDate = eventDate;
                 }
-                console.log("event", event);
                 return (
                   <div key={`${event.id}-${index}`}>
                     {showDate && (
