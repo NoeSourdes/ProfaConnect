@@ -11,6 +11,7 @@ export const createCourseAction = userAction(
     const course = await prisma.course.create({
       data: {
         ...inputs,
+        userImage: context.user.image || "",
         userId: context.user.id,
       },
     });
@@ -19,16 +20,16 @@ export const createCourseAction = userAction(
 );
 
 export const getUserCourses = async (userId: string) => {
-  // return Promise.reject("Une erreur est survenue");
-
   const courses = await prisma.course.findMany({
     where: {
       userId,
     },
+    include: {
+      users: true, // Inclure les données de l'utilisateur associé
+    },
   });
   return courses;
 };
-
 export const updateCourseAction = userAction(
   z.object({
     id: z.string(),
