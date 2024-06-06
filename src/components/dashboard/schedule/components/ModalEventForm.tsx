@@ -207,7 +207,7 @@ export const ModalEventForm = (props: ModalEventFormProps) => {
               ? props.icon
                 ? ""
                 : "w-full"
-              : "w-full flex items-center justify-start gap-2"
+              : "w-full flex items-center justify-start gap-2 rounded"
           }
         >
           {isCreate ? (

@@ -111,7 +111,7 @@ export const CalendarMonth = (props: CalendarMonthProps) => {
                     <Popover>
                       <PopoverTrigger asChild>
                         <Ellipsis
-                          size={20}
+                          size={18}
                           className="cursor-pointer w-full flex justify-center items-center"
                         />
                       </PopoverTrigger>

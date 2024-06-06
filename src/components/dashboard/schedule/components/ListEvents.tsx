@@ -53,7 +53,7 @@ export const ListEvents = (props: ListEventsProps) => {
                       <Skeleton className="w-4 h-4 rounded" />
                       <Skeleton className="w-1/2 h-4" />
                     </div>
-                    <EllipsisVertical size={20} />
+                    <EllipsisVertical size={18} />
                   </div>
                 ))}
             </div>

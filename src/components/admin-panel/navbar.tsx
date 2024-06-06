@@ -23,13 +23,13 @@ export function Navbar() {
         </div>
         <div className="flex flex-1 items-center space-x-2 justify-end">
           <CommandBar />
-          <div className="h-8 w-8">
+          <div className="h-9 w-9">
             <UserNotification />
           </div>
-          <div className="h-8 w-8">
+          <div className="h-9 w-9">
             <ModeToggle />
           </div>
-          <div className="h-8 w-8">
+          <div className="h-9 w-9">
             <UserNav />
           </div>
         </div>

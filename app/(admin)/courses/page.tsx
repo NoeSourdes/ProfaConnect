@@ -35,9 +35,14 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   CirclePlus,
   EllipsisVertical,
+  ExternalLink,
+  FolderInput,
   FolderOpen,
+  FolderPen,
+  Pen,
   Pencil,
   SlidersHorizontal,
+  Trash,
   Trash2,
   Undo2,
 } from "lucide-react";
@@ -51,7 +56,6 @@ import {
   deleteCourseAction,
   getUserCourses,
 } from "./[coursId]/edit/course.actions";
-import { getUserData } from "./action/user";
 
 function useDebounce(value: string, delay: number) {
   const [debouncedValue, setDebouncedValue] = useState(value);
@@ -91,8 +95,6 @@ export default function Course() {
     },
   });
 
-  console.log(courses);
-
   const deleteMutation = useMutation({
     mutationFn: (idCourse: { id: string }) => deleteCourseAction(idCourse.id),
     onSuccess: ({ data, serverError }) => {
@@ -107,10 +109,6 @@ export default function Course() {
     },
   });
 
-  const getUserDataFunction = async (userId: string) => {
-    return await getUserData(userId);
-  };
-
   if (isLoading) {
     return (
       <div className="h-full w-full overflow-y-scroll">
@@ -118,7 +116,7 @@ export default function Course() {
           <div className="flex items-center gap-3 w-full">
             <Link href="/dashboard">
               <Button size="icon" variant="outline">
-                <Undo2 size={20} />
+                <Undo2 size={18} />
               </Button>
             </Link>
             <BreadcrumbComponent
@@ -147,7 +145,7 @@ export default function Course() {
           <div className="flex items-center gap-3 w-full">
             <Link href="/dashboard">
               <Button size="icon" variant="outline">
-                <Undo2 size={20} />
+                <Undo2 size={18} />
               </Button>
             </Link>
             <BreadcrumbComponent
@@ -188,7 +186,7 @@ export default function Course() {
           <div className="flex items-center gap-3 w-full">
             <Link href="/dashboard">
               <Button size="icon" variant="outline">
-                <Undo2 size={20} />
+                <Undo2 size={18} />
               </Button>
             </Link>
             <BreadcrumbComponent
@@ -226,7 +224,7 @@ export default function Course() {
             <div className="flex items-center gap-3">
               <Link href="/dashboard">
                 <Button size="icon" variant="outline">
-                  <Undo2 size={20} />
+                  <Undo2 size={18} />
                 </Button>
               </Link>
               <BreadcrumbComponent
@@ -252,7 +250,7 @@ export default function Course() {
               <Popover>
                 <PopoverTrigger>
                   <Button variant="outline">
-                    <SlidersHorizontal size={20} />
+                    <SlidersHorizontal size={18} />
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent className="text-warning font-medium">
@@ -390,12 +388,16 @@ export default function Course() {
                     <Table className="w-full">
                       <TableHeader>
                         <TableRow>
-                          <TableHead>Nom</TableHead>
-                          <TableHead>Propriétaire</TableHead>
-                          <TableHead>Dernière modification</TableHead>
+                          <TableHead className="max-sm:text-xs">Nom</TableHead>
+                          <TableHead className="max-sm:text-xs">
+                            Propriétaire
+                          </TableHead>
+                          <TableHead className="max-sm:text-xs">
+                            Dernière modification
+                          </TableHead>
                         </TableRow>
                       </TableHeader>
-                      <TableBody>
+                      <TableBody className="max-sm:text-xs">
                         {courses
                           ?.filter((course) =>
                             course.title
@@ -421,8 +423,8 @@ export default function Course() {
                               <TableCell className="flex items-center gap-1 text-muted-foreground">
                                 <Image
                                   src={
-                                    course.userImage
-                                      ? course.userImage
+                                    course.author?.image
+                                      ? course.author.image
                                       : "/user.png"
                                   }
                                   alt={"user image"}
@@ -431,7 +433,9 @@ export default function Course() {
                                   className="rounded-full"
                                 />
 
-                                {course.userId === user?.user?.id && "Moi"}
+                                {course.authorId === user?.user?.id
+                                  ? "Moi"
+                                  : course.author?.name}
                               </TableCell>
                               <TableCell className="text-muted-foreground">
                                 {new Date(course.updatedAt).toLocaleDateString(
@@ -445,10 +449,47 @@ export default function Course() {
                                 )}
                               </TableCell>
                               <TableCell>
-                                <EllipsisVertical
-                                  size={20}
-                                  className="cursor-pointer"
-                                />
+                                <Popover>
+                                  <PopoverTrigger asChild>
+                                    <EllipsisVertical
+                                      size={18}
+                                      className="cursor-pointer"
+                                    />
+                                  </PopoverTrigger>
+                                  <PopoverContent className="flex flex-col p-1 w-52 mr-10 sm:mr-16 lg:mr-28 rounded-[6px]">
+                                    {[
+                                      {
+                                        icon: <ExternalLink size={18} />,
+                                        text: "Ouvrir le cours",
+                                      },
+                                      {
+                                        icon: <FolderPen size={18} />,
+                                        text: "Renommer",
+                                      },
+                                      {
+                                        icon: <Pen size={18} />,
+                                        text: "Modifier",
+                                      },
+                                      {
+                                        icon: <FolderInput size={18} />,
+                                        text: "Déplacer",
+                                      },
+                                      {
+                                        icon: <Trash size={18} />,
+                                        text: "Supprimer le cours",
+                                      },
+                                    ].map((button, index) => (
+                                      <Button
+                                        key={index}
+                                        className="flex justify-start items-center gap-2 pl-2 rounded"
+                                        variant="ghost"
+                                      >
+                                        {button.icon}
+                                        {button.text}
+                                      </Button>
+                                    ))}
+                                  </PopoverContent>
+                                </Popover>
                               </TableCell>
                             </TableRow>
                           ))}

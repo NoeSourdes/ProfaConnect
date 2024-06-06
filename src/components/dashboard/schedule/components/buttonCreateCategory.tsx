@@ -77,7 +77,7 @@ export const ButtonCreateCategory = (props: ButtonCreateCategoryProps) => {
           size={props.buttonString ? "sm" : "icon_sm"}
           className={props.buttonString ? "w-full" : ""}
         >
-          {props.buttonString ? "Ajouter une catégorie" : <Plus size={20} />}
+          {props.buttonString ? "Ajouter une catégorie" : <Plus size={18} />}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="sm:max-w-[425px]">

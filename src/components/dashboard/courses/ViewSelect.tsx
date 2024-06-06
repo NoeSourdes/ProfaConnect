@@ -11,10 +11,10 @@ export const ViewSelect = (props: ViewSelectProps) => {
       <Tabs defaultValue={view} onValueChange={(value) => setView(value)}>
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="grid_view">
-            <LayoutGrid size={20} />
+            <LayoutGrid size={18} />
           </TabsTrigger>
           <TabsTrigger value="list_view">
-            <AlignJustify size={20} />
+            <AlignJustify size={18} />
           </TabsTrigger>
         </TabsList>
       </Tabs>

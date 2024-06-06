@@ -32,7 +32,7 @@ export const TopBarPdf = (props: TopBarPdfProps) => {
           onClick={() => props.setPageNumber(props.pageNumber - 1)}
           disabled={props.pageNumber === 1}
         >
-          <ArrowLeft size={20} />
+          <ArrowLeft size={18} />
         </Button>
         <Button
           size="icon"
@@ -40,7 +40,7 @@ export const TopBarPdf = (props: TopBarPdfProps) => {
           onClick={() => props.setPageNumber(props.pageNumber + 1)}
           disabled={props.pageNumber === props.numPages}
         >
-          <ArrowRight size={20} />
+          <ArrowRight size={18} />
         </Button>
         <span className="text-sm sm:block hidden">
           Page {props.pageNumber} sur {props.numPages}
@@ -60,7 +60,7 @@ export const TopBarPdf = (props: TopBarPdfProps) => {
               }
             }}
           >
-            <Minus size={20} />
+            <Minus size={18} />
           </Button>
           <Input
             type="text"
@@ -73,7 +73,7 @@ export const TopBarPdf = (props: TopBarPdfProps) => {
             variant="secondary"
             onClick={() => props.setPourcentage(props.pourcentage + 10)}
           >
-            <Plus size={20} />
+            <Plus size={18} />
           </Button>
         </div>
         <Button
@@ -81,7 +81,7 @@ export const TopBarPdf = (props: TopBarPdfProps) => {
           variant="secondary"
           onClick={() => props.setIsFullScreen(!props.isFullScreen)}
         >
-          {props.isFullScreen ? <Shrink size={20} /> : <Expand size={20} />}
+          {props.isFullScreen ? <Shrink size={18} /> : <Expand size={18} />}
         </Button>
       </div>
     </div>
