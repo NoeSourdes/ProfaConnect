@@ -10,5 +10,5 @@ export type EventType = {
   categoryId: string | null;
   category: { name: string } | null;
   id: string;
-  userId: string;
+  authorId: string;
 };
