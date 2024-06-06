@@ -37,7 +37,7 @@ export const PopoverManagementEvents = (
       toast.success("Événement supprimé avec succès");
 
       queryClient.invalidateQueries({
-        queryKey: ["events", props.event.userId],
+        queryKey: ["events", props.event.authorId],
       });
     },
   });

@@ -42,7 +42,7 @@ export const CalendarDay = (props: CalendarDayProps) => {
       toast.success("Événement supprimé avec succès");
 
       queryClient.invalidateQueries({
-        queryKey: ["events", props.events[0].userId],
+        queryKey: ["events", props.events[0].authorId],
       });
     },
   });
