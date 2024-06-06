@@ -153,7 +153,7 @@ export const Categories = (props: categoriesProps) => {
       <div className="flex justify-between border-b py-2 px-2 scroll-px-24">
         <div className="flex items-center justify-between w-full">
           <h2 className="flex items-center gap-3 text-sm font-medium">
-            <Flag size={20} />
+            <Flag size={18} />
             Catégories
           </h2>
           <ButtonCreateCategory />
@@ -173,7 +173,7 @@ export const Categories = (props: categoriesProps) => {
                     <Skeleton className="w-4 h-4 rounded" />
                     <Skeleton className="w-1/2 h-4" />
                   </div>
-                  <EllipsisVertical size={20} />
+                  <EllipsisVertical size={18} />
                 </div>
               ))}
           </div>
@@ -202,7 +202,7 @@ export const Categories = (props: categoriesProps) => {
                   </div>
                   <Popover>
                     <PopoverTrigger>
-                      <EllipsisVertical size={20} />
+                      <EllipsisVertical size={18} />
                     </PopoverTrigger>
                     <PopoverContent className="max-w-56 p-2">
                       <div className="flex flex-col gap-2">

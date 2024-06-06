@@ -14,7 +14,7 @@ export const createLesson = userAction(
         title: inputs.title,
         document: content,
         courseId: inputs.courseId,
-        userId: context.user.id,
+        authorId: context.user.id,
       },
     });
     return lesson;
@@ -30,7 +30,7 @@ export const updateLesson = userAction(
     const lesson = await prisma.lesson.update({
       where: {
         lessonId: inputs.id,
-        userId: context.user.id,
+        authorId: context.user.id,
       },
       data: {
         title: inputs.data.title,
@@ -49,7 +49,7 @@ export const createLesssonPDF = userAction(
         title: inputs.title,
         url: inputs.url,
         courseId: inputs.courseId,
-        userId: context.user.id,
+        authorId: context.user.id,
       },
     });
     return lesson;
@@ -65,7 +65,7 @@ export const updateLessonPdf = userAction(
     const lesson = await prisma.lesson.update({
       where: {
         lessonId: inputs.id,
-        userId: context.user.id,
+        authorId: context.user.id,
       },
       data: {
         title: inputs.data.title,
@@ -93,7 +93,7 @@ export const deleteLessonAction = userAction(
     const lesson = await prisma.lesson.findUnique({
       where: {
         lessonId: id,
-        userId: context.user.id,
+        authorId: context.user.id,
       },
     });
 

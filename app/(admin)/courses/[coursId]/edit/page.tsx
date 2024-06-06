@@ -18,7 +18,7 @@ export default async function RoutePage(
   const course = await prisma.course.findUnique({
     where: {
       id: props.params.coursId,
-      userId: user.id,
+      authorId: user.id,
     },
     select: {
       title: true,
@@ -36,7 +36,7 @@ export default async function RoutePage(
         <div className="flex items-center gap-3">
           <Link href={`/courses/${props.params.coursId}`}>
             <Button size="icon" variant="outline">
-              <Undo2 size={20} />
+              <Undo2 size={18} />
             </Button>
           </Link>
           <BreadcrumbComponent

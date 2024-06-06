@@ -11,25 +11,25 @@ export const createCourseAction = userAction(
     const course = await prisma.course.create({
       data: {
         ...inputs,
-        userImage: context.user.image || "",
-        userId: context.user.id,
+        authorId: context.user.id,
       },
     });
     return course;
   }
 );
 
-export const getUserCourses = async (userId: string) => {
+export const getUserCourses = async (authorId: string) => {
   const courses = await prisma.course.findMany({
     where: {
-      userId,
+      authorId,
     },
     include: {
-      users: true, // Inclure les données de l'utilisateur associé
+      author: true,
     },
   });
   return courses;
 };
+
 export const updateCourseAction = userAction(
   z.object({
     id: z.string(),
@@ -39,7 +39,7 @@ export const updateCourseAction = userAction(
     const upadteCourse = await prisma.course.update({
       where: {
         id: inputs.id,
-        userId: context.user.id,
+        authorId: context.user.id,
       },
       data: inputs.data,
     });
@@ -53,7 +53,7 @@ export const deleteCourseAction = userAction(
     const course = await prisma.course.findUnique({
       where: {
         id: id,
-        userId: context.user.id,
+        authorId: context.user.id,
       },
     });
 
@@ -68,7 +68,7 @@ export const deleteCourseAction = userAction(
     const deletedCourse = await prisma.course.delete({
       where: {
         id: id,
-        userId: context.user.id,
+        authorId: context.user.id,
       },
     });
 

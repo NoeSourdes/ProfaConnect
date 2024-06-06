@@ -12,7 +12,7 @@ export default function RoutePage(props: PageParams<{}>) {
         <div className="flex items-center gap-3">
           <Link href="/courses">
             <Button size="icon" variant="outline">
-              <Undo2 size={20} />
+              <Undo2 size={18} />
             </Button>
           </Link>
           <BreadcrumbComponent

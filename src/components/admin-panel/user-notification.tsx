@@ -24,7 +24,7 @@ export const UserNotification = (props: notificationProps) => {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button
-          className="rounded-full w-8 h-8 bg-background"
+          className="rounded-full w-9 h-9 bg-background"
           variant="outline"
           size="icon"
         >

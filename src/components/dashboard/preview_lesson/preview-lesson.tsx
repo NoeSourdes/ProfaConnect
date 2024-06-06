@@ -18,7 +18,7 @@ export const PreviewLesson = (props: previewProps) => {
       <div className="flex items-center gap-3 w-full">
         <Link href={`/courses/${props.courseId}`}>
           <Button size="icon" variant="outline">
-            <Undo2 size={20} />
+            <Undo2 size={18} />
           </Button>
         </Link>
         <BreadcrumbComponent

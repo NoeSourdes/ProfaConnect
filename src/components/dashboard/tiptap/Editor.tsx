@@ -84,7 +84,7 @@ const TailwindAdvancedEditor = (props: EditorProps) => {
             onClick={toggleFullScreen}
             className="text-muted-foreground"
           >
-            {!isFullScreen ? <Expand size={20} /> : <Shrink size={20} />}
+            {!isFullScreen ? <Expand size={18} /> : <Shrink size={18} />}
           </Button>
         </div>
         <EditorRootComponent

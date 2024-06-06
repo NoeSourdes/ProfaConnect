@@ -18,6 +18,7 @@ import {
   useZodForm,
 } from "@/src/components/ui/form";
 import { Input } from "@/src/components/ui/input";
+import { Textarea } from "@/src/components/ui/textarea";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
@@ -114,7 +115,8 @@ export const CourseForm = (props: CourseFormProps) => {
               <FormItem>
                 <FormLabel>Description</FormLabel>
                 <FormControl>
-                  <Input
+                  <Textarea
+                    className="resize-none"
                     placeholder="
                   Entrez la description du cours"
                     {...field}

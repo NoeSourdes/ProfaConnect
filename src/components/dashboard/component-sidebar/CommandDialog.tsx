@@ -45,7 +45,7 @@ export function CommandDialogSideBar({
       >
         <div className={`w-full flex items-center justify-between`}>
           <div className="flex items-center gap-2">
-            <Search size={20} />
+            <Search size={18} />
             <span
               className={`${isSidebarOpen ? "" : "opacity-0"} transition-all`}
             >

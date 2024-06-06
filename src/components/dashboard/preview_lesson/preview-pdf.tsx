@@ -68,7 +68,7 @@ export const PreviewPdf = (props: PreviewPdfProps) => {
           <div className="flex items-center gap-3">
             <Link href={`/courses/${props.courseId}`}>
               <Button size="icon" variant="outline">
-                <Undo2 size={20} />
+                <Undo2 size={18} />
               </Button>
             </Link>
             <BreadcrumbComponent
@@ -85,7 +85,7 @@ export const PreviewPdf = (props: PreviewPdfProps) => {
           <Dialog>
             <DialogTrigger asChild>
               <Button size="icon">
-                <Pencil size={20} />
+                <Pencil size={18} />
               </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">

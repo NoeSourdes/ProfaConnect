@@ -68,10 +68,10 @@ export const PopoverManagementEvents = (
               </p>
             </div>
           ) : (
-            <EllipsisVertical size={20} className="text-muted-foreground" />
+            <EllipsisVertical size={18} className="text-muted-foreground" />
           )}
         </PopoverTrigger>
-        <PopoverContent className="max-w-56 p-2 space-y-2 z-50">
+        <PopoverContent className="max-w-56 p-1 space-y-2 z-50 rounded-[6px]">
           <div className="px-1">
             <div className="flex items-center gap-1 ">
               <span
@@ -111,7 +111,7 @@ export const PopoverManagementEvents = (
           <div className="flex flex-col gap-3">
             <Button
               size="sm"
-              className="w-full flex items-center justify-start gap-2 hover:text-destructive tramsition-colors"
+              className="w-full flex items-center justify-start gap-2 hover:text-destructive tramsition-colors rounded"
               variant="ghost"
               onClick={() => {
                 deleteMutation.mutate({ id: props.event.id });

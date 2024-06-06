@@ -9,6 +9,7 @@ import {
   MessageCircleMore,
   MonitorIcon,
   MoonIcon,
+  Search,
   Settings,
   SunIcon,
 } from "lucide-react";
@@ -54,9 +55,10 @@ export function CommandBar() {
         onClick={() => {
           setOpen(true);
         }}
-        className="text-sm text-muted-foreground border rounded-[6px] w-full sm:max-w-44 p-1 flex items-center justify-between hover:bg-secondary transition-all cursor-pointer group"
+        className="text-sm text-muted-foreground border rounded-lg w-full sm:max-w-44 px-3 py-2 flex items-center justify-between hover:bg-secondary transition-all cursor-pointer group"
       >
-        <span className="text-smt group-hover:text-accent-foreground transition-all">
+        <span className="text-smt group-hover:text-accent-foreground transition-all flex items-center gap-2">
+          <Search size={18} />
           Rechercher
         </span>
         <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100 group-hover:text-accent-foreground transition-all">

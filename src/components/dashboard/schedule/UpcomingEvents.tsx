@@ -5,11 +5,11 @@ import { Calendar, EllipsisVertical } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { Skeleton } from "../../ui/skeleton";
 import { colorClassesClean } from "./actions/color";
+import { getEventAction } from "./actions/events/event.action";
 import { checkHour, sortEvents } from "./actions/hour";
 import { EventType } from "./actions/types/events-type";
 import { ModalEventForm } from "./components/ModalEventForm";
 import { PopoverManagementEvents } from "./components/popoverManagementEvents";
-import { getEventAction } from "./actions/events/event.action";
 
 export type UpcomingEventsProps = {};
 
@@ -59,7 +59,7 @@ export const UpcomingEvents = (props: UpcomingEventsProps) => {
       <div className="flex justify-between border-b py-2 px-2 scroll-px-24">
         <div className="flex items-center justify-between w-full">
           <h2 className="flex items-center gap-3 text-sm font-medium">
-            <Calendar size={20} />
+            <Calendar size={18} />
             Événements à venir
           </h2>
           <ModalEventForm icon={true} />
@@ -79,7 +79,7 @@ export const UpcomingEvents = (props: UpcomingEventsProps) => {
                     <Skeleton className="w-4 h-4 rounded" />
                     <Skeleton className="w-1/2 h-4" />
                   </div>
-                  <EllipsisVertical size={20} />
+                  <EllipsisVertical size={18} />
                 </div>
               ))}
           </div>

@@ -110,7 +110,7 @@ export default function RoutePage(
           <div className="flex items-center gap-3">
             <Link href={`/courses`}>
               <Button size="icon" variant="outline">
-                <Undo2 size={20} />
+                <Undo2 size={18} />
               </Button>
             </Link>
 
@@ -143,7 +143,7 @@ export default function RoutePage(
           <div className="flex items-center gap-3">
             <Link href={`/courses`}>
               <Button size="icon" variant="outline">
-                <Undo2 size={20} />
+                <Undo2 size={18} />
               </Button>
             </Link>
 
@@ -176,7 +176,7 @@ export default function RoutePage(
           <div className="flex items-center gap-3">
             <Link href={`/courses`}>
               <Button size="icon" variant="outline">
-                <Undo2 size={20} />
+                <Undo2 size={18} />
               </Button>
             </Link>
 
@@ -222,7 +222,7 @@ export default function RoutePage(
           <div className="flex items-center gap-3">
             <Link href={`/courses`}>
               <Button size="icon" variant="outline">
-                <Undo2 size={20} />
+                <Undo2 size={18} />
               </Button>
             </Link>
             <BreadcrumbComponent
@@ -265,7 +265,7 @@ export default function RoutePage(
             <div className="flex items-center gap-3">
               <Link href={`/courses`}>
                 <Button size="icon" variant="outline">
-                  <Undo2 size={20} />
+                  <Undo2 size={18} />
                 </Button>
               </Link>
               <BreadcrumbComponent
@@ -298,7 +298,7 @@ export default function RoutePage(
               <Popover>
                 <PopoverTrigger>
                   <Button variant="secondary">
-                    <SlidersHorizontal size={20} />
+                    <SlidersHorizontal size={18} />
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent className="text-warning font-medium">

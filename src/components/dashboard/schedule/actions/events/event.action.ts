@@ -16,7 +16,7 @@ export const createEventAction = userAction(
         ...inputs,
         start: inputs.start,
         end: inputs.end,
-        userId: context.user.id,
+        authorId: context.user.id,
         description: inputs.description || undefined,
         categoryId: inputs.categoryId || undefined,
         startTime: inputs.startTime,
@@ -39,7 +39,7 @@ export const updateEventAction = userAction(
     const event = await prisma.event.update({
       where: {
         id: inputs.id,
-        userId: context.user.id,
+        authorId: context.user.id,
       },
       data: {
         title: inputs.data.title,
@@ -64,16 +64,16 @@ export const deleteEventAction = userAction(z.string(), async (id, context) => {
   const event = await prisma.event.delete({
     where: {
       id,
-      userId: context.user.id,
+      authorId: context.user.id,
     },
   });
   return event;
 });
 
-export const getEventAction = async (userId: string) => {
+export const getEventAction = async (authorId: string) => {
   const events = await prisma.event.findMany({
     where: {
-      userId,
+      authorId,
     },
     select: {
       id: true,
@@ -91,7 +91,7 @@ export const getEventAction = async (userId: string) => {
           name: true,
         },
       },
-      userId: true,
+      authorId: true,
     },
     orderBy: {
       startTime: "asc",
