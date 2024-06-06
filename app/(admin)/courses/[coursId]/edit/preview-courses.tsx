@@ -26,7 +26,7 @@ export default async function PreviewComponent(props: PageParams<{}>) {
   const queryClient = useQueryClient();
 
   const WhereInput = {
-    userId: user.id,
+    authorId: user?.id,
   };
 
   const courses = await prisma.course.findMany({
