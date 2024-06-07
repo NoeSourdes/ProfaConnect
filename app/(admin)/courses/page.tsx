@@ -1,6 +1,7 @@
 "use client";
 
 import { BreadcrumbComponent } from "@/src/components/dashboard/Breadcrumb";
+import { PopoverActionCourse } from "@/src/components/dashboard/courses/PopoverActionCourse";
 import { ViewSelect } from "@/src/components/dashboard/courses/ViewSelect";
 import { useViewSelect } from "@/src/components/dashboard/courses/viewSelect.store";
 import {
@@ -35,14 +36,9 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   CirclePlus,
   EllipsisVertical,
-  ExternalLink,
-  FolderInput,
   FolderOpen,
-  FolderPen,
-  Pen,
   Pencil,
   SlidersHorizontal,
-  Trash,
   Trash2,
   Undo2,
 } from "lucide-react";
@@ -91,7 +87,10 @@ export default function Course() {
     queryKey: ["courses", user?.user?.id ? user.user.id : ""],
     queryFn: async () => {
       const courses = await getUserCourses(user?.user?.id ? user.user.id : "");
-      return courses;
+      return courses.map((course) => ({
+        ...course,
+        published: course.published ?? false,
+      }));
     },
   });
 
@@ -405,12 +404,7 @@ export default function Course() {
                               .includes(search?.toLowerCase() ?? "")
                           )
                           .map((course) => (
-                            <TableRow
-                              key={course.id}
-                              onDoubleClick={() => {
-                                router.push(`/courses/${course.id}`);
-                              }}
-                            >
+                            <TableRow key={course.id}>
                               <TableCell>
                                 <Link href={`/courses/${course.id}`}>
                                   <span className="text-primary">
@@ -457,37 +451,10 @@ export default function Course() {
                                     />
                                   </PopoverTrigger>
                                   <PopoverContent className="flex flex-col p-1 w-52 mr-10 sm:mr-16 lg:mr-28 rounded-[6px]">
-                                    {[
-                                      {
-                                        icon: <ExternalLink size={18} />,
-                                        text: "Ouvrir le cours",
-                                      },
-                                      {
-                                        icon: <FolderPen size={18} />,
-                                        text: "Renommer",
-                                      },
-                                      {
-                                        icon: <Pen size={18} />,
-                                        text: "Modifier",
-                                      },
-                                      {
-                                        icon: <FolderInput size={18} />,
-                                        text: "Déplacer",
-                                      },
-                                      {
-                                        icon: <Trash size={18} />,
-                                        text: "Supprimer le cours",
-                                      },
-                                    ].map((button, index) => (
-                                      <Button
-                                        key={index}
-                                        className="flex justify-start items-center gap-2 pl-2 rounded"
-                                        variant="ghost"
-                                      >
-                                        {button.icon}
-                                        {button.text}
-                                      </Button>
-                                    ))}
+                                    <PopoverActionCourse
+                                      course={course}
+                                      user={user}
+                                    />
                                   </PopoverContent>
                                 </Popover>
                               </TableCell>

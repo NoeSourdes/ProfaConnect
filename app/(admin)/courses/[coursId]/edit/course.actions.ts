@@ -3,10 +3,10 @@
 import { prisma } from "@/src/lib/prisma";
 import { userAction } from "@/src/lib/safe-actions";
 import { z } from "zod";
-import { courseSchema } from "./course.schema";
+import { createCourseSchema } from "./course.schema";
 
 export const createCourseAction = userAction(
-  courseSchema,
+  createCourseSchema,
   async (inputs, context) => {
     const course = await prisma.course.create({
       data: {
@@ -33,7 +33,7 @@ export const getUserCourses = async (authorId: string) => {
 export const updateCourseAction = userAction(
   z.object({
     id: z.string(),
-    data: courseSchema,
+    data: createCourseSchema,
   }),
   async (inputs, context) => {
     const upadteCourse = await prisma.course.update({
