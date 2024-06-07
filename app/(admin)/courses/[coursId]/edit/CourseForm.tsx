@@ -27,23 +27,23 @@ import {
   createCourseAction,
   updateCourseAction,
 } from "./course.actions";
-import { CourseType, courseSchema } from "./course.schema";
+import { CreateCourseType, createCourseSchema } from "./course.schema";
 
 export type CourseFormProps = {
-  defaultValues?: CourseType;
+  defaultValues?: CreateCourseType;
   courseId?: string;
 };
 
 export const CourseForm = (props: CourseFormProps) => {
   const form = useZodForm({
-    schema: courseSchema,
+    schema: createCourseSchema,
     defaultValues: props.defaultValues,
   });
   const isCreate = !Boolean(props.defaultValues);
   const router = useRouter();
 
   const mutation = useMutation({
-    mutationFn: async (values: CourseType) => {
+    mutationFn: async (values: CreateCourseType) => {
       const checkTitle = await checkTitleCourseAction(values.title);
       if (checkTitle) {
         toast.error("Le titre du cours est déjà utilisé");
