@@ -96,8 +96,8 @@ export const BreadcrumbComponent = (props: BreadcrumbProps) => {
                   href={array[array.length - 1].link}
                   className="text-foreground"
                 >
-                  {array[array.length - 1].item.length > 20
-                    ? array[array.length - 1].item.substring(0, 20) + "..."
+                  {array[array.length - 1].item.length > 17
+                    ? array[array.length - 1].item.substring(0, 17) + "..."
                     : array[array.length - 1].item}
                 </Link>
               </BreadcrumbLink>
@@ -114,8 +114,8 @@ export const BreadcrumbComponent = (props: BreadcrumbProps) => {
                       index === array.length - 1 ? "text-foreground" : ""
                     }`}
                   >
-                    {item.item.length > 20
-                      ? item.item.substring(0, 20) + "..."
+                    {item.item.length > 17
+                      ? item.item.substring(0, 17) + "..."
                       : item.item}
                   </Link>
                 </BreadcrumbLink>

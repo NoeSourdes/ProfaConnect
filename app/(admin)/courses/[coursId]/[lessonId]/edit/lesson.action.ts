@@ -83,8 +83,25 @@ export const getlessons = async (id: string) => {
     where: {
       courseId: id,
     },
+    include: {
+      author: true,
+    },
   });
-  return lessons;
+
+  const lessonsWithoutAuthorId = lessons.map(
+    ({ authorId, document, url, ...lesson }) => ({
+      ...lesson,
+      document:
+        typeof document === "string"
+          ? document
+          : document === null
+          ? null
+          : undefined,
+      url: url ?? null,
+    })
+  );
+
+  return lessonsWithoutAuthorId;
 };
 
 export const deleteLessonAction = userAction(
@@ -141,3 +158,22 @@ export const getNameLesson = async (id: string) => {
 
   return lesson;
 };
+
+export const renameLessonAction = userAction(
+  z.object({
+    id: z.string(),
+    name: z.string(),
+  }),
+  async (inputs, context) => {
+    const lesson = await prisma.lesson.update({
+      where: {
+        lessonId: inputs.id,
+        authorId: context.user.id,
+      },
+      data: {
+        title: inputs.name,
+      },
+    });
+    return lesson;
+  }
+);

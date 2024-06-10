@@ -3,6 +3,8 @@
 import { getNameCourse } from "@/actions/courses/courses";
 import { BreadcrumbComponent } from "@/src/components/dashboard/Breadcrumb";
 import { ViewSelect } from "@/src/components/dashboard/courses/ViewSelect";
+import { useViewSelect } from "@/src/components/dashboard/courses/viewSelect.store";
+import { PopoverActionLesson } from "@/src/components/dashboard/lesson/PopoverActionLesson";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -23,16 +25,26 @@ import {
   PopoverTrigger,
 } from "@/src/components/ui/popover";
 import { Skeleton } from "@/src/components/ui/skeleton";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/src/components/ui/table";
 import type { PageParams } from "@/src/types/next";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   CirclePlus,
+  EllipsisVertical,
   FileText,
   Pencil,
-  SlidersHorizontal,
   Trash2,
   Undo2,
 } from "lucide-react";
+import { useSession } from "next-auth/react";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useQueryState } from "nuqs";
@@ -48,6 +60,8 @@ export default function RoutePage(
   }>
 ) {
   const router = useRouter();
+  const { view } = useViewSelect();
+  const { data: user } = useSession();
   const handleNameCourse = async (idCourse: string) => {
     if (!idCourse) {
       return;
@@ -88,6 +102,8 @@ export default function RoutePage(
       return lessons;
     },
   });
+
+  console.log(lessons);
 
   const deleteMutation = useMutation({
     mutationFn: (idLesson: { id: string }) => deleteLessonAction(idLesson.id),
@@ -295,7 +311,7 @@ export default function RoutePage(
                   <span className="sm:block hidden">Créer une leçon</span>
                 </Button>
               </Link>
-              <Popover>
+              {/* <Popover>
                 <PopoverTrigger>
                   <Button variant="secondary">
                     <SlidersHorizontal size={18} />
@@ -304,7 +320,7 @@ export default function RoutePage(
                 <PopoverContent className="text-warning font-medium">
                   En cours de développement
                 </PopoverContent>
-              </Popover>
+              </Popover> */}
 
               <Input
                 defaultValue={search}
@@ -315,97 +331,207 @@ export default function RoutePage(
                 onChange={(e) => setSearch(e.target.value)}
               />
             </div>
-            <div className="w-full flex flex-wrap gap-4">
-              {lessons
-                ?.filter((lesson) =>
-                  lesson.title
-                    .toLowerCase()
-                    .includes(searchParams?.toLowerCase() ?? "")
-                )
-                .map((lesson) => (
-                  <div
-                    key={lesson.lessonId}
-                    className="h-48 sm:max-w-80 grow flex flex-col p-4 justify-between border rounded-2xl shadow-lg hover:ring ring-primary/70 cursor-pointer transition-all hover:shadow-blue bg-background"
-                    onDoubleClick={() => {
-                      router.push(
-                        `/courses/${props.params.coursId}/${lesson.lessonId}`
-                      );
-                    }}
-                  >
-                    <div className="flex items-center gap-2">
-                      <div className="">
-                        <FileText />
-                      </div>
-                      <div className="flex flex-col gap-1">
-                        <h2 className="text-lg font-semibold">
-                          {lesson.title.length > 20
-                            ? lesson.title.slice(0, 20) + "..."
-                            : lesson.title}
-                        </h2>
-                      </div>
-                    </div>
-                    <div className="space-y-1">
-                      <div className="flex justify-end">
-                        <p className="text-sm text-muted-foreground">
-                          mis à jour le :{" "}
-                          {new Date(lesson.updatedAt).toLocaleDateString()}
-                        </p>
-                      </div>
-                      <div className="flex gap-1 items-center flex-row-reverse justify-between">
-                        <div className="flex flex-row-reverse items-center gap-1">
-                          <Link
-                            className="w-full grow"
-                            href={`/courses/${props.params.coursId}/${lesson.lessonId}`}
-                          >
-                            <Button>Voir la leçon</Button>
-                          </Link>
-                          <Link
-                            href={`/courses/${props.params.coursId}/${lesson.lessonId}/edit`}
-                          >
-                            <Button
-                              variant="secondary"
-                              size="icon"
-                              className="p-3"
-                            >
-                              <Pencil />
-                            </Button>
-                          </Link>
+            {view === "grid_view" ? (
+              <div className="w-full flex flex-wrap gap-4">
+                {lessons
+                  ?.filter((lesson) =>
+                    lesson.title
+                      .toLowerCase()
+                      .includes(searchParams?.toLowerCase() ?? "")
+                  )
+                  .map((lesson) => (
+                    <div
+                      key={lesson.lessonId}
+                      className="h-48 sm:max-w-80 grow flex flex-col p-4 justify-between border rounded-2xl shadow-lg hover:ring ring-primary/70 cursor-pointer transition-all hover:shadow-blue bg-background"
+                      onDoubleClick={() => {
+                        router.push(
+                          `/courses/${props.params.coursId}/${lesson.lessonId}`
+                        );
+                      }}
+                    >
+                      <div className="flex items-center justify-between gap-2">
+                        <div className="flex items-center gap-2">
+                          <div className="">
+                            <FileText />
+                          </div>
+                          <div className="flex flex-col gap-1">
+                            <h2 className="text-lg font-semibold">
+                              {lesson.title.length > 20
+                                ? lesson.title.slice(0, 20) + "..."
+                                : lesson.title}
+                            </h2>
+                          </div>
                         </div>
-                        <AlertDialog>
-                          <AlertDialogTrigger asChild>
-                            <Button variant="ghost" size="icon" className="p-3">
-                              <Trash2 />
-                            </Button>
-                          </AlertDialogTrigger>
-                          <AlertDialogContent>
-                            <AlertDialogHeader>
-                              <AlertDialogTitle>
-                                Supprimer la leçon
-                              </AlertDialogTitle>
-                              <AlertDialogDescription>
-                                Êtes-vous sûr de vouloir supprimer la leçon ?
-                              </AlertDialogDescription>
-                            </AlertDialogHeader>
-                            <AlertDialogFooter>
-                              <AlertDialogCancel>Annuler</AlertDialogCancel>
-                              <AlertDialogAction
-                                className="bg-destructive hover:bg-destructive/90"
-                                onClick={() => {
-                                  deleteMutation.mutate({
-                                    id: lesson.lessonId,
-                                  });
-                                }}
+                        <Popover>
+                          <PopoverTrigger asChild>
+                            <EllipsisVertical
+                              size={18}
+                              className="cursor-pointer"
+                            />
+                          </PopoverTrigger>
+                          <PopoverContent className="flex flex-col p-1 w-52 mr-10 sm:mr-16 lg:mr-28 rounded-[6px]">
+                            <PopoverActionLesson
+                              lesson={lesson}
+                              courseId={props.params.coursId}
+                              user={user}
+                            />
+                          </PopoverContent>
+                        </Popover>
+                      </div>
+                      <div className="space-y-1">
+                        <div className="flex justify-end">
+                          <p className="text-sm text-muted-foreground">
+                            mis à jour le :{" "}
+                            {new Date(lesson.updatedAt).toLocaleDateString()}
+                          </p>
+                        </div>
+                        <div className="flex gap-1 items-center flex-row-reverse justify-between">
+                          <div className="flex flex-row-reverse items-center gap-1">
+                            <Link
+                              className="w-full grow"
+                              href={`/courses/${props.params.coursId}/${lesson.lessonId}`}
+                            >
+                              <Button>Voir la leçon</Button>
+                            </Link>
+                            <Link
+                              href={`/courses/${props.params.coursId}/${lesson.lessonId}/edit`}
+                            >
+                              <Button
+                                variant="secondary"
+                                size="icon"
+                                className="p-3"
                               >
-                                Supprimer
-                              </AlertDialogAction>
-                            </AlertDialogFooter>
-                          </AlertDialogContent>
-                        </AlertDialog>
+                                <Pencil />
+                              </Button>
+                            </Link>
+                          </div>
+                          <AlertDialog>
+                            <AlertDialogTrigger asChild>
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                className="p-3"
+                              >
+                                <Trash2 />
+                              </Button>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent>
+                              <AlertDialogHeader>
+                                <AlertDialogTitle>
+                                  Supprimer la leçon
+                                </AlertDialogTitle>
+                                <AlertDialogDescription>
+                                  Êtes-vous sûr de vouloir supprimer la leçon ?
+                                </AlertDialogDescription>
+                              </AlertDialogHeader>
+                              <AlertDialogFooter>
+                                <AlertDialogCancel>Annuler</AlertDialogCancel>
+                                <AlertDialogAction
+                                  className="bg-destructive hover:bg-destructive/90"
+                                  onClick={() => {
+                                    deleteMutation.mutate({
+                                      id: lesson.lessonId,
+                                    });
+                                  }}
+                                >
+                                  Supprimer
+                                </AlertDialogAction>
+                              </AlertDialogFooter>
+                            </AlertDialogContent>
+                          </AlertDialog>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
-            </div>
+                  ))}
+              </div>
+            ) : (
+              <div className="w-full">
+                <Table className="w-full">
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead className="max-sm:text-xs">Nom</TableHead>
+                      <TableHead className="max-sm:text-xs">
+                        Propriétaire
+                      </TableHead>
+                      <TableHead className="max-sm:text-xs">
+                        Dernière modification
+                      </TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  {lessons
+                    ?.filter((lesson) =>
+                      lesson.title
+                        .toLowerCase()
+                        .includes(search?.toLowerCase() ?? "")
+                    )
+                    .map((lesson) => (
+                      <TableBody
+                        className="max-sm:text-xs"
+                        key={lesson.lessonId}
+                      >
+                        <TableRow>
+                          <TableCell>
+                            <Link
+                              href={`/courses/${props.params.coursId}/${lesson.lessonId}`}
+                            >
+                              <span className="text-primary">
+                                {lesson.title.length > 20
+                                  ? lesson.title.slice(0, 20) + "..."
+                                  : lesson.title}
+                              </span>
+                            </Link>
+                          </TableCell>
+                          <TableCell className="flex items-center gap-1 text-muted-foreground">
+                            <Image
+                              src={
+                                lesson.author?.image
+                                  ? lesson.author.image
+                                  : "/user.png"
+                              }
+                              alt={"user image"}
+                              width={20}
+                              height={20}
+                              className="rounded-full"
+                            />
+
+                            {lesson.author?.id === user?.user?.id
+                              ? "Moi"
+                              : lesson.author?.name}
+                          </TableCell>
+                          <TableCell className="text-muted-foreground">
+                            {new Date(lesson.updatedAt).toLocaleDateString(
+                              "fr-FR",
+                              {
+                                weekday: "long",
+                                year: "numeric",
+                                month: "long",
+                                day: "numeric",
+                              }
+                            )}
+                          </TableCell>
+                          <TableCell>
+                            <Popover>
+                              <PopoverTrigger asChild>
+                                <EllipsisVertical
+                                  size={18}
+                                  className="cursor-pointer"
+                                />
+                              </PopoverTrigger>
+                              <PopoverContent className="flex flex-col p-1 w-52 mr-10 sm:mr-16 lg:mr-28 rounded-[6px]">
+                                <PopoverActionLesson
+                                  lesson={lesson}
+                                  courseId={props.params.coursId}
+                                  user={user}
+                                />
+                              </PopoverContent>
+                            </Popover>
+                          </TableCell>
+                        </TableRow>
+                      </TableBody>
+                    ))}
+                </Table>
+              </div>
+            )}
           </div>
         </main>
       )}

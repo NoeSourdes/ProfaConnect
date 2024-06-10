@@ -38,7 +38,6 @@ import {
   EllipsisVertical,
   FolderOpen,
   Pencil,
-  SlidersHorizontal,
   Trash2,
   Undo2,
 } from "lucide-react";
@@ -246,7 +245,7 @@ export default function Course() {
                   <span className="sm:block hidden">Créer un cours</span>
                 </Button>
               </Link>
-              <Popover>
+              {/* <Popover>
                 <PopoverTrigger>
                   <Button variant="outline">
                     <SlidersHorizontal size={18} />
@@ -255,7 +254,7 @@ export default function Course() {
                 <PopoverContent className="text-warning font-medium">
                   En cours de développement
                 </PopoverContent>
-              </Popover>
+              </Popover> */}
 
               <Input
                 defaultValue={search}
@@ -295,15 +294,31 @@ export default function Course() {
                         >
                           <div>
                             <div className="flex flex-col gap-1">
-                              <div className="flex items-center gap-2">
-                                <div className="">
-                                  <FolderOpen />
+                              <div className="flex items-center justify-between gap-2">
+                                <div className="flex items-center gap-2">
+                                  <div className="">
+                                    <FolderOpen />
+                                  </div>
+                                  <h2 className="text-lg font-semibold">
+                                    {course.title.length > 20
+                                      ? course.title.slice(0, 20) + "..."
+                                      : course.title}
+                                  </h2>
                                 </div>
-                                <h2 className="text-lg font-semibold">
-                                  {course.title.length > 20
-                                    ? course.title.slice(0, 20) + "..."
-                                    : course.title}
-                                </h2>
+                                <Popover>
+                                  <PopoverTrigger asChild>
+                                    <EllipsisVertical
+                                      size={18}
+                                      className="cursor-pointer"
+                                    />
+                                  </PopoverTrigger>
+                                  <PopoverContent className="flex flex-col p-1 w-52 mr-10 sm:mr-16 lg:mr-28 rounded-[6px]">
+                                    <PopoverActionCourse
+                                      course={course}
+                                      user={user}
+                                    />
+                                  </PopoverContent>
+                                </Popover>
                               </div>
                               <p className="text-sm text-muted-foreground">
                                 {course.description.length > 80
@@ -396,15 +411,15 @@ export default function Course() {
                           </TableHead>
                         </TableRow>
                       </TableHeader>
-                      <TableBody className="max-sm:text-xs">
-                        {courses
-                          ?.filter((course) =>
-                            course.title
-                              .toLowerCase()
-                              .includes(search?.toLowerCase() ?? "")
-                          )
-                          .map((course) => (
-                            <TableRow key={course.id}>
+                      {courses
+                        ?.filter((course) =>
+                          course.title
+                            .toLowerCase()
+                            .includes(search?.toLowerCase() ?? "")
+                        )
+                        .map((course) => (
+                          <TableBody className="max-sm:text-xs" key={course.id}>
+                            <TableRow>
                               <TableCell>
                                 <Link href={`/courses/${course.id}`}>
                                   <span className="text-primary">
@@ -459,8 +474,8 @@ export default function Course() {
                                 </Popover>
                               </TableCell>
                             </TableRow>
-                          ))}
-                      </TableBody>
+                          </TableBody>
+                        ))}
                     </Table>
                   </div>
                 )}

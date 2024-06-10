@@ -1,10 +1,10 @@
 "use client";
 
 import {
-  deleteCourseAction,
-  renameCourseAction,
-} from "@/app/(admin)/courses/[coursId]/edit/course.actions";
-import { CourseType } from "@/app/(admin)/courses/[coursId]/edit/course.schema";
+  deleteLessonAction,
+  renameLessonAction,
+} from "@/app/(admin)/courses/[coursId]/[lessonId]/edit/lesson.action";
+import { lessonTypeGlobal } from "@/app/(admin)/courses/[coursId]/[lessonId]/edit/lesson.schema";
 import {
   Dialog,
   DialogContent,
@@ -22,39 +22,40 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { Button } from "../../ui/button";
 
-export type PopoverActionCourseProps = {
-  course: CourseType;
+export type PopoverActionLessonProps = {
+  lesson: lessonTypeGlobal;
+  courseId: string;
   user: any;
 };
 
-export const PopoverActionCourse = (props: PopoverActionCourseProps) => {
+export const PopoverActionLesson = (props: PopoverActionLessonProps) => {
   const router = useRouter();
   const queryClient = useQueryClient();
   const [newNameCourse, setNewNameCourse] = useState("");
   const [open, setOpen] = useState(false);
 
   const deleteMutation = useMutation({
-    mutationFn: (idCourse: { id: string }) => deleteCourseAction(idCourse.id),
+    mutationFn: (idLesson: { id: string }) => deleteLessonAction(idLesson.id),
     onSuccess: ({ data, serverError }) => {
       if (serverError || !data) {
         throw new Error(serverError);
       }
-      toast.success("Le cours a été supprimé avec succès");
+      toast.success("La leçon a été supprimée avec succès");
 
       queryClient.invalidateQueries({
-        queryKey: ["courses", props.user?.user?.id ? props.user.user.id : ""],
+        queryKey: ["lessons", props.user?.user?.id ? props.user.user.id : ""],
       });
     },
   });
 
-  const { mutate: mutationupdateNameCourse, isPending } = useMutation({
+  const { mutate: mutationupdateNameLesson, isPending } = useMutation({
     mutationFn: (data: { id: string; name: string }) =>
-      renameCourseAction({ id: data.id, name: data.name }),
+      renameLessonAction({ id: data.id, name: data.name }),
     onSuccess: ({ data, serverError }) => {
       if (serverError || !data) {
         throw new Error(serverError);
       }
-      toast.success("Le cours a été renommé avec succès");
+      toast.success("La leçon a été renommée avec succès");
       setOpen(false);
 
       queryClient.invalidateQueries({
@@ -70,7 +71,7 @@ export const PopoverActionCourse = (props: PopoverActionCourseProps) => {
           icon: <ExternalLink size={18} />,
           text: "Ouvrir le cours",
           action: () => {
-            router.push(`/courses/${props.course.id}`);
+            router.push(`/courses/${props.courseId}/${props.lesson.lessonId}`);
           },
           name: "open",
         },
@@ -84,7 +85,9 @@ export const PopoverActionCourse = (props: PopoverActionCourseProps) => {
           icon: <Pen size={18} />,
           text: "Modifier",
           action: () => {
-            router.push(`/courses/${props.course.id}/edit`);
+            router.push(
+              `/courses/${props.courseId}/${props.lesson.lessonId}/edit`
+            );
           },
           name: "edit",
         },
@@ -92,7 +95,7 @@ export const PopoverActionCourse = (props: PopoverActionCourseProps) => {
           icon: <Trash size={18} />,
           text: "Supprimer le cours",
           action: () => {
-            deleteMutation.mutate({ id: props.course.id });
+            deleteMutation.mutate({ id: props.lesson.lessonId });
           },
           name: "delete",
         },
@@ -131,12 +134,12 @@ export const PopoverActionCourse = (props: PopoverActionCourseProps) => {
             <DialogContent className="p-6">
               <div className="flex flex-col gap-4">
                 <DialogHeader>
-                  <DialogTitle>Renommer le cours</DialogTitle>
+                  <DialogTitle>Renommer la lesson</DialogTitle>
                 </DialogHeader>
 
                 <Input
                   id="name"
-                  defaultValue={props.course.title}
+                  defaultValue={props.lesson.title}
                   className="col-span-3"
                   onChange={(e) => {
                     setNewNameCourse(e.target.value);
@@ -150,8 +153,8 @@ export const PopoverActionCourse = (props: PopoverActionCourseProps) => {
                   <Button
                     disabled={isPending}
                     onClick={() => {
-                      mutationupdateNameCourse({
-                        id: props.course.id,
+                      mutationupdateNameLesson({
+                        id: props.lesson.lessonId,
                         name: newNameCourse,
                       });
                     }}
