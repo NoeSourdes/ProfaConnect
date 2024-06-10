@@ -87,3 +87,22 @@ export const checkTitleCourseAction = async (title: string) => {
     return true;
   }
 };
+
+export const renameCourseAction = userAction(
+  z.object({
+    id: z.string(),
+    name: z.string(),
+  }),
+  async (inputs, context) => {
+    const course = await prisma.course.update({
+      where: {
+        id: inputs.id,
+        authorId: context.user.id,
+      },
+      data: {
+        title: inputs.name,
+      },
+    });
+    return course;
+  }
+);

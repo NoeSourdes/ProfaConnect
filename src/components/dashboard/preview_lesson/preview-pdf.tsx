@@ -88,7 +88,7 @@ export const PreviewPdf = (props: PreviewPdfProps) => {
                 <Pencil size={18} />
               </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
+            <DialogContent className="p-6 space-y-4">
               <DialogHeader>
                 <DialogTitle>Modifier le titre de la leçon</DialogTitle>
                 <DialogDescription>

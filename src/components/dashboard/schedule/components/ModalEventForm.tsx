@@ -93,6 +93,7 @@ export const ModalEventForm = (props: ModalEventFormProps) => {
 
   const [date, setDate] = useState<Date>();
   const { data: session } = useSession();
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     if (date && date <= new Date(Date.now() - 86400000)) {
@@ -145,6 +146,7 @@ export const ModalEventForm = (props: ModalEventFormProps) => {
           ? "Événement créé avec succès"
           : "Événement mis à jour avec succès"
       );
+      setOpen(false);
       return data;
     },
     onSuccess: (data) => {
@@ -197,7 +199,7 @@ export const ModalEventForm = (props: ModalEventFormProps) => {
   });
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button
           size={isCreate ? (props.icon ? "icon_sm" : "default") : "sm"}
