@@ -35,6 +35,39 @@ export default function Layout({ children }: Props) {
     },
   });
 
+  if (isLoading) {
+    return (
+      <div className="relative">
+        <div className="absolute inset-0 bg-transparence z-[5000]"></div>
+        <Sidebar />
+        <main
+          className={cn(
+            "min-h-[calc(100vh_-_56px)] transition-[margin-left] ease-in-out duration-300",
+            sidebar?.isOpen === false
+              ? "max-[1200px]:ml-0 ml-[90px]"
+              : "max-[1200px]:ml-0 ml-72"
+          )}
+        >
+          <Navbar />
+          <div className="container py-5 px-5 max-[1200px]:p-4 z-50">
+            {children}
+          </div>
+        </main>
+
+        <footer
+          className={cn(
+            "transition-[margin-left] ease-in-out duration-300",
+            sidebar?.isOpen === false
+              ? "max-[1200px]:ml-0 ml-[90px]"
+              : "max-[1200px]:ml-0 ml-72"
+          )}
+        >
+          <Footer />
+        </footer>
+      </div>
+    );
+  }
+
   return (
     <div className="">
       <Sidebar />
