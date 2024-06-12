@@ -35,19 +35,30 @@ model Session {
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
+model UserProfile {
+  id        String  @id @default(cuid())
+  role      String  @default("STUDENT")
+  level     String? @default("HIGH_SCHOOL")
+  onboarded Boolean @default(false)
+  userId    String  @unique
+  user      User    @relation(fields: [userId], references: [id])
+}
+
 model User {
   id            String    @id @default(cuid())
   name          String?
   email         String?   @unique
   emailVerified DateTime?
   image         String?
-  role          Role      @default(STUDENT)
+  profile       UserProfile?
   accounts      Account[]
   sessions      Session[]
   courses       Course[]
   lessons       Lesson[]
   events        Event[]
 }
+
+
 
 model Course {
   id          String   @id @default(cuid())
@@ -112,11 +123,4 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
-}
-
-enum Role {
-  STUDENT
-  TEACHER
-  PARENT
-  ADMIN
 }
