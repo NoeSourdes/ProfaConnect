@@ -27,7 +27,6 @@ export const lessonShemaGlobal = z.object({
       email: z.string().nullable(),
       emailVerified: z.union([z.boolean(), z.date().nullable()]),
       image: z.string().nullable(),
-      role: z.string(),
     })
     .nullable(),
 });
