@@ -103,8 +103,6 @@ export default function RoutePage(
     },
   });
 
-  console.log(lessons);
-
   const deleteMutation = useMutation({
     mutationFn: (idLesson: { id: string }) => deleteLessonAction(idLesson.id),
     onSuccess: ({ data, serverError }) => {

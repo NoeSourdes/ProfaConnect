@@ -17,7 +17,9 @@ import { PopoverManagementEvents } from "./popoverManagementEvents";
 export type CalendarMonthProps = {
   year: number;
   month: number;
+  setCurrentView: (value: string) => void;
   events: EventType[];
+  setDate: (value: Date) => void;
 };
 
 export const CalendarMonth = (props: CalendarMonthProps) => {
@@ -96,6 +98,10 @@ export const CalendarMonth = (props: CalendarMonthProps) => {
                   className={`${isTodayClass} mt-1 rounded cursor-pointer w-5 h-5 flex items-center justify-center transition-all ${
                     !isToday(day) ? "hover:bg-secondary" : ""
                   }`}
+                  onClick={() => {
+                    props.setCurrentView("day");
+                    props.setDate(day.toDate());
+                  }}
                 >
                   {day.format("D")}
                 </div>

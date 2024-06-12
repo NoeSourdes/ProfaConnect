@@ -26,7 +26,6 @@ export const courseSchema = z.object({
       id: z.string(),
       name: z.string().nullable(),
       email: z.string().nullable(),
-      emailVerified: z.union([z.boolean(), z.date().nullable()]),
       image: z.string().nullable(),
       role: z.string(),
     })

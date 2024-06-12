@@ -102,6 +102,7 @@ export const FullCalendarComponent = (props: CalendarProps) => {
       <Tabs
         defaultValue={currentView}
         onValueChange={(value) => setCurrentView(value)}
+        value={currentView}
       >
         <TabsList className="flex max-md:flex-col max-md:items-start items-center justify-between gap-3 w-full p-0 bg-transparent">
           <div className="flex items-center gap-2 w-full">
@@ -206,7 +207,13 @@ export const FullCalendarComponent = (props: CalendarProps) => {
         <TabsContent value="month" className="mt-3 max-md:mt-[68px]">
           <Card className="border-none shadow-none bg-transparent">
             <CardContent className="p-0">
-              <CalendarMonth year={years} month={months} events={events} />
+              <CalendarMonth
+                year={years}
+                month={months}
+                events={events}
+                setCurrentView={setCurrentView}
+                setDate={setDate}
+              />
             </CardContent>
           </Card>
         </TabsContent>

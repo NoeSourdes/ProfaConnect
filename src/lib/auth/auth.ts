@@ -27,4 +27,18 @@ export const {
       return session;
     },
   },
+  events: {
+    async createUser({ user }) {
+      if (user.id) {
+        await prisma.userProfile.create({
+          data: {
+            userId: user.id,
+            role: "STUDENT",
+            level: "HIGH_SCHOOL",
+            onboarded: false,
+          },
+        });
+      }
+    },
+  },
 });

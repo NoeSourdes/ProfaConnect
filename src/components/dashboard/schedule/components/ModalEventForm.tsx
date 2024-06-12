@@ -214,7 +214,7 @@ export const ModalEventForm = (props: ModalEventFormProps) => {
         >
           {isCreate ? (
             props.icon ? (
-              <Plus />
+              <Plus size={18} />
             ) : (
               "Créer un événement"
             )

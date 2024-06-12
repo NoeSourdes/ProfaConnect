@@ -1,4 +1,3 @@
-import { User } from "@prisma/client";
 import { baseAuth } from "./auth";
 
 export const currentUser = async () => {
@@ -8,7 +7,7 @@ export const currentUser = async () => {
     return null;
   }
 
-  const user = session.user as User;
+  const user = session.user as any;
 
   return user;
 };
