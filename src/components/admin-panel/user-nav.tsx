@@ -1,8 +1,16 @@
 "use client";
 
-import { LayoutGrid, LogOut, User } from "lucide-react";
+import {
+  LayoutGrid,
+  LogOut,
+  Settings,
+  Shapes,
+  SquareArrowUpRight,
+  User,
+} from "lucide-react";
 import Link from "next/link";
 
+import { getUserProfileAction } from "@/actions/user/user";
 import {
   Avatar,
   AvatarFallback,
@@ -18,10 +26,27 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/src/components/ui/dropdown-menu";
+import { getRoleFrench } from "@/src/hooks/user-actions";
+import { useQuery } from "@tanstack/react-query";
 import { signOut, useSession } from "next-auth/react";
+import { toast } from "sonner";
 
 export function UserNav() {
   const { data: user } = useSession();
+
+  const {
+    data: userProfile,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["user", user?.user?.id ?? ""],
+    queryFn: async () => {
+      const userProfile = await getUserProfileAction(user?.user?.id ?? "");
+      return userProfile;
+    },
+  });
+
+  console.log(userProfile);
 
   return (
     <DropdownMenu>
@@ -52,6 +77,13 @@ export function UserNav() {
             <p className="text-xs leading-none text-muted-foreground">
               {user?.user?.email}
             </p>
+            <p className="text-xs leading-none text-muted-foreground flex items-center gap-2">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-success opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-success"></span>
+              </span>
+              {getRoleFrench(userProfile?.data?.role ?? "")}
+            </p>
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
@@ -59,13 +91,38 @@ export function UserNav() {
           <DropdownMenuItem className="hover:cursor-pointer" asChild>
             <Link href="/dashboard" className="flex items-center">
               <LayoutGrid className="w-4 h-4 mr-3 text-muted-foreground" />
-              Dashboard
+              Tableau de bord
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem className="hover:cursor-pointer" asChild>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center">
+                <SquareArrowUpRight className="w-4 h-4 mr-3 text-muted-foreground" />{" "}
+                Partager
+              </div>
+              <kbd
+                className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100"
+                onClick={() => {
+                  navigator.clipboard.writeText(userProfile?.data?.id ?? "");
+                  toast.success("ID copié dans le presse-papiers");
+                }}
+              >
+                copier ID
+              </kbd>
+            </div>
+          </DropdownMenuItem>
+          {userProfile?.data?.role === "TEACHER" && (
+            <DropdownMenuItem className="hover:cursor-pointer" asChild>
+              <Link href="/settings" className="flex items-center">
+                <Shapes className="w-4 h-4 mr-3 text-muted-foreground" />
+                Ma classe
+              </Link>
+            </DropdownMenuItem>
+          )}
+          <DropdownMenuItem className="hover:cursor-pointer" asChild>
             <Link href="/settings" className="flex items-center">
-              <User className="w-4 h-4 mr-3 text-muted-foreground" />
-              Compte
+              <Settings className="w-4 h-4 mr-3 text-muted-foreground" />
+              Paramètres
             </Link>
           </DropdownMenuItem>
         </DropdownMenuGroup>

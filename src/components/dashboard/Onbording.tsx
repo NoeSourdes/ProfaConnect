@@ -15,6 +15,7 @@ import { RiParentFill } from "react-icons/ri";
 import { updateUserAction } from "@/actions/user/user";
 import { Button } from "@/src/components/ui/button";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { Loader2 } from "lucide-react";
 import React from "react";
 import { toast } from "sonner";
 
@@ -37,7 +38,7 @@ export const Onboarding = (props: OnboardingProps) => {
   const [level, setLevel] = React.useState("");
   const queryClient = useQueryClient();
 
-  const mutationuUpadateUser = useMutation({
+  const { mutate: mutationuUpadateUser, isPending } = useMutation({
     mutationFn: async (data: { role: string; level: string }) => {
       const res = await updateUserAction(data);
       return res;
@@ -180,18 +181,22 @@ export const Onboarding = (props: OnboardingProps) => {
               )}
               {steps === 2 && (
                 <Button
+                  disabled={isPending}
                   onClick={() => {
                     if (level === "") {
                       toast.error("Veuillez choisir un niveau");
                       return;
                     } else {
-                      mutationuUpadateUser.mutate({
-                        role,
-                        level,
+                      mutationuUpadateUser({
+                        role: role,
+                        level: level,
                       });
                     }
                   }}
                 >
+                  {isPending && (
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  )}
                   Terminer
                 </Button>
               )}

@@ -1,6 +1,6 @@
 "use client";
 
-import { Ellipsis, LogOut, Star } from "lucide-react";
+import { Ellipsis, LogOut, Star, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -16,6 +16,7 @@ import {
 import { getPages } from "@/src/lib/pages";
 import { cn } from "@/src/lib/utils";
 import { signOut } from "next-auth/react";
+import { useEffect, useState } from "react";
 import {
   Card,
   CardContent,
@@ -31,6 +32,34 @@ interface MenuProps {
 export function Menu({ isOpen }: MenuProps) {
   const pathname = usePathname();
   const pages = getPages(pathname);
+  const SEVEN_DAYS_IN_MS = 7 * 24 * 60 * 60 * 1000;
+  const [showCardPremium, setShowCardPremium] = useState<boolean>(false);
+
+  useEffect(() => {
+    const saved = localStorage.getItem("showCardPremium");
+    const lastUpdated = localStorage.getItem("showCardPremiumLastUpdated");
+    const now = Date.now();
+
+    if (lastUpdated) {
+      const timeSinceLastUpdate = now - parseInt(lastUpdated, 10);
+      if (timeSinceLastUpdate > SEVEN_DAYS_IN_MS) {
+        localStorage.setItem("showCardPremium", "true");
+        localStorage.setItem("showCardPremiumLastUpdated", now.toString());
+        setShowCardPremium(true);
+      } else {
+        setShowCardPremium(saved === "true");
+      }
+    } else {
+      localStorage.setItem("showCardPremium", "true");
+      localStorage.setItem("showCardPremiumLastUpdated", now.toString());
+      setShowCardPremium(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("showCardPremium", showCardPremium.toString());
+    localStorage.setItem("showCardPremiumLastUpdated", Date.now().toString());
+  }, [showCardPremium]);
 
   return (
     <ScrollArea className="[&>div>div[style]]:!block">
@@ -112,28 +141,43 @@ export function Menu({ isOpen }: MenuProps) {
             </li>
           ))}
           <li className="w-full grow flex items-end">
-            {isOpen ? (
-              <Card x-chunk="dashboard-02-chunk-0">
-                <CardHeader className="p-3">
-                  <CardTitle>Passez à Pro</CardTitle>
-                  <CardDescription>
-                    Débloquez toutes les fonctionnalités !!
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="p-3">
-                  <Button size="sm" className="w-full">
-                    Mettre à niveau
+            {showCardPremium && (
+              <>
+                {isOpen ? (
+                  <Card x-chunk="dashboard-02-chunk-0">
+                    <div className="relative">
+                      <div
+                        onClick={() => {
+                          setShowCardPremium(false);
+                          localStorage.setItem("showCardPremium", "true");
+                        }}
+                        className="absolute -top-1 -right-1 bg-secondary h-4 w-4 rounded-full z-50 flex justify-center items-center cursor-pointer"
+                      >
+                        <X size={12} />
+                      </div>
+                      <CardHeader className="p-3">
+                        <CardTitle>Passez à Pro</CardTitle>
+                        <CardDescription>
+                          Débloquez toutes les fonctionnalités !!
+                        </CardDescription>
+                      </CardHeader>
+                      <CardContent className="p-3">
+                        <Button size="sm" className="w-full">
+                          Mettre à niveau
+                        </Button>
+                      </CardContent>
+                    </div>
+                  </Card>
+                ) : (
+                  <Button
+                    size="lg_sideBar"
+                    variant="hover_sideBar"
+                    className="flex items-center justify-start gap-2 w-full overflow-hidden"
+                  >
+                    <Star fill="#2563EB" color="#2563EB" />
                   </Button>
-                </CardContent>
-              </Card>
-            ) : (
-              <Button
-                size="lg_sideBar"
-                variant="hover_sideBar"
-                className="flex items-center justify-start gap-2 w-full overflow-hidden"
-              >
-                <Star fill="#2563EB" color="#2563EB" />
-              </Button>
+                )}
+              </>
             )}
           </li>
           <li className="w-full">
