@@ -55,7 +55,7 @@ export function CommandBar() {
         onClick={() => {
           setOpen(true);
         }}
-        className="text-sm text-muted-foreground border rounded-lg w-full sm:max-w-44 px-3 py-2 flex items-center justify-between hover:bg-secondary transition-all cursor-pointer group"
+        className="text-sm text-muted-foreground border rounded-md w-full sm:max-w-44 px-3 py-2 flex items-center justify-between hover:bg-secondary transition-all cursor-pointer group"
       >
         <span className="text-smt group-hover:text-accent-foreground transition-all flex items-center gap-2">
           <Search size={18} />
@@ -78,8 +78,8 @@ export function CommandBar() {
               { icon: CalendarDays, label: "Calendrier", url: "/schedule" },
               {
                 icon: MessageCircleMore,
-                label: "Messages",
-                url: "/communication",
+                label: "Messagerie",
+                url: "/messaging",
               },
               { icon: Gamepad2, label: "Jeux", url: "/games" },
               { icon: Settings, label: "Paramètres", url: "/settings" },
