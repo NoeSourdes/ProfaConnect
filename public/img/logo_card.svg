@@ -1,13 +1,13 @@
 <svg width="2000" height="2000" viewBox="0 0 2000 2000" fill="none" xmlns="http://www.w3.org/2000/svg">
-<rect width="2000" height="2000" rx="500" fill="#2463EB"/>
+<rect width="2000" height="2000" rx="500" fill="#12374A"/>
 <rect x="455" y="736" width="806" height="814" rx="100" fill="white"/>
-<rect x="581" y="864" width="552" height="558" rx="25" fill="#2463EB"/>
+<rect x="581" y="864" width="552" height="558" rx="25" fill="#12374A"/>
 <rect x="739" y="449" width="806" height="814" rx="100" fill="white"/>
-<rect x="866" y="578" width="552" height="558" rx="25" fill="#2463EB"/>
+<rect x="866" y="578" width="552" height="558" rx="25" fill="#12374A"/>
 <path d="M1133 892C1133 877 1125 864 1104.5 864L1142 855L1133 892Z" fill="white"/>
-<rect x="1081" y="1105" width="53" height="203" fill="#2463EB"/>
-<rect x="686" y="734" width="53" height="205" fill="#2463EB"/>
-<rect x="1261" y="1104" width="53" height="161" fill="#2463EB"/>
+<rect x="1081" y="1105" width="53" height="203" fill="#12374A"/>
+<rect x="686" y="734" width="53" height="205" fill="#12374A"/>
+<rect x="1261" y="1104" width="53" height="161" fill="#12374A"/>
 <path d="M919 736H1161C1216.23 736 1261 780.772 1261 836V864H919V736Z" fill="white"/>
 <path d="M1133 860H1261V1449C1261 1504.23 1216.23 1549 1161 1549H1133V864Z" fill="white"/>
 </svg>
