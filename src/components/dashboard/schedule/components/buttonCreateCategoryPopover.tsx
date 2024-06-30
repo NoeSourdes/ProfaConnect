@@ -44,7 +44,7 @@ export const ButtonCreateCategoryPopover = (
             <Plus />
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-80">
+        <PopoverContent className="w-80 z-[4004]">
           <form className="flex flex-col">
             <h1 className="text-lg font-medium">Ajouter une catégorie</h1>
             <div className="space-y-1">
