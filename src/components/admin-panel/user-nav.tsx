@@ -94,23 +94,28 @@ export function UserNav() {
               Tableau de bord
             </Link>
           </DropdownMenuItem>
-          <DropdownMenuItem className="hover:cursor-pointer" asChild>
-            <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between gap-1">
+            <DropdownMenuItem
+              className="hover:cursor-pointer w-[125px]"
+              asChild
+            >
               <div className="flex items-center">
                 <SquareArrowUpRight className="w-4 h-4 mr-3 text-muted-foreground" />{" "}
                 Partager
               </div>
+            </DropdownMenuItem>
+            <DropdownMenuItem className="hover:cursor-pointer" asChild>
               <kbd
-                className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100"
                 onClick={() => {
-                  navigator.clipboard.writeText(userProfile?.data?.id ?? "");
+                  navigator.clipboard.writeText(user?.user?.id ?? "");
                   toast.success("ID copié dans le presse-papiers");
                 }}
+                className="inline-flex h-full select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-xs font-medium text-muted-foreground opacity-100"
               >
                 copier ID
               </kbd>
-            </div>
-          </DropdownMenuItem>
+            </DropdownMenuItem>
+          </div>
           {userProfile?.data?.role === "TEACHER" && (
             <DropdownMenuItem className="hover:cursor-pointer" asChild>
               <Link href="/settings" className="flex items-center">
