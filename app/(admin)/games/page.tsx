@@ -1,3 +1,9 @@
+import { PlateEditor } from "@/src/components/editor_plate/editor_plate";
+
 export default function Game() {
-  return <div>Jeux et concour</div>;
+  return (
+    <div>
+      <PlateEditor />
+    </div>
+  );
 }

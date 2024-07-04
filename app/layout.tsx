@@ -1,3 +1,4 @@
+import { TooltipProvider } from "@/src/components/plate-ui/tooltip";
 import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
 import { GeistSans } from "geist/font/sans";
 import type { Metadata } from "next";
@@ -37,7 +38,9 @@ export default function RootLayout({
             shadow="0 0 10px #2463EB,0 0 5px #2463EB"
           />
           <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
-          <Providers>{children}</Providers>
+          <Providers>
+            <TooltipProvider>{children}</TooltipProvider>
+          </Providers>
         </body>
       </html>
     </>
