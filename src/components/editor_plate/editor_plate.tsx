@@ -91,11 +91,7 @@ import {
   createImagePlugin,
   createMediaEmbedPlugin,
 } from "@udecode/plate-media";
-import {
-  ELEMENT_MENTION,
-  ELEMENT_MENTION_INPUT,
-  createMentionPlugin,
-} from "@udecode/plate-mention";
+import { ELEMENT_MENTION, createMentionPlugin } from "@udecode/plate-mention";
 import { createNodeIdPlugin } from "@udecode/plate-node-id";
 import {
   ELEMENT_PARAGRAPH,
@@ -144,7 +140,6 @@ import { LinkElement } from "@/src/components/plate-ui/link-element";
 import { LinkFloatingToolbar } from "@/src/components/plate-ui/link-floating-toolbar";
 import { MediaEmbedElement } from "@/src/components/plate-ui/media-embed-element";
 import { MentionElement } from "@/src/components/plate-ui/mention-element";
-import { MentionInputElement } from "@/src/components/plate-ui/mention-input-element";
 import { ParagraphElement } from "@/src/components/plate-ui/paragraph-element";
 import { withPlaceholders } from "@/src/components/plate-ui/placeholder";
 import {
@@ -335,7 +330,6 @@ const plugins = createPlugins(
         [ELEMENT_H6]: withProps(HeadingElement, { variant: "h6" }),
         [ELEMENT_MEDIA_EMBED]: MediaEmbedElement,
         [ELEMENT_MENTION]: MentionElement,
-        [ELEMENT_MENTION_INPUT]: MentionInputElement,
         [ELEMENT_PARAGRAPH]: ParagraphElement,
         [ELEMENT_TABLE]: TableElement,
         [ELEMENT_TR]: TableRowElement,
