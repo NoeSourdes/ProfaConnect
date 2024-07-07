@@ -1,7 +1,5 @@
 "use client";
 
-import React from "react";
-
 import { useCommentAddButton } from "@udecode/plate-comments";
 
 import { Icons } from "@/src/components/icons";
@@ -14,7 +12,7 @@ export function CommentToolbarButton() {
   if (hidden) return null;
 
   return (
-    <ToolbarButton tooltip="Comment (⌘+⇧+M)" {...props}>
+    <ToolbarButton tooltip="Commentaire (⌘+⇧+M)" {...props}>
       <Icons.commentAdd />
     </ToolbarButton>
   );

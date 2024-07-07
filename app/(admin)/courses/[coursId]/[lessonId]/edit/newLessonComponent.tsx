@@ -158,11 +158,7 @@ export const NewLessonComponent = (props: NewLessonComponentProps) => {
                 </div>
               </div>
             </CardHeader>
-            <CardContent className="space-y-2 w-full overflow-hidden border-t p-0">
-              <div className="w-full overflow-y-scroll pt-3">
-                <TailwindEditor setContent={setContent} />
-              </div>
-            </CardContent>
+            <CardContent className="w-full overflow-hidden border-t p-0"></CardContent>
             <CardFooter>
               <Button
                 onClick={() =>

@@ -7,8 +7,11 @@ import {
 } from "@udecode/plate-basic-marks";
 import { useEditorReadOnly } from "@udecode/plate-common";
 
-import { Icons } from "@/src/components/icons";
+import { Icons, iconVariants } from "@/src/components/icons";
 
+import { MARK_BG_COLOR, MARK_COLOR } from "@udecode/plate-font";
+import { AlignDropdownMenu } from "./align-dropdown-menu";
+import { ColorDropdownMenu } from "./color-dropdown-menu";
 import { MarkToolbarButton } from "./mark-toolbar-button";
 import { MoreDropdownMenu } from "./more-dropdown-menu";
 import { TurnIntoDropdownMenu } from "./turn-into-dropdown-menu";
@@ -34,15 +37,25 @@ export function FloatingToolbarButtons() {
           >
             <Icons.underline />
           </MarkToolbarButton>
+          <ColorDropdownMenu nodeType={MARK_COLOR} tooltip="Couleur du texte">
+            <Icons.color className={iconVariants({ variant: "toolbar" })} />
+          </ColorDropdownMenu>
+          <ColorDropdownMenu
+            nodeType={MARK_BG_COLOR}
+            tooltip="Couleur de surlignage"
+          >
+            <Icons.bg className={iconVariants({ variant: "toolbar" })} />
+          </ColorDropdownMenu>
           <MarkToolbarButton
             nodeType={MARK_STRIKETHROUGH}
-            tooltip="barré (⌘+⇧+M)"
+            tooltip="Barré (⌘+⇧+M)"
           >
             <Icons.strikethrough />
           </MarkToolbarButton>
           <MarkToolbarButton nodeType={MARK_CODE} tooltip="Code (⌘+E)">
             <Icons.code />
           </MarkToolbarButton>
+          <AlignDropdownMenu />
         </>
       )}
 

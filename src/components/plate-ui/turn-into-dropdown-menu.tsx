@@ -10,7 +10,14 @@ import {
   useEditorRef,
   useEditorSelector,
 } from "@udecode/plate-common";
-import { ELEMENT_H1, ELEMENT_H2, ELEMENT_H3 } from "@udecode/plate-heading";
+import {
+  ELEMENT_H1,
+  ELEMENT_H2,
+  ELEMENT_H3,
+  ELEMENT_H4,
+  ELEMENT_H5,
+  ELEMENT_H6,
+} from "@udecode/plate-heading";
 import { ELEMENT_PARAGRAPH } from "@udecode/plate-paragraph";
 
 import { Icons } from "@/src/components/icons";
@@ -52,23 +59,30 @@ const items = [
     value: ELEMENT_H3,
   },
   {
+    Description: "Titre 4",
+    icon: Icons.h4,
+    label: "Titre 4",
+    value: ELEMENT_H4,
+  },
+  {
+    Description: "Titre 5",
+    icon: Icons.h5,
+    label: "Titre 5",
+    value: ELEMENT_H5,
+  },
+  {
+    Description: "Titre 6",
+    icon: Icons.h6,
+    label: "Titre 6",
+    value: ELEMENT_H6,
+  },
+
+  {
     description: "Citation (⌘+⇧+.)",
     icon: Icons.blockquote,
     label: "Citation",
     value: ELEMENT_BLOCKQUOTE,
   },
-  // {
-  //   value: 'ul',
-  //   label: 'Bulleted list',
-  //   description: 'Bulleted list',
-  //   icon: Icons.ul,
-  // },
-  // {
-  //   value: 'ol',
-  //   label: 'Numbered list',
-  //   description: 'Numbered list',
-  //   icon: Icons.ol,
-  // },
 ];
 
 const defaultItem = items.find((item) => item.value === ELEMENT_PARAGRAPH)!;
@@ -109,7 +123,7 @@ export function TurnIntoDropdownMenu(props: DropdownMenuProps) {
           className="lg:min-w-[130px]"
           isDropdown
           pressed={openState.open}
-          tooltip="Changer en"
+          tooltip="Transformer en"
         >
           <SelectedItemIcon className="size-5 lg:hidden" />
           <span className="max-lg:hidden">{selectedItemLabel}</span>
@@ -117,7 +131,7 @@ export function TurnIntoDropdownMenu(props: DropdownMenuProps) {
       </DropdownMenuTrigger>
 
       <DropdownMenuContent align="start" className="min-w-0">
-        <DropdownMenuLabel>Changer en</DropdownMenuLabel>
+        <DropdownMenuLabel>Transformer en</DropdownMenuLabel>
 
         <DropdownMenuRadioGroup
           className="flex flex-col gap-0.5"

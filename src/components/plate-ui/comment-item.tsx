@@ -1,18 +1,18 @@
-'use client';
-
-import React from 'react';
+"use client";
 
 import {
   CommentProvider,
   useCommentById,
   useCommentItemContentState,
-} from '@udecode/plate-comments';
-import { formatDistance } from 'date-fns';
+} from "@udecode/plate-comments";
+import { formatDistance } from "date-fns";
 
-import { CommentAvatar } from './comment-avatar';
-import { CommentMoreDropdown } from './comment-more-dropdown';
-import { CommentResolveButton } from './comment-resolve-button';
-import { CommentValue } from './comment-value';
+import { fr } from "date-fns/locale";
+import { useSession } from "next-auth/react";
+import { CommentAvatar } from "./comment-avatar";
+import { CommentMoreDropdown } from "./comment-more-dropdown";
+import { CommentResolveButton } from "./comment-resolve-button";
+import { CommentValue } from "./comment-value";
 
 type PlateCommentProps = {
   commentId: string;
@@ -27,16 +27,19 @@ function CommentItemContent() {
     isReplyComment,
     user,
   } = useCommentItemContentState();
+  const userData = useSession();
 
   return (
     <div>
       <div className="relative flex items-center gap-2">
         <CommentAvatar userId={comment.userId} />
 
-        <h4 className="text-sm font-semibold leading-none">{user?.name}</h4>
+        <h4 className="text-sm font-semibold leading-none">
+          {userData.data?.user?.name?.split(" ")[0] ?? ""}
+        </h4>
 
         <div className="text-xs leading-none text-muted-foreground">
-          {formatDistance(comment.createdAt, Date.now())} ago
+          il y a {formatDistance(comment.createdAt, Date.now(), { locale: fr })}
         </div>
 
         {isMyComment && (

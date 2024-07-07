@@ -41,6 +41,7 @@ import {
 } from "@udecode/plate-comments";
 import {
   Plate,
+  PlateElement,
   PlateLeaf,
   RenderAfterEditable,
   createPlugins,
@@ -54,7 +55,9 @@ import {
 import {
   createFontBackgroundColorPlugin,
   createFontColorPlugin,
+  createFontFamilyPlugin,
   createFontSizePlugin,
+  createFontWeightPlugin,
 } from "@udecode/plate-font";
 import {
   ELEMENT_H1,
@@ -77,14 +80,16 @@ import { createIndentPlugin } from "@udecode/plate-indent";
 import { createIndentListPlugin } from "@udecode/plate-indent-list";
 import { createJuicePlugin } from "@udecode/plate-juice";
 import { MARK_KBD, createKbdPlugin } from "@udecode/plate-kbd";
-import {
-  ELEMENT_COLUMN,
-  ELEMENT_COLUMN_GROUP,
-  createColumnPlugin,
-} from "@udecode/plate-layout";
+import { createColumnPlugin } from "@udecode/plate-layout";
 import { createLineHeightPlugin } from "@udecode/plate-line-height";
 import { ELEMENT_LINK, createLinkPlugin } from "@udecode/plate-link";
-import { ELEMENT_TODO_LI, createTodoListPlugin } from "@udecode/plate-list";
+import {
+  ELEMENT_LI,
+  ELEMENT_OL,
+  ELEMENT_TODO_LI,
+  ELEMENT_UL,
+  createTodoListPlugin,
+} from "@udecode/plate-list";
 import {
   ELEMENT_IMAGE,
   ELEMENT_MEDIA_EMBED,
@@ -121,8 +126,6 @@ import { CodeBlockElement } from "@/src/components/plate-ui/code-block-element";
 import { CodeLeaf } from "@/src/components/plate-ui/code-leaf";
 import { CodeLineElement } from "@/src/components/plate-ui/code-line-element";
 import { CodeSyntaxLeaf } from "@/src/components/plate-ui/code-syntax-leaf";
-import { ColumnElement } from "@/src/components/plate-ui/column-element";
-import { ColumnGroupElement } from "@/src/components/plate-ui/column-group-element";
 import { CommentLeaf } from "@/src/components/plate-ui/comment-leaf";
 import { CommentsPopover } from "@/src/components/plate-ui/comments-popover";
 import { Editor } from "@/src/components/plate-ui/editor";
@@ -149,11 +152,45 @@ import {
 import { TableElement } from "@/src/components/plate-ui/table-element";
 import { TableRowElement } from "@/src/components/plate-ui/table-row-element";
 import { TodoListElement } from "@/src/components/plate-ui/todo-list-element";
-import { ToggleElement } from "@/src/components/plate-ui/toggle-element";
 import { withDraggables } from "@/src/components/plate-ui/with-draggables";
+import { autoformatRules } from "@/src/lib/plate-ui/plugins/autoformatRules";
+import { createBasicElementsPlugin } from "@udecode/plate-basic-elements";
+import {
+  createCloudAttachmentPlugin,
+  createCloudImagePlugin,
+  createCloudPlugin,
+} from "@udecode/plate-cloud";
+import { createListPlugin } from "@udecode/plate-list";
+import { createSelectOnBackspacePlugin } from "@udecode/plate-select";
+import { useState } from "react";
+import { ListElement } from "../plate-ui/list-element";
 
 const plugins = createPlugins(
   [
+    // gestion du cloud
+    createCloudPlugin({
+      options: {
+        apiKey: "PRTV_D8XOsYGAv4mX5N8D_ttMwFbmsfyHLokGRrTMvOOgltsLl2so4",
+      },
+    }),
+    createCloudAttachmentPlugin(),
+    createCloudImagePlugin({
+      options: {
+        maxInitialWidth: 320,
+        maxInitialHeight: 320,
+        minResizeWidth: 100,
+        maxResizeWidth: 720,
+      },
+    }),
+    //gestion de excalidraw
+    createExcalidrawPlugin(),
+    createSelectOnBackspacePlugin({
+      options: { query: { allow: [ELEMENT_EXCALIDRAW] } },
+    }),
+    //gestion des listes
+    createListPlugin(),
+    createTodoListPlugin(),
+    createBasicElementsPlugin(),
     createParagraphPlugin(),
     createHeadingPlugin(),
     createBlockquotePlugin(),
@@ -163,7 +200,6 @@ const plugins = createPlugins(
       renderAfterEditable: LinkFloatingToolbar as RenderAfterEditable,
     }),
     createImagePlugin(),
-    createExcalidrawPlugin(),
     createTogglePlugin(),
     createColumnPlugin(),
     createMediaEmbedPlugin(),
@@ -176,7 +212,6 @@ const plugins = createPlugins(
     }),
     createMentionPlugin(),
     createTablePlugin(),
-    createTodoListPlugin(),
     createBoldPlugin(),
     createItalicPlugin(),
     createUnderlinePlugin(),
@@ -186,6 +221,8 @@ const plugins = createPlugins(
     createSuperscriptPlugin(),
     createFontColorPlugin(),
     createFontBackgroundColorPlugin(),
+    createFontWeightPlugin(),
+    createFontFamilyPlugin(),
     createFontSizePlugin(),
     createHighlightPlugin(),
     createKbdPlugin(),
@@ -194,7 +231,12 @@ const plugins = createPlugins(
         props: {
           validTypes: [
             ELEMENT_PARAGRAPH,
-            // ELEMENT_H1, ELEMENT_H2, ELEMENT_H3
+            ELEMENT_H1,
+            ELEMENT_H2,
+            ELEMENT_H3,
+            ELEMENT_H4,
+            ELEMENT_H5,
+            ELEMENT_H6,
           ],
         },
       },
@@ -204,7 +246,15 @@ const plugins = createPlugins(
         props: {
           validTypes: [
             ELEMENT_PARAGRAPH,
-            // ELEMENT_H1, ELEMENT_H2, ELEMENT_H3, ELEMENT_BLOCKQUOTE, ELEMENT_CODE_BLOCK
+            ELEMENT_H1,
+            ELEMENT_H2,
+            ELEMENT_H3,
+            ELEMENT_H4,
+            ELEMENT_H5,
+            ELEMENT_H6,
+            ELEMENT_BLOCKQUOTE,
+            ELEMENT_CODE_BLOCK,
+            ELEMENT_TOGGLE,
           ],
         },
       },
@@ -233,9 +283,7 @@ const plugins = createPlugins(
     }),
     createAutoformatPlugin({
       options: {
-        rules: [
-          // Usage: https://platejs.org/docs/autoformat
-        ],
+        rules: autoformatRules,
         enableUndoOnDelete: true,
       },
     }),
@@ -315,30 +363,29 @@ const plugins = createPlugins(
         [ELEMENT_CODE_BLOCK]: CodeBlockElement,
         [ELEMENT_CODE_LINE]: CodeLineElement,
         [ELEMENT_CODE_SYNTAX]: CodeSyntaxLeaf,
-        [ELEMENT_EXCALIDRAW]: ExcalidrawElement,
         [ELEMENT_HR]: HrElement,
-        [ELEMENT_IMAGE]: ImageElement,
-        [ELEMENT_LINK]: LinkElement,
-        [ELEMENT_TOGGLE]: ToggleElement,
-        [ELEMENT_COLUMN_GROUP]: ColumnGroupElement,
-        [ELEMENT_COLUMN]: ColumnElement,
         [ELEMENT_H1]: withProps(HeadingElement, { variant: "h1" }),
         [ELEMENT_H2]: withProps(HeadingElement, { variant: "h2" }),
         [ELEMENT_H3]: withProps(HeadingElement, { variant: "h3" }),
         [ELEMENT_H4]: withProps(HeadingElement, { variant: "h4" }),
         [ELEMENT_H5]: withProps(HeadingElement, { variant: "h5" }),
         [ELEMENT_H6]: withProps(HeadingElement, { variant: "h6" }),
+        [ELEMENT_IMAGE]: ImageElement,
+        [ELEMENT_LI]: withProps(PlateElement, { as: "li" }),
+        [ELEMENT_LINK]: LinkElement,
         [ELEMENT_MEDIA_EMBED]: MediaEmbedElement,
         [ELEMENT_MENTION]: MentionElement,
+        [ELEMENT_UL]: withProps(ListElement, { variant: "ul" }),
+        [ELEMENT_OL]: withProps(ListElement, { variant: "ol" }),
         [ELEMENT_PARAGRAPH]: ParagraphElement,
         [ELEMENT_TABLE]: TableElement,
-        [ELEMENT_TR]: TableRowElement,
         [ELEMENT_TD]: TableCellElement,
         [ELEMENT_TH]: TableCellHeaderElement,
         [ELEMENT_TODO_LI]: TodoListElement,
+        [ELEMENT_TR]: TableRowElement,
+        [ELEMENT_EXCALIDRAW]: ExcalidrawElement,
         [MARK_BOLD]: withProps(PlateLeaf, { as: "strong" }),
         [MARK_CODE]: CodeLeaf,
-        [MARK_COMMENT]: CommentLeaf,
         [MARK_HIGHLIGHT]: HighlightLeaf,
         [MARK_ITALIC]: withProps(PlateLeaf, { as: "em" }),
         [MARK_KBD]: KbdLeaf,
@@ -346,24 +393,31 @@ const plugins = createPlugins(
         [MARK_SUBSCRIPT]: withProps(PlateLeaf, { as: "sub" }),
         [MARK_SUPERSCRIPT]: withProps(PlateLeaf, { as: "sup" }),
         [MARK_UNDERLINE]: withProps(PlateLeaf, { as: "u" }),
+        [MARK_COMMENT]: CommentLeaf,
       })
     ),
   }
 );
 
 export function PlateEditor() {
+  const [value, setValue] = useState<string>();
   return (
     <DndProvider backend={HTML5Backend}>
       <CommentsProvider users={{}} myUserId="1">
-        <Plate plugins={plugins}>
+        <Plate
+          plugins={plugins}
+          initialValue={JSON.parse(value || "null")}
+          onChange={(newValue) => {
+            setValue(JSON.stringify(newValue));
+          }}
+        >
           <FixedToolbar>
             <FixedToolbarButtons />
           </FixedToolbar>
-          <div className="mt-1">
-            <Editor className="border-none" focusRing={false} />
-          </div>
 
-          <FloatingToolbar className="z-[4004] border rounded- py-1 px-2">
+          <Editor focusRing={false} className="border-none mt-1 rounded-none" />
+
+          <FloatingToolbar className="z-[5001] border rounded-lg px-1">
             <FloatingToolbarButtons />
           </FloatingToolbar>
           <CommentsPopover />

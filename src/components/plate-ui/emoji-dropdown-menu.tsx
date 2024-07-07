@@ -1,8 +1,8 @@
 import React from "react";
 
 import {
-  useEmojiDropdownMenuState,
   type EmojiDropdownMenuOptions,
+  useEmojiDropdownMenuState,
 } from "@udecode/plate-emoji";
 
 import { Icons } from "@/src/components/icons";

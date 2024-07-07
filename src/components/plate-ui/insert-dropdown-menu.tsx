@@ -15,6 +15,12 @@ import { ELEMENT_PARAGRAPH } from "@udecode/plate-paragraph";
 
 import { Icons } from "@/src/components/icons";
 
+import { ELEMENT_CODE_BLOCK } from "@udecode/plate-code-block";
+import { ELEMENT_EXCALIDRAW } from "@udecode/plate-excalidraw";
+import { ELEMENT_HR } from "@udecode/plate-horizontal-rule";
+import { ELEMENT_LINK } from "@udecode/plate-link";
+import { ELEMENT_IMAGE } from "@udecode/plate-media";
+import { ELEMENT_TABLE } from "@udecode/plate-table";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -59,73 +65,73 @@ const items = [
         label: "Citation",
         value: ELEMENT_BLOCKQUOTE,
       },
-      // {
-      //   value: ELEMENT_TABLE,
-      //   label: 'Table',
-      //   description: 'Table',
-      //   icon: Icons.table,
-      // },
-      // {
-      //   value: 'ul',
-      //   label: 'Bulleted list',
-      //   description: 'Bulleted list',
-      //   icon: Icons.ul,
-      // },
-      // {
-      //   value: 'ol',
-      //   label: 'Numbered list',
-      //   description: 'Numbered list',
-      //   icon: Icons.ol,
-      // },
-      // {
-      //   value: ELEMENT_HR,
-      //   label: 'Divider',
-      //   description: 'Divider (---)',
-      //   icon: Icons.hr,
-      // },
+      {
+        value: ELEMENT_TABLE,
+        label: "Table",
+        description: "Table",
+        icon: Icons.table,
+      },
+      {
+        value: "ul",
+        label: "Liste à puces",
+        description: "Liste à puces",
+        icon: Icons.ul,
+      },
+      {
+        value: "ol",
+        label: "Liste numérotée",
+        description: "Liste numérotée",
+        icon: Icons.ol,
+      },
+      {
+        value: ELEMENT_HR,
+        label: "Séparateur",
+        description: "Séparateur (---)",
+        icon: Icons.hr,
+      },
     ],
     label: "Blocs de base",
   },
-  // {
-  //   label: 'Media',
-  //   items: [
-  //     {
-  //       value: ELEMENT_CODE_BLOCK,
-  //       label: 'Code',
-  //       description: 'Code (```)',
-  //       icon: Icons.codeblock,
-  //     },
-  //     {
-  //       value: ELEMENT_IMAGE,
-  //       label: 'Image',
-  //       description: 'Image',
-  //       icon: Icons.image,
-  //     },
-  //     {
-  //       value: ELEMENT_MEDIA_EMBED,
-  //       label: 'Embed',
-  //       description: 'Embed',
-  //       icon: Icons.embed,
-  //     },
-  //     {
-  //       value: ELEMENT_EXCALIDRAW,
-  //       label: 'Excalidraw',
-  //       description: 'Excalidraw',
-  //       icon: Icons.excalidraw,
-  //     },
-  //   ],
-  // },
-  // {
-  //   label: 'Inline',
-  //   items: [
-  //     {
-  //       value: ELEMENT_LINK,
-  //       label: 'Link',
-  //       description: 'Link',
-  //       icon: Icons.link,
-  //     },
-  //   ],
-  // },
+  {
+    label: "Média",
+    items: [
+      {
+        value: ELEMENT_CODE_BLOCK,
+        label: "Code",
+        description: "Code (```)",
+        icon: Icons.codeblock,
+      },
+      {
+        value: ELEMENT_IMAGE,
+        label: "Image",
+        description: "Image",
+        icon: Icons.image,
+      },
+      // {
+      //   value: ELEMENT_MEDIA_EMBED,
+      //   label: "Intégrer",
+      //   description: "Intégrer",
+      //   icon: Icons.embed,
+      // },
+      {
+        value: ELEMENT_EXCALIDRAW,
+        label: "Excalidraw",
+        description: "Excalidraw",
+        icon: Icons.excalidraw,
+      },
+    ],
+  },
+  {
+    label: "En ligne",
+    items: [
+      {
+        value: ELEMENT_LINK,
+        label: "Lien",
+        description: "Lien",
+        icon: Icons.link,
+      },
+    ],
+  },
 ];
 
 export function InsertDropdownMenu(props: DropdownMenuProps) {

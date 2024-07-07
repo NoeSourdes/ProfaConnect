@@ -22,19 +22,19 @@ import { ToolbarButton } from "./toolbar";
 const items = [
   {
     icon: Icons.alignLeft,
-    value: "gauche",
+    value: "left",
   },
   {
     icon: Icons.alignCenter,
-    value: "centré",
+    value: "center",
   },
   {
     icon: Icons.alignRight,
-    value: "droite",
+    value: "right",
   },
   {
     icon: Icons.alignJustify,
-    value: "justifier",
+    value: "justify",
   },
 ];
 

@@ -4,7 +4,7 @@ import { withRef } from "@udecode/cn";
 import { PlateElement } from "@udecode/plate-common";
 import { EmojiInlineIndexSearch, insertEmoji } from "@udecode/plate-emoji";
 
-import { useDebounce } from "@/src/hooks/plate-ui/use-debounce";
+import { useDebounce } from "@/src/hooks/use-debounce";
 
 import {
   InlineCombobox,
