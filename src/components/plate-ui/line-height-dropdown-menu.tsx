@@ -1,3 +1,5 @@
+import React from "react";
+
 import type { DropdownMenuProps } from "@radix-ui/react-dropdown-menu";
 
 import {
@@ -28,7 +30,7 @@ export function LineHeightDropdownMenu({ ...props }: DropdownMenuProps) {
         <ToolbarButton
           isDropdown
           pressed={openState.open}
-          tooltip="Line height"
+          tooltip="Hauteur de ligne"
         >
           <Icons.lineHeight />
         </ToolbarButton>

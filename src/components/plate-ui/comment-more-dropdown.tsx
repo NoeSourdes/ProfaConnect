@@ -1,7 +1,5 @@
 "use client";
 
-import React from "react";
-
 import { cn } from "@udecode/cn";
 import {
   useCommentDeleteButton,
@@ -34,8 +32,12 @@ export function CommentMoreDropdown() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        <DropdownMenuItem {...editProps}>Edit comment</DropdownMenuItem>
-        <DropdownMenuItem {...deleteProps}>Delete comment</DropdownMenuItem>
+        <DropdownMenuItem {...editProps}>
+          Modifier le commentaire
+        </DropdownMenuItem>
+        <DropdownMenuItem {...deleteProps}>
+          Supprimer le commentaire
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

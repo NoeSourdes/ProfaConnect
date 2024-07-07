@@ -1,33 +1,26 @@
 "use client";
 
-import React from "react";
-
 import type { DropTargetMonitor } from "react-dnd";
 
 import { cn, withRef } from "@udecode/cn";
 import {
+  useEditorRef,
+  useElement,
   type ClassNames,
   type PlateElementProps,
   type TEditor,
   type TElement,
-  useEditorRef,
-  useElement,
 } from "@udecode/plate-common";
 import {
-  type DragItemNode,
   useDraggable,
   useDraggableState,
+  type DragItemNode,
 } from "@udecode/plate-dnd";
 import { blockSelectionActions } from "@udecode/plate-selection";
 
 import { Icons } from "@/src/components/icons";
 
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipPortal,
-  TooltipTrigger,
-} from "./tooltip";
+import { Tooltip, TooltipPortal, TooltipTrigger } from "./tooltip";
 
 export interface DraggableProps
   extends PlateElementProps,
@@ -85,7 +78,7 @@ const DragHandle = () => {
     <Tooltip>
       <TooltipTrigger type="button">
         <Icons.dragHandle
-          className="size-4 text-muted-foreground"
+          className="size-4 text-muted-foreground cursor-grab"
           onClick={(event) => {
             event.stopPropagation();
             event.preventDefault();
@@ -101,7 +94,9 @@ const DragHandle = () => {
         />
       </TooltipTrigger>
       <TooltipPortal>
-        <TooltipContent>Drag to move</TooltipContent>
+        {/* <TooltipContent>
+          titre du tooltip
+        </TooltipContent> */}
       </TooltipPortal>
     </Tooltip>
   );

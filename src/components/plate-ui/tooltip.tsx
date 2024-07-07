@@ -17,7 +17,7 @@ export const TooltipContent = withCn(
   withProps(TooltipPrimitive.Content, {
     sideOffset: 4,
   }),
-  "z-[4005] overflow-hidden rounded-md border bg-popover px-3 py-1.5 text-sm text-popover-foreground shadow-md"
+  "z-[5000] overflow-hidden rounded-md border bg-popover px-3 py-1.5 text-sm text-popover-foreground shadow-md"
 );
 
 export function withTooltip<
@@ -50,7 +50,7 @@ export function withTooltip<
 
     if (tooltip && mounted) {
       return (
-        <Tooltip {...tooltipProps}>
+        <Tooltip {...tooltipProps} delayDuration={0}>
           <TooltipTrigger asChild>{component}</TooltipTrigger>
 
           <TooltipPortal>

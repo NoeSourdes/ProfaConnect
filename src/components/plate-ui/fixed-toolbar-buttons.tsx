@@ -7,14 +7,18 @@ import {
 } from "@udecode/plate-basic-marks";
 import { useEditorReadOnly } from "@udecode/plate-common";
 
-import { Icons } from "@/src/components/icons";
+import { Icons, iconVariants } from "@/src/components/icons";
 
+import { MARK_BG_COLOR, MARK_COLOR } from "@udecode/plate-font";
+import { ELEMENT_OL, ELEMENT_UL } from "@udecode/plate-list";
 import { AlignDropdownMenu } from "./align-dropdown-menu";
+import { ColorDropdownMenu } from "./color-dropdown-menu";
 import { CommentToolbarButton } from "./comment-toolbar-button";
 import { EmojiDropdownMenu } from "./emoji-dropdown-menu";
 import { InsertDropdownMenu } from "./insert-dropdown-menu";
+import { LineHeightDropdownMenu } from "./line-height-dropdown-menu";
+import { ListToolbarButton } from "./list-toolbar-button";
 import { MarkToolbarButton } from "./mark-toolbar-button";
-import { ModeDropdownMenu } from "./mode-dropdown-menu";
 import { ToolbarGroup } from "./toolbar";
 import { TurnIntoDropdownMenu } from "./turn-into-dropdown-menu";
 
@@ -52,19 +56,40 @@ export function FixedToolbarButtons() {
               >
                 <Icons.underline />
               </MarkToolbarButton>
+              <ColorDropdownMenu
+                nodeType={MARK_COLOR}
+                tooltip="Couleur du texte"
+              >
+                <Icons.color className={iconVariants({ variant: "toolbar" })} />
+              </ColorDropdownMenu>
+              <ColorDropdownMenu
+                nodeType={MARK_BG_COLOR}
+                tooltip="Couleur de surlignage"
+              >
+                <Icons.bg className={iconVariants({ variant: "toolbar" })} />
+              </ColorDropdownMenu>
 
               <MarkToolbarButton
                 nodeType={MARK_STRIKETHROUGH}
-                tooltip="barré (⌘+⇧+M)"
+                tooltip="Barré (⌘+⇧+M)"
               >
                 <Icons.strikethrough />
               </MarkToolbarButton>
               <MarkToolbarButton nodeType={MARK_CODE} tooltip="Code (⌘+E)">
                 <Icons.code />
               </MarkToolbarButton>
-            </ToolbarGroup>
-            <ToolbarGroup>
-              <AlignDropdownMenu />
+              <ToolbarGroup>
+                <AlignDropdownMenu />
+
+                <LineHeightDropdownMenu />
+
+                {/* <IndentListToolbarButton nodeType={ListStyleType.Disc} />
+                <IndentListToolbarButton nodeType={ListStyleType.Decimal} />
+                <IndentTodoToolbarButton /> */}
+
+                <ListToolbarButton nodeType={ELEMENT_UL} />
+                <ListToolbarButton nodeType={ELEMENT_OL} />
+              </ToolbarGroup>
               <EmojiDropdownMenu />
             </ToolbarGroup>
           </>
@@ -74,7 +99,6 @@ export function FixedToolbarButtons() {
 
         <ToolbarGroup noSeparator>
           <CommentToolbarButton />
-          <ModeDropdownMenu />
         </ToolbarGroup>
       </div>
     </div>

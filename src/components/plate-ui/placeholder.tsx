@@ -2,10 +2,10 @@ import React from "react";
 
 import { cn } from "@udecode/cn";
 import {
+  type PlaceholderProps,
   createNodeHOC,
   createNodesHOC,
   usePlaceholderState,
-  type PlaceholderProps,
 } from "@udecode/plate-common";
 import { ELEMENT_H1 } from "@udecode/plate-heading";
 import { ELEMENT_PARAGRAPH } from "@udecode/plate-paragraph";
@@ -47,6 +47,6 @@ export const withPlaceholders = (components: any) =>
     {
       hideOnBlur: false,
       key: ELEMENT_H1,
-      placeholder: "Untitled",
+      placeholder: "Sans titre",
     },
   ]);
