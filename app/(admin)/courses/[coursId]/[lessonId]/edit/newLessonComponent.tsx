@@ -2,6 +2,7 @@
 
 import { PreviewPdf } from "@/src/components/dashboard/preview_lesson/preview-pdf";
 import TailwindEditor from "@/src/components/dashboard/tiptap/Editor";
+import { PlateEditor } from "@/src/components/editor_plate/editor_plate";
 import { Button } from "@/src/components/ui/button";
 import {
   Card,
@@ -131,12 +132,13 @@ export const NewLessonComponent = (props: NewLessonComponentProps) => {
 
   if (!lesson) {
     return (
-      <Tabs defaultValue="create" className="relative w-full h-full ">
+      <Tabs defaultValue="create" className="w-full h-full">
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="create">Créer une leçon</TabsTrigger>
           <TabsTrigger value="import">Importer un fichier</TabsTrigger>
         </TabsList>
-        <TabsContent value="create">
+
+        <TabsContent value="create" className="">
           <Card className="h-full w-full flex flex-col p-0">
             <CardHeader>
               <div className="flex sm:items-center justify-between gap-3 max-sm:flex-col">
@@ -158,7 +160,9 @@ export const NewLessonComponent = (props: NewLessonComponentProps) => {
                 </div>
               </div>
             </CardHeader>
-            <CardContent className="w-full overflow-hidden border-t p-0"></CardContent>
+            <CardContent className="w-full overflow-hidden border-t p-0">
+              <PlateEditor />
+            </CardContent>
             <CardFooter>
               <Button
                 onClick={() =>

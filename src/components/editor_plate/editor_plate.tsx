@@ -33,6 +33,9 @@ import {
   ELEMENT_CODE_LINE,
   ELEMENT_CODE_SYNTAX,
   createCodeBlockPlugin,
+  isCodeBlockEmpty,
+  isSelectionAtCodeBlockStart,
+  unwrapCodeBlock,
 } from "@udecode/plate-code-block";
 import {
   CommentsProvider,
@@ -45,9 +48,11 @@ import {
   PlateLeaf,
   RenderAfterEditable,
   createPlugins,
+  isBlockAboveEmpty,
+  isSelectionAtBlockStart,
+  someNode,
 } from "@udecode/plate-common";
 import { createDndPlugin } from "@udecode/plate-dnd";
-import { createEmojiPlugin } from "@udecode/plate-emoji";
 import {
   ELEMENT_EXCALIDRAW,
   createExcalidrawPlugin,
@@ -66,6 +71,7 @@ import {
   ELEMENT_H4,
   ELEMENT_H5,
   ELEMENT_H6,
+  KEYS_HEADING,
   createHeadingPlugin,
 } from "@udecode/plate-heading";
 import {
@@ -77,10 +83,17 @@ import {
   createHorizontalRulePlugin,
 } from "@udecode/plate-horizontal-rule";
 import { createIndentPlugin } from "@udecode/plate-indent";
-import { createIndentListPlugin } from "@udecode/plate-indent-list";
+import {
+  KEY_LIST_STYLE_TYPE,
+  createIndentListPlugin,
+} from "@udecode/plate-indent-list";
 import { createJuicePlugin } from "@udecode/plate-juice";
 import { MARK_KBD, createKbdPlugin } from "@udecode/plate-kbd";
-import { createColumnPlugin } from "@udecode/plate-layout";
+import {
+  ELEMENT_COLUMN,
+  ELEMENT_COLUMN_GROUP,
+  createColumnPlugin,
+} from "@udecode/plate-layout";
 import { createLineHeightPlugin } from "@udecode/plate-line-height";
 import { ELEMENT_LINK, createLinkPlugin } from "@udecode/plate-link";
 import {
@@ -156,14 +169,34 @@ import { withDraggables } from "@/src/components/plate-ui/with-draggables";
 import { autoformatRules } from "@/src/lib/plate-ui/plugins/autoformatRules";
 import { createBasicElementsPlugin } from "@udecode/plate-basic-elements";
 import {
+  ELEMENT_CLOUD_ATTACHMENT,
+  ELEMENT_CLOUD_IMAGE,
   createCloudAttachmentPlugin,
   createCloudImagePlugin,
   createCloudPlugin,
 } from "@udecode/plate-cloud";
 import { createListPlugin } from "@udecode/plate-list";
 import { createSelectOnBackspacePlugin } from "@udecode/plate-select";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { CloudAttachmentElement } from "../plate-ui/cloud-attachment-element";
+import { CloudImageElement } from "../plate-ui/cloud-image-element";
+import { ColumnElement } from "../plate-ui/column-element";
+import { ColumnGroupElement } from "../plate-ui/column-group-element";
 import { ListElement } from "../plate-ui/list-element";
+import { TabbableElement } from "../plate-ui/tabbable-element";
+import { ToggleElement } from "../plate-ui/toggle-element";
+import { Button } from "../ui/button";
+
+const resetBlockTypesCommonRule = {
+  types: [ELEMENT_BLOCKQUOTE, ELEMENT_TODO_LI],
+  defaultType: ELEMENT_PARAGRAPH,
+};
+
+const resetBlockTypesCodeBlockRule = {
+  types: [ELEMENT_CODE_BLOCK],
+  defaultType: ELEMENT_PARAGRAPH,
+  onReset: unwrapCodeBlock,
+};
 
 const plugins = createPlugins(
   [
@@ -182,17 +215,36 @@ const plugins = createPlugins(
         maxResizeWidth: 720,
       },
     }),
-    //gestion de excalidraw
+    // gestion de excalidraw
     createExcalidrawPlugin(),
     createSelectOnBackspacePlugin({
-      options: { query: { allow: [ELEMENT_EXCALIDRAW] } },
+      options: {
+        query: {
+          allow: [ELEMENT_IMAGE, ELEMENT_MEDIA_EMBED, ELEMENT_HR],
+        },
+      },
     }),
-    //gestion des listes
+    // gestion des listes
+    createHeadingPlugin(),
+    createParagraphPlugin(),
+    createIndentListPlugin({
+      inject: {
+        props: {
+          validTypes: [
+            ELEMENT_PARAGRAPH,
+            ELEMENT_H1,
+            ELEMENT_H2,
+            ELEMENT_H3,
+            ELEMENT_BLOCKQUOTE,
+            ELEMENT_CODE_BLOCK,
+          ],
+        },
+      },
+    }),
     createListPlugin(),
     createTodoListPlugin(),
     createBasicElementsPlugin(),
-    createParagraphPlugin(),
-    createHeadingPlugin(),
+
     createBlockquotePlugin(),
     createCodeBlockPlugin(),
     createHorizontalRulePlugin(),
@@ -204,14 +256,14 @@ const plugins = createPlugins(
     createColumnPlugin(),
     createMediaEmbedPlugin(),
     createCaptionPlugin({
-      options: {
-        pluginKeys: [
-          // ELEMENT_IMAGE, ELEMENT_MEDIA_EMBED
-        ],
-      },
+      options: { pluginKeys: [ELEMENT_IMAGE, ELEMENT_MEDIA_EMBED] },
     }),
     createMentionPlugin(),
-    createTablePlugin(),
+    createTablePlugin({
+      options: {
+        initialTableWidth: 600,
+      },
+    }),
     createBoldPlugin(),
     createItalicPlugin(),
     createUnderlinePlugin(),
@@ -259,25 +311,12 @@ const plugins = createPlugins(
         },
       },
     }),
-    createIndentListPlugin({
-      inject: {
-        props: {
-          validTypes: [
-            ELEMENT_PARAGRAPH,
-            // ELEMENT_H1, ELEMENT_H2, ELEMENT_H3, ELEMENT_BLOCKQUOTE, ELEMENT_CODE_BLOCK
-          ],
-        },
-      },
-    }),
     createLineHeightPlugin({
       inject: {
         props: {
           defaultNodeValue: 1.5,
           validNodeValues: [1, 1.2, 1.5, 2, 3],
-          validTypes: [
-            ELEMENT_PARAGRAPH,
-            // ELEMENT_H1, ELEMENT_H2, ELEMENT_H3
-          ],
+          validTypes: [ELEMENT_PARAGRAPH, ELEMENT_H1, ELEMENT_H2, ELEMENT_H3],
         },
       },
     }),
@@ -298,7 +337,9 @@ const plugins = createPlugins(
     createDndPlugin({
       options: { enableScroller: true },
     }),
-    createEmojiPlugin(),
+    // createEmojiPlugin({
+    //   renderAfterEditable: EmojiCombobox as RenderAfterEditable,
+    // }),
     createExitBreakPlugin({
       options: {
         rules: [
@@ -314,7 +355,7 @@ const plugins = createPlugins(
             query: {
               start: true,
               end: true,
-              // allow: KEYS_HEADING,
+              allow: KEYS_HEADING,
             },
             relative: true,
             level: 1,
@@ -326,7 +367,26 @@ const plugins = createPlugins(
     createResetNodePlugin({
       options: {
         rules: [
-          // Usage: https://platejs.org/docs/reset-node
+          {
+            ...resetBlockTypesCommonRule,
+            hotkey: "Enter",
+            predicate: isBlockAboveEmpty,
+          },
+          {
+            ...resetBlockTypesCommonRule,
+            hotkey: "Backspace",
+            predicate: isSelectionAtBlockStart,
+          },
+          {
+            ...resetBlockTypesCodeBlockRule,
+            hotkey: "Enter",
+            predicate: isCodeBlockEmpty,
+          },
+          {
+            ...resetBlockTypesCodeBlockRule,
+            hotkey: "Backspace",
+            predicate: isSelectionAtCodeBlockStart,
+          },
         ],
       },
     }),
@@ -338,18 +398,43 @@ const plugins = createPlugins(
           {
             hotkey: "enter",
             query: {
-              allow: [
-                // ELEMENT_CODE_BLOCK, ELEMENT_BLOCKQUOTE, ELEMENT_TD
-              ],
+              allow: [ELEMENT_CODE_BLOCK, ELEMENT_BLOCKQUOTE, ELEMENT_TD],
             },
           },
         ],
       },
     }),
-    createTabbablePlugin(),
+    createTabbablePlugin({
+      options: {
+        query: (editor) => {
+          if (isSelectionAtBlockStart(editor)) return false;
+
+          return !someNode(editor, {
+            match: (n) => {
+              return !!(
+                n.type &&
+                ([ELEMENT_TABLE, ELEMENT_LI, ELEMENT_CODE_BLOCK].includes(
+                  n.type as string
+                ) ||
+                  n[KEY_LIST_STYLE_TYPE])
+              );
+            },
+          });
+        },
+      },
+      plugins: [
+        {
+          key: "tabbable_element",
+          isElement: true,
+          isVoid: true,
+          component: TabbableElement,
+        },
+      ],
+    }),
     createTrailingBlockPlugin({
       options: { type: ELEMENT_PARAGRAPH },
     }),
+    // dragOverCursorPlugin(),
     createCommentsPlugin(),
     createDeserializeDocxPlugin(),
     createDeserializeCsvPlugin(),
@@ -370,9 +455,15 @@ const plugins = createPlugins(
         [ELEMENT_H4]: withProps(HeadingElement, { variant: "h4" }),
         [ELEMENT_H5]: withProps(HeadingElement, { variant: "h5" }),
         [ELEMENT_H6]: withProps(HeadingElement, { variant: "h6" }),
+        [ELEMENT_CLOUD_ATTACHMENT]: CloudAttachmentElement,
+        [ELEMENT_CLOUD_IMAGE]: CloudImageElement,
         [ELEMENT_IMAGE]: ImageElement,
-        [ELEMENT_LI]: withProps(PlateElement, { as: "li" }),
         [ELEMENT_LINK]: LinkElement,
+        [ELEMENT_TOGGLE]: ToggleElement,
+        [ELEMENT_COLUMN_GROUP]: ColumnGroupElement,
+        [ELEMENT_COLUMN]: ColumnElement,
+        [ELEMENT_TR]: TableRowElement,
+        [ELEMENT_LI]: withProps(PlateElement, { as: "li" }),
         [ELEMENT_MEDIA_EMBED]: MediaEmbedElement,
         [ELEMENT_MENTION]: MentionElement,
         [ELEMENT_UL]: withProps(ListElement, { variant: "ul" }),
@@ -382,7 +473,6 @@ const plugins = createPlugins(
         [ELEMENT_TD]: TableCellElement,
         [ELEMENT_TH]: TableCellHeaderElement,
         [ELEMENT_TODO_LI]: TodoListElement,
-        [ELEMENT_TR]: TableRowElement,
         [ELEMENT_EXCALIDRAW]: ExcalidrawElement,
         [MARK_BOLD]: withProps(PlateLeaf, { as: "strong" }),
         [MARK_CODE]: CodeLeaf,
@@ -401,28 +491,93 @@ const plugins = createPlugins(
 
 export function PlateEditor() {
   const [value, setValue] = useState<string>();
+  const commentsProviderRef = useRef<HTMLDivElement>(null);
+  const [isFullScreen, setIsFullScreen] = useState(false);
+
+  const handleFullScreen = () => {
+    if (commentsProviderRef.current) {
+      const element = commentsProviderRef.current;
+      if (!isFullScreen) {
+        if (element.requestFullscreen) {
+          element.requestFullscreen();
+        } else if ((element as any).mozRequestFullScreen) {
+          (element as any).mozRequestFullScreen();
+        } else if ((element as any).webkitRequestFullscreen) {
+          (element as any).webkitRequestFullscreen();
+        } else if ((element as any).msRequestFullscreen) {
+          (element as any).msRequestFullscreen();
+        }
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        } else if ((document as any).mozCancelFullScreen) {
+          (document as any).mozCancelFullScreen();
+        } else if ((document as any).webkitExitFullscreen) {
+          (document as any).webkitExitFullscreen();
+        } else if ((document as any).msExitFullscreen) {
+          (document as any).msExitFullscreen();
+        }
+      }
+    }
+  };
+
+  useEffect(() => {
+    const handleFullScreenChange = () => {
+      setIsFullScreen(!!document.fullscreenElement);
+    };
+
+    document.addEventListener("fullscreenchange", handleFullScreenChange);
+    document.addEventListener("webkitfullscreenchange", handleFullScreenChange);
+    document.addEventListener("mozfullscreenchange", handleFullScreenChange);
+    document.addEventListener("MSFullscreenChange", handleFullScreenChange);
+
+    return () => {
+      document.removeEventListener("fullscreenchange", handleFullScreenChange);
+      document.removeEventListener(
+        "webkitfullscreenchange",
+        handleFullScreenChange
+      );
+      document.removeEventListener(
+        "mozfullscreenchange",
+        handleFullScreenChange
+      );
+      document.removeEventListener(
+        "MSFullscreenChange",
+        handleFullScreenChange
+      );
+    };
+  }, []);
+
   return (
     <DndProvider backend={HTML5Backend}>
-      <CommentsProvider users={{}} myUserId="1">
-        <Plate
-          plugins={plugins}
-          initialValue={JSON.parse(value || "null")}
-          onChange={(newValue) => {
-            setValue(JSON.stringify(newValue));
-          }}
-        >
-          <FixedToolbar>
-            <FixedToolbarButtons />
-          </FixedToolbar>
+      <div ref={commentsProviderRef} className="bg-background">
+        <CommentsProvider users={{}} myUserId="1">
+          <Plate
+            plugins={plugins}
+            initialValue={JSON.parse(value || "null")}
+            onChange={(newValue) => {
+              setValue(JSON.stringify(newValue));
+            }}
+          >
+            <FixedToolbar>
+              <FixedToolbarButtons
+                handleFullScreen={handleFullScreen}
+                isFullScreen={isFullScreen}
+              />
+            </FixedToolbar>
 
-          <Editor focusRing={false} className="border-none mt-1 rounded-none" />
+            <Editor
+              focusRing={false}
+              className="border-none mt-1 rounded-none"
+            />
 
-          <FloatingToolbar className="z-[5001] border rounded-lg px-1">
-            <FloatingToolbarButtons />
-          </FloatingToolbar>
-          <CommentsPopover />
-        </Plate>
-      </CommentsProvider>
+            <FloatingToolbar className="z-[5001] border rounded-lg px-1">
+              <FloatingToolbarButtons />
+            </FloatingToolbar>
+            <CommentsPopover />
+          </Plate>
+        </CommentsProvider>
+      </div>
     </DndProvider>
   );
 }

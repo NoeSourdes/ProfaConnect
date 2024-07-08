@@ -20,7 +20,12 @@ import { blockSelectionActions } from "@udecode/plate-selection";
 
 import { Icons } from "@/src/components/icons";
 
-import { Tooltip, TooltipPortal, TooltipTrigger } from "./tooltip";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipPortal,
+  TooltipTrigger,
+} from "./tooltip";
 
 export interface DraggableProps
   extends PlateElementProps,
@@ -94,9 +99,7 @@ const DragHandle = () => {
         />
       </TooltipTrigger>
       <TooltipPortal>
-        {/* <TooltipContent>
-          titre du tooltip
-        </TooltipContent> */}
+        <TooltipContent>titre du tooltip</TooltipContent>
       </TooltipPortal>
     </Tooltip>
   );

@@ -84,7 +84,7 @@ export function LinkFloatingToolbar({ state }: LinkFloatingToolbarProps) {
 
         <FloatingLinkUrlInput
           className={inputVariants({ h: "sm", variant: "ghost" })}
-          placeholder="Paste link"
+          placeholder="Coller le lien"
         />
       </div>
       <Separator />
@@ -94,7 +94,7 @@ export function LinkFloatingToolbar({ state }: LinkFloatingToolbarProps) {
         </div>
         <input
           className={inputVariants({ h: "sm", variant: "ghost" })}
-          placeholder="Text to display"
+          placeholder="Texte à afficher"
           {...textInputProps}
         />
       </div>
@@ -110,7 +110,7 @@ export function LinkFloatingToolbar({ state }: LinkFloatingToolbarProps) {
         type="button"
         {...editButtonProps}
       >
-        Edit link
+        Modifier le lien
       </button>
 
       <Separator orientation="vertical" />

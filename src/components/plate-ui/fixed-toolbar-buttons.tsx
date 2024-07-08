@@ -10,19 +10,32 @@ import { useEditorReadOnly } from "@udecode/plate-common";
 import { Icons, iconVariants } from "@/src/components/icons";
 
 import { MARK_BG_COLOR, MARK_COLOR } from "@udecode/plate-font";
-import { ELEMENT_OL, ELEMENT_UL } from "@udecode/plate-list";
+import { ListStyleType } from "@udecode/plate-indent-list";
+import { ELEMENT_IMAGE } from "@udecode/plate-media";
+import { Maximize, Minimize } from "lucide-react";
 import { AlignDropdownMenu } from "./align-dropdown-menu";
 import { ColorDropdownMenu } from "./color-dropdown-menu";
 import { CommentToolbarButton } from "./comment-toolbar-button";
 import { EmojiDropdownMenu } from "./emoji-dropdown-menu";
+import { IndentListToolbarButton } from "./indent-list-toolbar-button";
+import { IndentToolbarButton } from "./indent-toolbar-button";
 import { InsertDropdownMenu } from "./insert-dropdown-menu";
 import { LineHeightDropdownMenu } from "./line-height-dropdown-menu";
-import { ListToolbarButton } from "./list-toolbar-button";
+import { LinkToolbarButton } from "./link-toolbar-button";
 import { MarkToolbarButton } from "./mark-toolbar-button";
-import { ToolbarGroup } from "./toolbar";
+import { MediaToolbarButton } from "./media-toolbar-button";
+import { MoreDropdownMenu } from "./more-dropdown-menu";
+import { OutdentToolbarButton } from "./outdent-toolbar-button";
+import { TableDropdownMenu } from "./table-dropdown-menu";
+import { ToolbarButton, ToolbarGroup } from "./toolbar";
 import { TurnIntoDropdownMenu } from "./turn-into-dropdown-menu";
 
-export function FixedToolbarButtons() {
+interface FixedToolbarButtonsProps {
+  handleFullScreen: () => void;
+  isFullScreen: boolean;
+}
+
+export function FixedToolbarButtons(props: FixedToolbarButtonsProps) {
   const readOnly = useEditorReadOnly();
 
   return (
@@ -78,19 +91,37 @@ export function FixedToolbarButtons() {
               <MarkToolbarButton nodeType={MARK_CODE} tooltip="Code (⌘+E)">
                 <Icons.code />
               </MarkToolbarButton>
-              <ToolbarGroup>
-                <AlignDropdownMenu />
+            </ToolbarGroup>
+            <ToolbarGroup>
+              <AlignDropdownMenu />
 
-                <LineHeightDropdownMenu />
+              <LineHeightDropdownMenu />
 
-                {/* <IndentListToolbarButton nodeType={ListStyleType.Disc} />
-                <IndentListToolbarButton nodeType={ListStyleType.Decimal} />
-                <IndentTodoToolbarButton /> */}
+              <IndentListToolbarButton nodeType={ListStyleType.Disc} />
+              <IndentListToolbarButton nodeType={ListStyleType.Decimal} />
 
-                <ListToolbarButton nodeType={ELEMENT_UL} />
-                <ListToolbarButton nodeType={ELEMENT_OL} />
-              </ToolbarGroup>
+              <OutdentToolbarButton />
+              <IndentToolbarButton />
+            </ToolbarGroup>
+
+            <ToolbarGroup>
+              <LinkToolbarButton />
+
+              <MediaToolbarButton nodeType={ELEMENT_IMAGE} />
+
+              <TableDropdownMenu />
+
               <EmojiDropdownMenu />
+
+              <MoreDropdownMenu />
+              <ToolbarButton
+                onClick={props.handleFullScreen}
+                tooltip={
+                  props.isFullScreen ? "Quitter le plein écran" : "Plein écran"
+                }
+              >
+                {props.isFullScreen ? <Minimize /> : <Maximize />}
+              </ToolbarButton>
             </ToolbarGroup>
           </>
         )}
