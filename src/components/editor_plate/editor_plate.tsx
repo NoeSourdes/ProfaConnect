@@ -177,7 +177,7 @@ import {
 } from "@udecode/plate-cloud";
 import { createListPlugin } from "@udecode/plate-list";
 import { createSelectOnBackspacePlugin } from "@udecode/plate-select";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { CloudAttachmentElement } from "../plate-ui/cloud-attachment-element";
 import { CloudImageElement } from "../plate-ui/cloud-image-element";
 import { ColumnElement } from "../plate-ui/column-element";
@@ -185,7 +185,6 @@ import { ColumnGroupElement } from "../plate-ui/column-group-element";
 import { ListElement } from "../plate-ui/list-element";
 import { TabbableElement } from "../plate-ui/tabbable-element";
 import { ToggleElement } from "../plate-ui/toggle-element";
-import { Button } from "../ui/button";
 
 const resetBlockTypesCommonRule = {
   types: [ELEMENT_BLOCKQUOTE, ELEMENT_TODO_LI],
@@ -491,66 +490,15 @@ const plugins = createPlugins(
 
 export function PlateEditor() {
   const [value, setValue] = useState<string>();
-  const commentsProviderRef = useRef<HTMLDivElement>(null);
   const [isFullScreen, setIsFullScreen] = useState(false);
-
-  const handleFullScreen = () => {
-    if (commentsProviderRef.current) {
-      const element = commentsProviderRef.current;
-      if (!isFullScreen) {
-        if (element.requestFullscreen) {
-          element.requestFullscreen();
-        } else if ((element as any).mozRequestFullScreen) {
-          (element as any).mozRequestFullScreen();
-        } else if ((element as any).webkitRequestFullscreen) {
-          (element as any).webkitRequestFullscreen();
-        } else if ((element as any).msRequestFullscreen) {
-          (element as any).msRequestFullscreen();
-        }
-      } else {
-        if (document.exitFullscreen) {
-          document.exitFullscreen();
-        } else if ((document as any).mozCancelFullScreen) {
-          (document as any).mozCancelFullScreen();
-        } else if ((document as any).webkitExitFullscreen) {
-          (document as any).webkitExitFullscreen();
-        } else if ((document as any).msExitFullscreen) {
-          (document as any).msExitFullscreen();
-        }
-      }
-    }
-  };
-
-  useEffect(() => {
-    const handleFullScreenChange = () => {
-      setIsFullScreen(!!document.fullscreenElement);
-    };
-
-    document.addEventListener("fullscreenchange", handleFullScreenChange);
-    document.addEventListener("webkitfullscreenchange", handleFullScreenChange);
-    document.addEventListener("mozfullscreenchange", handleFullScreenChange);
-    document.addEventListener("MSFullscreenChange", handleFullScreenChange);
-
-    return () => {
-      document.removeEventListener("fullscreenchange", handleFullScreenChange);
-      document.removeEventListener(
-        "webkitfullscreenchange",
-        handleFullScreenChange
-      );
-      document.removeEventListener(
-        "mozfullscreenchange",
-        handleFullScreenChange
-      );
-      document.removeEventListener(
-        "MSFullscreenChange",
-        handleFullScreenChange
-      );
-    };
-  }, []);
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <div ref={commentsProviderRef} className="bg-background">
+      <div
+        className={`bg-background z-[4002] transition-all ${
+          isFullScreen ? "fixed inset-0" : "relative"
+        }`}
+      >
         <CommentsProvider users={{}} myUserId="1">
           <Plate
             plugins={plugins}
@@ -561,8 +509,8 @@ export function PlateEditor() {
           >
             <FixedToolbar>
               <FixedToolbarButtons
-                handleFullScreen={handleFullScreen}
                 isFullScreen={isFullScreen}
+                setIsFullScreen={setIsFullScreen}
               />
             </FixedToolbar>
 

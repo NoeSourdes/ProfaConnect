@@ -2,7 +2,10 @@
 
 import {
   LayoutGrid,
+  Link2,
   LogOut,
+  Mail,
+  QrCode,
   Settings,
   Shapes,
   SquareArrowUpRight,
@@ -18,6 +21,14 @@ import {
 } from "@/src/components/ui/avatar";
 import { Button } from "@/src/components/ui/button";
 import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/src/components/ui/dialog-shared";
+import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuGroup,
@@ -30,6 +41,7 @@ import { getRoleFrench } from "@/src/hooks/user-actions";
 import { useQuery } from "@tanstack/react-query";
 import { signOut, useSession } from "next-auth/react";
 import { toast } from "sonner";
+import { GlareCardComp } from "../GlareCard";
 
 export function UserNav() {
   const { data: user } = useSession();
@@ -95,15 +107,53 @@ export function UserNav() {
             </Link>
           </DropdownMenuItem>
           <div className="flex items-center justify-between gap-1">
-            <DropdownMenuItem
-              className="hover:cursor-pointer w-[125px]"
-              asChild
-            >
-              <div className="flex items-center">
-                <SquareArrowUpRight className="w-4 h-4 mr-3 text-muted-foreground" />{" "}
-                Partager
-              </div>
-            </DropdownMenuItem>
+            <Dialog>
+              <DialogTrigger asChild>
+                <div className="hover:cursor-pointer w-[125px] relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 hover:bg-secondary">
+                  <SquareArrowUpRight className="w-4 h-4 mr-3 text-muted-foreground" />{" "}
+                  Partager
+                </div>
+              </DialogTrigger>
+              <DialogContent className="space-y-5 p-6">
+                <DialogHeader>
+                  <DialogTitle>
+                    Partager votre tableau de bord avec vos élèves
+                  </DialogTitle>
+                  <DialogDescription>
+                    Partagez cette carte avec vos élèves pour qu'ils puissent
+                    accéder à votre tableau de bord.
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="flex items-start max-sm:flex-col max-sm:items-center gap-6">
+                  <div className="">
+                    <GlareCardComp />
+                  </div>
+                  <div className="flex flex-col w-full gap-3">
+                    <Button
+                      variant="outline"
+                      className="flex items-center justify-start"
+                    >
+                      <Mail className="w-4 h-4 mr-3 text-muted-foreground" />
+                      Partager avec un mail
+                    </Button>
+                    <Button
+                      variant="outline"
+                      className="flex items-center justify-start"
+                    >
+                      <Link2 className="w-4 h-4 mr-3 text-muted-foreground" />
+                      Partager avec un lien
+                    </Button>
+                    <Button
+                      variant="outline"
+                      className="flex items-center justify-start"
+                    >
+                      <QrCode className="w-4 h-4 mr-3 text-muted-foreground" />
+                      Partager avec un QR Code
+                    </Button>
+                  </div>
+                </div>
+              </DialogContent>
+            </Dialog>
             <DropdownMenuItem className="hover:cursor-pointer" asChild>
               <kbd
                 onClick={() => {
