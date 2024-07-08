@@ -65,28 +65,28 @@ export const TableBordersDropdownMenuContent = withRef<
         onCheckedChange={getOnSelectTableBorder("bottom")}
       >
         <Icons.borderBottom className={iconVariants({ size: "sm" })} />
-        <div>Bottom Border</div>
+        <div>Bordure inférieure</div>
       </DropdownMenuCheckboxItem>
       <DropdownMenuCheckboxItem
         checked={hasTopBorder}
         onCheckedChange={getOnSelectTableBorder("top")}
       >
         <Icons.borderTop className={iconVariants({ size: "sm" })} />
-        <div>Top Border</div>
+        <div>Bordure supérieure</div>
       </DropdownMenuCheckboxItem>
       <DropdownMenuCheckboxItem
         checked={hasLeftBorder}
         onCheckedChange={getOnSelectTableBorder("left")}
       >
         <Icons.borderLeft className={iconVariants({ size: "sm" })} />
-        <div>Left Border</div>
+        <div>Bordure gauche</div>
       </DropdownMenuCheckboxItem>
       <DropdownMenuCheckboxItem
         checked={hasRightBorder}
         onCheckedChange={getOnSelectTableBorder("right")}
       >
         <Icons.borderRight className={iconVariants({ size: "sm" })} />
-        <div>Right Border</div>
+        <div>Bordure droite</div>
       </DropdownMenuCheckboxItem>
 
       <Separator />
@@ -96,14 +96,14 @@ export const TableBordersDropdownMenuContent = withRef<
         onCheckedChange={getOnSelectTableBorder("none")}
       >
         <Icons.borderNone className={iconVariants({ size: "sm" })} />
-        <div>No Border</div>
+        <div>Pas de bordure</div>
       </DropdownMenuCheckboxItem>
       <DropdownMenuCheckboxItem
         checked={hasOuterBorders}
         onCheckedChange={getOnSelectTableBorder("outer")}
       >
         <Icons.borderAll className={iconVariants({ size: "sm" })} />
-        <div>Outside Borders</div>
+        <div>Bordures extérieures</div>
       </DropdownMenuCheckboxItem>
     </DropdownMenuContent>
   );
@@ -136,7 +136,7 @@ export const TableFloatingToolbar = withRef<typeof PopoverContent>(
         variant="ghost"
       >
         <Icons.combine className="mr-2 size-4" />
-        Merge
+        Fusionner
       </Button>
     );
 
@@ -148,7 +148,7 @@ export const TableFloatingToolbar = withRef<typeof PopoverContent>(
         variant="ghost"
       >
         <Icons.ungroup className="mr-2 size-4" />
-        Unmerge
+        Dissocier
       </Button>
     );
 
@@ -158,7 +158,7 @@ export const TableFloatingToolbar = withRef<typeof PopoverContent>(
           <DropdownMenuTrigger asChild>
             <Button isMenu variant="ghost">
               <Icons.borderAll className="mr-2 size-4" />
-              Borders
+              Bordures
             </Button>
           </DropdownMenuTrigger>
 
@@ -169,7 +169,7 @@ export const TableFloatingToolbar = withRef<typeof PopoverContent>(
 
         <Button contentEditable={false} isMenu variant="ghost" {...buttonProps}>
           <Icons.delete className="mr-2 size-4" />
-          Delete
+          Supprimer
         </Button>
       </>
     );
