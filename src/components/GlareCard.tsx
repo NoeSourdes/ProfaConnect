@@ -36,7 +36,7 @@ export function GlareCardComp() {
         <div className="min-h-[200px] max-h-[220px] w-[280px] rounded-t-[200px] rounded-b-md relative overflow-hidden">
           <BackgroundGradientAnimation></BackgroundGradientAnimation>
         </div>
-        <div className="w-full h-full flex flex-col justify-between text-[#12374A]">
+        <div className="w-full h-full flex flex-col justify-between dark:text-white text-[#2E3E58]">
           <div>
             <p className="font-semibold text-2xl">{session.data?.user?.name}</p>
             <p className="font-medium">
@@ -45,11 +45,11 @@ export function GlareCardComp() {
           </div>
           <div className="flex justify-between items-center w-full">
             <div className=" text-xs flex items-center">
-              <p className="border border-[#12374A] rounded-l px-1">
+              <p className="border border-[#2E3E58] rounded-l px-1">
                 ProfaConnect
               </p>
-              <span className="w-4 bg-[#12374A]/50 h-[18px] border-t border-b border-[#12374A]"></span>
-              <p className="border border-[#12374A] rounded-r px-1">
+              <span className="w-4 bg-[#2E3E58]/50 h-[18px] border-t border-b border-[#2E3E58]"></span>
+              <p className="border border-[#2E3E58] rounded-r px-1">
                 21 Oct 2023
               </p>
             </div>

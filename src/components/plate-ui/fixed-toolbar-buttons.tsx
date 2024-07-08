@@ -31,8 +31,8 @@ import { ToolbarButton, ToolbarGroup } from "./toolbar";
 import { TurnIntoDropdownMenu } from "./turn-into-dropdown-menu";
 
 interface FixedToolbarButtonsProps {
-  handleFullScreen: () => void;
   isFullScreen: boolean;
+  setIsFullScreen: (isFullScreen: boolean) => void;
 }
 
 export function FixedToolbarButtons(props: FixedToolbarButtonsProps) {
@@ -115,7 +115,9 @@ export function FixedToolbarButtons(props: FixedToolbarButtonsProps) {
 
               <MoreDropdownMenu />
               <ToolbarButton
-                onClick={props.handleFullScreen}
+                onClick={() => {
+                  props.setIsFullScreen(!props.isFullScreen);
+                }}
                 tooltip={
                   props.isFullScreen ? "Quitter le plein écran" : "Plein écran"
                 }
