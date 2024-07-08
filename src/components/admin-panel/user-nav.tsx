@@ -114,7 +114,7 @@ export function UserNav() {
                   Partager
                 </div>
               </DialogTrigger>
-              <DialogContent className="space-y-5 p-6">
+              <DialogContent className="space-y-3 p-6">
                 <DialogHeader>
                   <DialogTitle>
                     Partager votre tableau de bord avec vos élèves
