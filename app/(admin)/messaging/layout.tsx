@@ -6,7 +6,7 @@ import Link from "next/link";
 
 export default async function RouteLayout(props: LayoutParams<{}>) {
   return (
-    <div>
+    <div className="h-full w-full">
       <div className="flex items-center justify-between gap-5 w-full">
         <div className="flex items-center gap-3">
           <Link href="/dashboard">
@@ -19,8 +19,8 @@ export default async function RouteLayout(props: LayoutParams<{}>) {
           />
         </div>
       </div>
-      <div className="w-full h-full flex justify-between ">
-        <section className="mt-2 w-full h-full">{props.children}</section>
+      <div className="w-full h-full flex justify-between">
+        <section className="w-full h-full">{props.children}</section>
       </div>
     </div>
   );
