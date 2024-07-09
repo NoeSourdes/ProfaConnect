@@ -131,7 +131,7 @@ export const PopoverActionLesson = (props: PopoverActionLessonProps) => {
             </Button>
           )}
           {button.text === "Renommer" && (
-            <DialogContent className="p-6">
+            <DialogContent className="p-6 shadow-lg">
               <div className="flex flex-col gap-4">
                 <DialogHeader>
                   <DialogTitle>Renommer la lesson</DialogTitle>

@@ -217,7 +217,7 @@ export const Categories = (props: categoriesProps) => {
                               Modifier la catégorie
                             </Button>
                           </DialogTrigger>
-                          <DialogContent className="sm:max-w-[425px]">
+                          <DialogContent className="sm:max-w-[425px] shadow-lg">
                             <DialogHeader>
                               <DialogTitle>Modifier la catégorie</DialogTitle>
                               <DialogDescription>

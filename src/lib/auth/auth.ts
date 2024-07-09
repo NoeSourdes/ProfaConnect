@@ -34,6 +34,7 @@ export const {
           data: {
             userId: user.id,
             role: "STUDENT",
+            createdAt: new Date(),
             level: "HIGH_SCHOOL",
             onboarded: false,
           },
