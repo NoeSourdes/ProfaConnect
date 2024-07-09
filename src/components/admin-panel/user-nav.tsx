@@ -132,7 +132,7 @@ export function UserNav() {
                   Partager
                 </div>
               </DialogTrigger>
-              <DialogContent className="">
+              <DialogContent className="max-h-[700px] overflow-y-auto">
                 <DialogHeader>
                   <DialogTitle>
                     Partager le tableau de bord avec vos élèves
@@ -146,7 +146,7 @@ export function UserNav() {
                   <div id="glareCard">
                     <GlareCardComp />
                   </div>
-                  <div className="flex flex-col w-full justify-between h-full">
+                  <div className="flex flex-col w-full justify-between h-full gap-5">
                     <div className="flex flex-col w-full gap-3">
                       <Button
                         variant="outline"
