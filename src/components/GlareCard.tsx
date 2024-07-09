@@ -42,6 +42,12 @@ export function GlareCardComp() {
             <p className="font-medium">
               {getRoleFrench(userProfile?.data?.role ?? "")}
             </p>
+            <p className="text-sm text-muted-foreground">
+              ID :{" "}
+              {userProfile?.data?.myIdShare
+                ? userProfile?.data?.myIdShare
+                : "Non défini"}
+            </p>
           </div>
           <div className="flex justify-between items-center w-full">
             <div className=" text-xs flex items-center">
@@ -50,7 +56,12 @@ export function GlareCardComp() {
               </p>
               <span className="w-4 bg-[#2E3E58]/50 h-[18px] border-t border-b border-[#2E3E58]"></span>
               <p className="border border-[#2E3E58] rounded-r px-1">
-                21 Oct 2023
+                {userProfile?.data?.createdAt
+                  ? new Date(userProfile?.data?.createdAt).toLocaleDateString(
+                      "fr-FR",
+                      { day: "2-digit", month: "short", year: "numeric" }
+                    )
+                  : ""}
               </p>
             </div>
             <div>

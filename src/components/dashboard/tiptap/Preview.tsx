@@ -18,7 +18,7 @@ export const Preview = (props: PreviewProps) => {
       <DialogTrigger asChild>
         <Button variant="outline">Aperçu</Button>
       </DialogTrigger>
-      <DialogContent className="h-full overflow-y-scroll">
+      <DialogContent className="h-full overflow-y-scroll shadow-lg">
         <EditorRootComponent editable={false} initialContent={props.content} />
       </DialogContent>
     </Dialog>

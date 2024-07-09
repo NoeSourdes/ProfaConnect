@@ -37,7 +37,9 @@ model Session {
 
 model UserProfile {
   id        String  @id @default(cuid())
+  myIdShare String  @unique() @default(cuid())
   role      String  @default("STUDENT")
+  createdAt DateTime @default(now())
   level     String? @default("HIGH_SCHOOL")
   onboarded Boolean @default(false)
   userId    String  @unique
