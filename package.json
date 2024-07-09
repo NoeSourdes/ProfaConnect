@@ -13,6 +13,8 @@
   "dependencies": {
     "@ariakit/react": "^0.4.7",
     "@auth/prisma-adapter": "^1.6.0",
+    "@emoji-mart/data": "^1.1.2",
+    "@emoji-mart/react": "^1.1.1",
     "@fullcalendar/core": "^6.1.11",
     "@fullcalendar/daygrid": "^6.1.11",
     "@fullcalendar/interaction": "^6.1.10",
@@ -155,6 +157,7 @@
     "react-lite-youtube-embed": "^2.4.0",
     "react-pdf": "^8.0.2",
     "react-query": "^3.39.3",
+    "react-resizable-panels": "^2.0.20",
     "react-stately": "^3.31.1",
     "react-tweet": "^3.2.1",
     "slate": "^0.103.0",
