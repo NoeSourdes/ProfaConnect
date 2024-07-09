@@ -132,7 +132,7 @@ export function UserNav() {
                   Partager
                 </div>
               </DialogTrigger>
-              <DialogContent className="max-h-[700px] overflow-y-auto">
+              <DialogContent className="max-h-[600px] overflow-y-auto">
                 <DialogHeader>
                   <DialogTitle>
                     Partager le tableau de bord avec vos élèves
