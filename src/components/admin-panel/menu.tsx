@@ -4,6 +4,7 @@ import { Ellipsis, LogOut, Star, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+import { getUserProfileAction } from "@/actions/user/user";
 import { CollapseMenuButton } from "@/src/components/admin-panel/collapse-menu-button";
 import { Button } from "@/src/components/ui/button";
 import { ScrollArea } from "@/src/components/ui/scroll-area";
@@ -15,7 +16,8 @@ import {
 } from "@/src/components/ui/tooltip";
 import { getPages } from "@/src/lib/pages";
 import { cn } from "@/src/lib/utils";
-import { signOut } from "next-auth/react";
+import { useQuery } from "@tanstack/react-query";
+import { signOut, useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import {
   Card,
@@ -30,8 +32,21 @@ interface MenuProps {
 }
 
 export function Menu({ isOpen }: MenuProps) {
+  const { data: user } = useSession();
+
+  const {
+    data: userProfile,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["user", user?.user?.id ?? ""],
+    queryFn: async () => {
+      const userProfile = await getUserProfileAction(user?.user?.id ?? "");
+      return userProfile;
+    },
+  });
   const pathname = usePathname();
-  const pages = getPages(pathname);
+  const pages = getPages(pathname, userProfile?.data?.role ?? "");
   const SEVEN_DAYS_IN_MS = 7 * 24 * 60 * 60 * 1000;
   const [showCardPremium, setShowCardPremium] = useState<boolean>(false);
 

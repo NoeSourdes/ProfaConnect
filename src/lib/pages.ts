@@ -8,6 +8,8 @@ import {
   LayoutGrid,
   MessageCircleMore,
   Settings,
+  Shapes,
+  SquareGanttChart,
 } from "lucide-react";
 
 type Submenu = {
@@ -29,7 +31,63 @@ export type Group = {
   menus: Menu[];
 };
 
-export function getPages(pathname: string): Group[] {
+export function getPages(pathname: string, userRole?: string): Group[] {
+  const contentMenus: (Menu | false)[] = [
+    {
+      href: "",
+      label: "Cours",
+      active: pathname.includes("/courses"),
+      icon: FolderOpenDot,
+      submenus: [
+        {
+          href: "/courses",
+          label: "Tous les cours",
+          active: pathname === "/courses",
+        },
+        {
+          href: "/courses/new_course",
+          label: "Créer un cours",
+          active: pathname === "/courses/new_course",
+        },
+      ],
+    },
+    {
+      href: "/schedule",
+      label: "Calendrier",
+      active: pathname.includes("/schedule"),
+      icon: CalendarDays,
+      submenus: [],
+    },
+    {
+      href: "/messaging",
+      label: "Messagerie",
+      active: pathname.includes("/messaging"),
+      icon: MessageCircleMore,
+      submenus: [],
+    },
+    {
+      href: "/games",
+      label: "Mini-jeux",
+      active: pathname.includes("/games"),
+      icon: Gamepad2,
+      submenus: [],
+    },
+    userRole === "TEACHER" && {
+      href: "/classroom",
+      label: "Ma classe",
+      active: pathname.includes("/classroom"),
+      icon: Shapes,
+      submenus: [],
+    },
+    userRole === "STUDENT" && {
+      href: "/internship",
+      label: "Mon livret de stage",
+      active: pathname.includes("/internship"),
+      icon: SquareGanttChart,
+      submenus: [],
+    },
+  ];
+
   return [
     {
       groupLabel: "",
@@ -45,47 +103,7 @@ export function getPages(pathname: string): Group[] {
     },
     {
       groupLabel: "Contenu",
-      menus: [
-        {
-          href: "",
-          label: "Cours",
-          active: pathname.includes("/courses"),
-          icon: FolderOpenDot,
-          submenus: [
-            {
-              href: "/courses",
-              label: "Tous les cours",
-              active: pathname === "/courses",
-            },
-            {
-              href: "/courses/new_course",
-              label: "Créer un cours",
-              active: pathname === "/courses/new_course",
-            },
-          ],
-        },
-        {
-          href: "/schedule",
-          label: "Calendrier",
-          active: pathname.includes("/schedule"),
-          icon: CalendarDays,
-          submenus: [],
-        },
-        {
-          href: "/messaging",
-          label: "Messagerie",
-          active: pathname.includes("/messaging"),
-          icon: MessageCircleMore,
-          submenus: [],
-        },
-        {
-          href: "/games",
-          label: "Mini-jeux",
-          active: pathname.includes("/games"),
-          icon: Gamepad2,
-          submenus: [],
-        },
-      ],
+      menus: contentMenus.filter((menu): menu is Menu => Boolean(menu)), // Ajoutez ce filtre pour enlever les valeurs falsy
     },
     {
       groupLabel: "Lien rapide",
@@ -97,13 +115,6 @@ export function getPages(pathname: string): Group[] {
           icon: Settings,
           submenus: [],
         },
-        // {
-        //   href: "Profile",
-        //   label: "Profil",
-        //   active: pathname.includes("/profile"),
-        //   icon: User,
-        //   submenus: [],
-        // },
         {
           href: "FAQ",
           label: "Centre d'aide",
@@ -215,6 +226,20 @@ export async function pagesUrl(pathname: string): Promise<Group[]> {
           label: "Mini-jeux",
           active: pathname.includes("/games"),
           icon: Gamepad2,
+          submenus: [],
+        },
+        {
+          href: "/classroom",
+          label: "Ma classe",
+          active: pathname.includes("/classroom"),
+          icon: Shapes,
+          submenus: [],
+        },
+        {
+          href: "/internship",
+          label: "Mon livret de stage",
+          active: pathname.includes("/internship"),
+          icon: SquareGanttChart,
           submenus: [],
         },
       ],

@@ -6,18 +6,19 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from "@/src/components/ui/dialog-onboarding";
+} from "@/src/components/ui/dialog-shared";
 import { useSession } from "next-auth/react";
 import { GiTeacher } from "react-icons/gi";
-import { PiStudent } from "react-icons/pi";
+import { PiStudentFill } from "react-icons/pi";
 import { RiParentFill } from "react-icons/ri";
 
 import { updateUserAction } from "@/actions/user/user";
-import { Button } from "@/src/components/ui/button";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
 import React from "react";
 import { toast } from "sonner";
+import { Button } from "../ui/button";
+import { DialogFooter } from "../ui/dialog";
 
 type UserProfile = {
   id: string;
@@ -73,7 +74,7 @@ export const Onboarding = (props: OnboardingProps) => {
   return (
     <Dialog open={props.userProfile.onboarded === false}>
       <DialogContent>
-        <div className="w-full h-64 flex flex-col justify-between">
+        <div className="w-full h-80 flex flex-col justify-between">
           <DialogHeader>
             <DialogTitle className="flex justify-start">
               Bienvenue, faisons connaissance ! 👋
@@ -83,15 +84,15 @@ export const Onboarding = (props: OnboardingProps) => {
             </DialogDescription>
           </DialogHeader>
           {steps === 1 && (
-            <div className="w-full space-y-2">
+            <div className="w-full space-y-2 h-full flex flex-col mt-3">
               <h4 className="font-medium text-sm">
                 Quel est votre rôle dans l'éducation ?
               </h4>
-              <div className="flex justify-between items-center gap-3 w-full">
+              <div className="flex justify-between items-center gap-3 w-full grow">
                 {["Étudiant", "Enseignant", "Parent"].map((value, index) => (
                   <div
                     key={index}
-                    className={` flex items-center justify-center w-full border rounded-lg p-4 cursor-pointer hover:ring-2 ring-primary transition-all duration-200 ${
+                    className={` flex items-center justify-center w-full border rounded-lg p-4 cursor-pointer hover:ring-2 ring-primary transition-all duration-200 h-full ${
                       role ===
                       dict_roles_user[value as keyof typeof dict_roles_user]
                         ? "ring-primary ring-2"
@@ -105,7 +106,7 @@ export const Onboarding = (props: OnboardingProps) => {
                   >
                     <div className="flex items-center justify-center flex-col gap-2">
                       <div className="text-5xl">
-                        {index === 0 && <PiStudent />}
+                        {index === 0 && <PiStudentFill />}
                         {index === 1 && <GiTeacher />}
                         {index === 2 && <RiParentFill />}
                       </div>
@@ -117,16 +118,16 @@ export const Onboarding = (props: OnboardingProps) => {
             </div>
           )}
           {steps === 2 && (
-            <div className="w-full space-y-2">
+            <div className="w-full space-y-2 h-full flex flex-col mt-3">
               <h4 className="font-medium text-sm">
                 Dans quelle niveau êtes-vous ?
               </h4>
-              <div className="grid grid-cols-4 gap-2 w-full">
+              <div className="grid grid-cols-4 gap-2 w-full grow">
                 {[
                   "Primaire",
                   "Collège",
                   "Lycée",
-                  "Post-Bac",
+                  "Post-B",
                   "Licence",
                   "Master",
                   "Doctorat",
@@ -151,6 +152,8 @@ export const Onboarding = (props: OnboardingProps) => {
               </div>
             </div>
           )}
+        </div>
+        <DialogFooter>
           <div className="flex items-center gap-2 w-full justify-between">
             <div className="flex items-center gap-2">
               <p className="text-sm text-muted-foreground">{steps}/2</p>
@@ -202,7 +205,7 @@ export const Onboarding = (props: OnboardingProps) => {
               )}
             </div>
           </div>
-        </div>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );
