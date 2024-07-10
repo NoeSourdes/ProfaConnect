@@ -47,9 +47,9 @@ model UserProfile {
 }
 
 model User {
-  id            String    @id @default(cuid())
+  id            String      @id @default(cuid())
   name          String?
-  email         String?   @unique
+  email         String?     @unique
   emailVerified DateTime?
   image         String?
   profile       UserProfile?
@@ -58,7 +58,10 @@ model User {
   courses       Course[]
   lessons       Lesson[]
   events        Event[]
+  classrooms    Classroom[] @relation(name: "ProfessorInClassroom")
+  enrolledClassrooms Classroom[] @relation(name: "StudentInClassroom")
 }
+
 
 
 
@@ -125,4 +128,12 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+model Classroom {
+  idClassroom  String @id @default(cuid())
+  name         String
+  professorId  String
+  professor    User    @relation(fields: [professorId], references: [id], name: "ProfessorInClassroom")
+  students     User[]  @relation(name: "StudentInClassroom")
 }

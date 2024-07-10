@@ -1,6 +1,8 @@
 "use client";
 
 import { Avatar, AvatarImage } from "@/src/components/ui/avatar";
+import { Button } from "@/src/components/ui/button";
+import { Input } from "@/src/components/ui/input";
 import {
   Tooltip,
   TooltipContent,
@@ -8,9 +10,7 @@ import {
   TooltipTrigger,
 } from "@/src/components/ui/tooltip";
 import { cn } from "@/src/lib/utils";
-import { MoreHorizontal, SquarePen } from "lucide-react";
-import { useSession } from "next-auth/react";
-import Image from "next/image";
+import { Search, SquarePen } from "lucide-react";
 import Link from "next/link";
 import { Message } from "../../../../../app/(admin)/messaging/data";
 import { buttonVariants } from "./ui/button";
@@ -28,48 +28,34 @@ interface SidebarProps {
 }
 
 export function Sidebar({ links, isCollapsed, isMobile }: SidebarProps) {
-  const session = useSession();
+  console.log("isCollapsed", isCollapsed);
+  console.log("links", links);
   return (
     <div
       data-collapsed={isCollapsed}
       className="relative group flex flex-col h-full gap-4 p-2 data-[collapsed=true]:p-2"
     >
-      {!isCollapsed && (
-        <div className="flex justify-between p-2 items-center">
-          <div className="flex gap-2 items-center">
-            <Image
-              src={session?.data?.user?.image ?? ""}
-              alt="Logo"
-              width={40}
-              height={40}
-              className="rounded-full"
+      <div className="flex justify-between gap-2 p-2 items-center">
+        {!isCollapsed && (
+          <div className="w-full relative">
+            <Input
+              className="w-full pl-9"
+              type="text"
+              placeholder="Rechercher..."
             />
-            <p className="font-medium">{session?.data?.user?.name ?? ""}</p>
+            <Search
+              className="absolute left-[10px] top-[10px] text-gray-400"
+              size={20}
+            />
           </div>
+        )}
 
-          <div>
-            <Link
-              href="#"
-              className={cn(
-                buttonVariants({ variant: "ghost", size: "icon" }),
-                "h-9 w-9"
-              )}
-            >
-              <MoreHorizontal size={20} />
-            </Link>
-
-            <Link
-              href="#"
-              className={cn(
-                buttonVariants({ variant: "ghost", size: "icon" }),
-                "h-9 w-9"
-              )}
-            >
-              <SquarePen size={20} />
-            </Link>
-          </div>
+        <div className={`${isCollapsed && "w-full flex justify-center"}`}>
+          <Button variant="ghost" size="icon" tooltip="Nouveau message">
+            <SquarePen size={20} />
+          </Button>
         </div>
-      )}
+      </div>
       <nav className="grid gap-1 px-2 group-[[data-collapsed=true]]:justify-center group-[[data-collapsed=true]]:px-2">
         {links.map((link, index) =>
           isCollapsed ? (

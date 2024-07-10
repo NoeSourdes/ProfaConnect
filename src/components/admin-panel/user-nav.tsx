@@ -38,7 +38,6 @@ import {
   Mail,
   QrCode,
   Settings,
-  Shapes,
   SquareArrowUpRight,
   User,
 } from "lucide-react";
@@ -224,14 +223,6 @@ export function UserNav() {
               </kbd>
             </DropdownMenuItem>
           </div>
-          {userProfile?.data?.role === "TEACHER" && (
-            <DropdownMenuItem className="hover:cursor-pointer" asChild>
-              <Link href="/settings" className="flex items-center">
-                <Shapes className="w-4 h-4 mr-3 text-muted-foreground" />
-                Ma classe
-              </Link>
-            </DropdownMenuItem>
-          )}
           <DropdownMenuItem className="hover:cursor-pointer" asChild>
             <Link href="/settings" className="flex items-center">
               <Settings className="w-4 h-4 mr-3 text-muted-foreground" />
