@@ -4,7 +4,7 @@ import { getUserProfileAction } from "@/actions/user/user";
 import { Footer } from "@/src/components/admin-panel/footer";
 import { Navbar } from "@/src/components/admin-panel/navbar";
 import { Sidebar } from "@/src/components/admin-panel/sidebar";
-import { Onboarding } from "@/src/components/dashboard/Onbording";
+import { Onboarding } from "@/src/components/dashboard/onbording/Onbording";
 import { useSidebarToggle } from "@/src/hooks/use-sidebar-toggle";
 import { useStore } from "@/src/hooks/use-store";
 import { cn } from "@/src/lib/utils";

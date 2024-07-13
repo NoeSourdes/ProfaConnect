@@ -69,7 +69,7 @@ export function CommandDialogSideBar({
       <CommandDialog open={open} onOpenChange={setOpen}>
         <CommandInput placeholder="Type a command or search..." />
         <CommandList className="">
-          <CommandEmpty>No results found.</CommandEmpty>
+          <CommandEmpty>Aucun résultat trouvé</CommandEmpty>
           <CommandGroup heading="Suggestions">
             <CommandItem>Calendar</CommandItem>
             <CommandItem>Search Emoji</CommandItem>

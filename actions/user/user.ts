@@ -8,6 +8,7 @@ export const updateUserAction = userAction(
   z.object({
     role: z.string(),
     level: z.string(),
+    gender: z.string(),
   }),
   async (data, context) => {
     const userProfile = await prisma.userProfile.update({
@@ -15,6 +16,12 @@ export const updateUserAction = userAction(
         userId: context.user.id,
       },
       data: {
+        publicName:
+          data.gender === "BOY"
+            ? "M. " + context.user.name.split(" ")[1]
+            : data.gender === "GIRL"
+            ? "Mme. " + context.user.name.split(" ")[1]
+            : "Mx. " + context.user.name.split(" ")[1],
         role: data.role,
         level: data.level,
         onboarded: true,
@@ -35,3 +42,12 @@ export const getUserProfileAction = userAction(
     return userProfile;
   }
 );
+
+export const getAllTeachersAction = async () => {
+  const teachers = await prisma.userProfile.findMany({
+    where: {
+      role: "TEACHER",
+    },
+  });
+  return teachers;
+};
