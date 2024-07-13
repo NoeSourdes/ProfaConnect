@@ -28,6 +28,7 @@ import {
 
 export type ButtonCreateCategoryProps = {
   buttonString?: boolean;
+  buttonString2?: boolean;
 };
 
 export const ButtonCreateCategory = (props: ButtonCreateCategoryProps) => {
@@ -72,13 +73,17 @@ export const ButtonCreateCategory = (props: ButtonCreateCategoryProps) => {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button
-          variant="secondary"
-          size={props.buttonString ? "sm" : "icon_sm"}
-          className={props.buttonString ? "w-full" : ""}
-        >
-          {props.buttonString ? "Ajouter une catégorie" : <Plus size={18} />}
-        </Button>
+        {props.buttonString2 ? (
+          <Button className="w-full">Créer une catégorie</Button>
+        ) : (
+          <Button
+            variant="secondary"
+            size={props.buttonString ? "sm" : "icon_sm"}
+            className={props.buttonString ? "w-full" : ""}
+          >
+            {props.buttonString ? "Ajouter une catégorie" : <Plus size={18} />}
+          </Button>
+        )}
       </PopoverTrigger>
       <PopoverContent className="sm:max-w-[425px]">
         <div>

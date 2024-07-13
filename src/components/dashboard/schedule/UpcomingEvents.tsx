@@ -90,9 +90,12 @@ export const UpcomingEvents = (props: UpcomingEventsProps) => {
           </p>
         )}
         {todayEvents && todayEvents.length === 0 && (
-          <p className="text-sm text-muted-foreground font-medium p-2">
-            Aucun événement à venir
-          </p>
+          <div className=" p-3 m-2 text-center border rounded">
+            <p className="text-sm text-muted-foreground font-medium p-2">
+              Aucun événement aujourd'hui
+            </p>
+            <ModalEventForm />
+          </div>
         )}
         {todayEvents &&
           sortEvents(todayEvents).map((event: EventType, index: number) => (
