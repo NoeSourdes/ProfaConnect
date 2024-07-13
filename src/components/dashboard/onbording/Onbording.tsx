@@ -1,12 +1,5 @@
 "use client";
 
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/src/components/ui/dialog-shared";
 import { useSession } from "next-auth/react";
 
 import {
@@ -14,13 +7,20 @@ import {
   updateCLassroomAddStudent,
 } from "@/actions/classroom/classroom.actions";
 import { updateUserAction } from "@/actions/user/user";
+import {
+  ResponsiveModal,
+  ResponsiveModalContent,
+  ResponsiveModalDescription,
+  ResponsiveModalFooter,
+  ResponsiveModalHeader,
+  ResponsiveModalTitle,
+} from "@/src/components/expenssion/modal-responsive-2xl";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AnimatePresence } from "framer-motion";
 import { Loader2 } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Button } from "../../ui/button";
-import { DialogFooter } from "../../ui/dialog";
 import { Step1 } from "./steps/step1";
 import { Step2 } from "./steps/step2";
 import { Step3 } from "./steps/step3";
@@ -150,17 +150,17 @@ export const Onboarding = (props: OnboardingProps) => {
   };
 
   return (
-    <Dialog open={props.userProfile.onboarded === false}>
-      <DialogContent className="overflow-hidden">
+    <ResponsiveModal open={props.userProfile.onboarded === false}>
+      <ResponsiveModalContent className="overflow-hidden">
         <div className="w-full h-[340px] flex flex-col justify-between">
-          <DialogHeader>
-            <DialogTitle className="flex justify-start">
+          <ResponsiveModalHeader>
+            <ResponsiveModalTitle className="flex justify-start">
               Bienvenue, faisons connaissance ! 👋
-            </DialogTitle>
-            <DialogDescription>
+            </ResponsiveModalTitle>
+            <ResponsiveModalDescription>
               Pour commencer, veuillez remplir les informations ci-dessous.
-            </DialogDescription>
-          </DialogHeader>
+            </ResponsiveModalDescription>
+          </ResponsiveModalHeader>
           <AnimatePresence mode="wait" initial={false} custom={direction}>
             {steps === 1 && (
               <Step1
@@ -203,7 +203,7 @@ export const Onboarding = (props: OnboardingProps) => {
               ))}
           </AnimatePresence>
         </div>
-        <DialogFooter>
+        <ResponsiveModalFooter>
           <div className="flex items-center gap-2 w-full justify-between">
             <div className="flex items-center gap-2">
               <p className="text-sm text-muted-foreground">{steps}/4</p>
@@ -258,8 +258,8 @@ export const Onboarding = (props: OnboardingProps) => {
               )}
             </div>
           </div>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+        </ResponsiveModalFooter>
+      </ResponsiveModalContent>
+    </ResponsiveModal>
   );
 };
