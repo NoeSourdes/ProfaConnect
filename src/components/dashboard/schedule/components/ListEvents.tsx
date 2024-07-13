@@ -1,12 +1,15 @@
 "use client";
 
+import { Button } from "@/src/components/ui/button";
 import { Skeleton } from "@/src/components/ui/skeleton";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import { EllipsisVertical } from "lucide-react";
+import Link from "next/link";
 import { colorClassesClean } from "../actions/color";
 import { checkHour, sortEventsByDate } from "../actions/hour";
 import { EventType } from "../actions/types/events-type";
+import { ModalEventForm } from "./ModalEventForm";
 import { PopoverManagementEvents } from "./popoverManagementEvents";
 
 export type ListEventsProps = {
@@ -38,7 +41,7 @@ export const ListEvents = (props: ListEventsProps) => {
           </div>
         </div>
       </section>
-      <div className="border rounded-lg w-full overflow-hidden bg-background">
+      <div className="border rounded-lg w-full overflow-hidden bg-background relative">
         <div className=" max-h-[638px] min-h-[638px] overflow-y-auto">
           {props.isLoading && (
             <div className="flex flex-col gap-3 w-full p-2">
@@ -59,14 +62,37 @@ export const ListEvents = (props: ListEventsProps) => {
             </div>
           )}
           {props.isError && (
-            <p className="text-sm text-muted-foreground font-medium p-2">
-              Erreur lors du chargement des événements
-            </p>
+            <div className="absolute inset-0 p-3">
+              <div className="w-full h-full flex items-center flex-col justify-center border-2 border-dashed rounded-lg">
+                <div className="">
+                  <p className="text-sm text-muted-foreground font-medium p-2">
+                    Erreur lors du chargement des événements
+                  </p>
+                  <Button
+                    onClick={() => {
+                      window.location.reload();
+                    }}
+                  >
+                    Réessayer
+                  </Button>
+                  <Link href="/dashboard">
+                    <Button variant="outline">Retour au tableau de bord</Button>
+                  </Link>
+                </div>
+              </div>
+            </div>
           )}
           {eventsMonth && eventsMonth.length === 0 && (
-            <p className="text-sm text-muted-foreground font-medium p-2">
-              Aucun événement à venir
-            </p>
+            <div className="absolute inset-0 p-3">
+              <div className="w-full h-full flex items-center flex-col justify-center border-2 border-dashed rounded-lg">
+                <div className="">
+                  <p className="text-sm text-muted-foreground font-medium p-2">
+                    Aucun événement ce mois-ci
+                  </p>
+                  <ModalEventForm />
+                </div>
+              </div>
+            </div>
           )}
           {eventsMonth &&
             sortEventsByDate(eventsMonth).map(

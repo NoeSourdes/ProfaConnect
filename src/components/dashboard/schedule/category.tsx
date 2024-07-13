@@ -159,7 +159,7 @@ export const Categories = (props: categoriesProps) => {
           <ButtonCreateCategory />
         </div>
       </div>
-      <div className="py-3 px-2 text-sm text-muted-foreground">
+      <div className="p-2 text-sm text-muted-foreground">
         {isLoading ? (
           <div className="flex flex-col gap-3 w-full">
             {Array(3)
@@ -180,7 +180,12 @@ export const Categories = (props: categoriesProps) => {
         ) : isError ? (
           <div>Une erreur est survenue</div>
         ) : categories?.length === 0 ? (
-          <div>Aucune catégorie</div>
+          <div className=" p-3 text-center border rounded">
+            <p className="text-sm text-muted-foreground font-medium p-2">
+              Aucune catégorie n'a été créée
+            </p>
+            <ButtonCreateCategory buttonString2 />
+          </div>
         ) : (
           <div>
             <div className="flex flex-col gap-3 w-full">
