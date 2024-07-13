@@ -6,15 +6,15 @@ import {
 } from "@/app/(admin)/courses/[coursId]/[lessonId]/edit/lesson.action";
 import { lessonTypeGlobal } from "@/app/(admin)/courses/[coursId]/[lessonId]/edit/lesson.schema";
 import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/src/components/ui/dialog";
+  ResponsiveModal,
+  ResponsiveModalClose,
+  ResponsiveModalContent,
+  ResponsiveModalFooter,
+  ResponsiveModalHeader,
+  ResponsiveModalTitle,
+  ResponsiveModalTrigger,
+} from "@/src/components/expenssion/modal-responsive";
 import { Input } from "@/src/components/ui/input";
-import { DialogClose } from "@radix-ui/react-dialog";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ExternalLink, FolderPen, Loader2, Pen, Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -100,9 +100,9 @@ export const PopoverActionLesson = (props: PopoverActionLessonProps) => {
           name: "delete",
         },
       ].map((button, index) => (
-        <Dialog key={index} open={open} onOpenChange={setOpen}>
+        <ResponsiveModal open={open} onOpenChange={setOpen} key={index}>
           {button.name === "rename" ? (
-            <DialogTrigger asChild>
+            <ResponsiveModalTrigger asChild>
               <Button
                 className={`flex justify-start items-center gap-2 pl-2 rounded`}
                 variant="ghost"
@@ -113,7 +113,7 @@ export const PopoverActionLesson = (props: PopoverActionLessonProps) => {
                 {button.icon}
                 {button.text}
               </Button>
-            </DialogTrigger>
+            </ResponsiveModalTrigger>
           ) : (
             <Button
               className={`flex justify-start items-center gap-2 pl-2 rounded transition-all ${
@@ -131,11 +131,13 @@ export const PopoverActionLesson = (props: PopoverActionLessonProps) => {
             </Button>
           )}
           {button.text === "Renommer" && (
-            <DialogContent className="p-6 shadow-lg">
+            <ResponsiveModalContent className="p-6 shadow-lg">
               <div className="flex flex-col gap-4">
-                <DialogHeader>
-                  <DialogTitle>Renommer la lesson</DialogTitle>
-                </DialogHeader>
+                <ResponsiveModalHeader>
+                  <ResponsiveModalTitle>
+                    Renommer la lesson
+                  </ResponsiveModalTitle>
+                </ResponsiveModalHeader>
 
                 <Input
                   id="name"
@@ -146,10 +148,10 @@ export const PopoverActionLesson = (props: PopoverActionLessonProps) => {
                   }}
                 />
 
-                <DialogFooter>
-                  <DialogClose>
+                <ResponsiveModalFooter>
+                  <ResponsiveModalClose>
                     <Button variant="ghost">Annuler</Button>
-                  </DialogClose>
+                  </ResponsiveModalClose>
                   <Button
                     disabled={isPending}
                     onClick={() => {
@@ -165,11 +167,11 @@ export const PopoverActionLesson = (props: PopoverActionLessonProps) => {
                     )}
                     Renommer
                   </Button>
-                </DialogFooter>
+                </ResponsiveModalFooter>
               </div>
-            </DialogContent>
+            </ResponsiveModalContent>
           )}
-        </Dialog>
+        </ResponsiveModal>
       ))}
     </>
   );

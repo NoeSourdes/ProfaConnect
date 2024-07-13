@@ -1,6 +1,13 @@
 "use client";
 
 import { getUserProfileAction } from "@/actions/user/user";
+import {
+  ResponsiveModal,
+  ResponsiveModalContent,
+  ResponsiveModalHeader,
+  ResponsiveModalTitle,
+  ResponsiveModalTrigger,
+} from "@/src/components/expenssion/modal-responsive-2xl";
 import { AnimatedSubscribeButton } from "@/src/components/magicui/animated-subscribe-button";
 import {
   Avatar,
@@ -8,14 +15,7 @@ import {
   AvatarImage,
 } from "@/src/components/ui/avatar";
 import { Button } from "@/src/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/src/components/ui/dialog-shared";
+import { DialogDescription } from "@/src/components/ui/dialog-shared";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -124,24 +124,24 @@ export function UserNav() {
             </Link>
           </DropdownMenuItem>
           <div className="flex items-center justify-between">
-            <Dialog>
-              <DialogTrigger asChild>
+            <ResponsiveModal>
+              <ResponsiveModalTrigger asChild>
                 <div className="hover:cursor-pointer w-[127px] relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 hover:bg-secondary">
                   <SquareArrowUpRight className="w-4 h-4 mr-3 text-muted-foreground" />{" "}
                   Partager
                 </div>
-              </DialogTrigger>
-              <DialogContent className="max-h-[600px] overflow-y-auto">
-                <DialogHeader>
-                  <DialogTitle>
+              </ResponsiveModalTrigger>
+              <ResponsiveModalContent className="max-h-[600px] overflow-y-auto">
+                <ResponsiveModalHeader>
+                  <ResponsiveModalTitle>
                     Partager le tableau de bord avec vos élèves
-                  </DialogTitle>
+                  </ResponsiveModalTitle>
                   <DialogDescription>
                     Partagez cette carte avec vos élèves pour qu'ils puissent
                     accéder à votre contenu mis en ligne sur le tableau de bord.
                   </DialogDescription>
-                </DialogHeader>
-                <div className="flex items-start max-sm:flex-col max-sm:items-center gap-6">
+                </ResponsiveModalHeader>
+                <div className="flex items-start max-sm:flex-col max-lg:mt-5 max-sm:items-center gap-6">
                   <div id="glareCard">
                     <GlareCardComp />
                   </div>
@@ -207,8 +207,8 @@ export function UserNav() {
                     </div>
                   </div>
                 </div>
-              </DialogContent>
-            </Dialog>
+              </ResponsiveModalContent>
+            </ResponsiveModal>
             <DropdownMenuItem className="hover:cursor-pointer" asChild>
               <kbd
                 onClick={() => {

@@ -23,14 +23,14 @@ import {
 } from "lucide-react";
 import { eventSchema, eventType } from "../actions/events/event.schema";
 
-import { Calendar } from "@/src/components/ui/calendar";
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/src/components/ui/dialog";
+  ResponsiveModal,
+  ResponsiveModalContent,
+  ResponsiveModalHeader,
+  ResponsiveModalTitle,
+  ResponsiveModalTrigger,
+} from "@/src/components/expenssion/modal-responsive";
+import { Calendar } from "@/src/components/ui/calendar";
 import {
   Popover,
   PopoverContent,
@@ -199,8 +199,8 @@ export const ModalEventForm = (props: ModalEventFormProps) => {
   });
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
+    <ResponsiveModal open={open} onOpenChange={setOpen}>
+      <ResponsiveModalTrigger asChild>
         <Button
           size={isCreate ? (props.icon ? "icon_sm" : "default") : "sm"}
           variant={isCreate ? (props.icon ? "secondary" : "default") : "ghost"}
@@ -225,11 +225,11 @@ export const ModalEventForm = (props: ModalEventFormProps) => {
             </>
           )}
         </Button>
-      </DialogTrigger>
-      <DialogContent className="overflow-auto sm:p-6 p-3 shadow-lg">
-        <DialogHeader>
-          <DialogTitle>Créer un événement</DialogTitle>
-        </DialogHeader>
+      </ResponsiveModalTrigger>
+      <ResponsiveModalContent className="overflow-auto sm:p-6 p-3 shadow-lg max-h-[600px]">
+        <ResponsiveModalHeader>
+          <ResponsiveModalTitle>Créer un événement</ResponsiveModalTitle>
+        </ResponsiveModalHeader>
         <Form
           className="flex flex-col gap-4"
           form={form}
@@ -453,7 +453,7 @@ export const ModalEventForm = (props: ModalEventFormProps) => {
             )}
           </Button>
         </Form>
-      </DialogContent>
-    </Dialog>
+      </ResponsiveModalContent>
+    </ResponsiveModal>
   );
 };
