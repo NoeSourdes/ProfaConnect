@@ -37,6 +37,7 @@ model Session {
 
 model UserProfile {
   id        String  @id @default(cuid())
+  publicName String?
   myIdShare String  @unique() @default(cuid())
   role      String  @default("STUDENT")
   createdAt DateTime @default(now())
@@ -132,8 +133,11 @@ model VerificationToken {
 
 model Classroom {
   idClassroom  String @id @default(cuid())
-  name         String
+  title         String
+  description  String
   professorId  String
   professor    User    @relation(fields: [professorId], references: [id], name: "ProfessorInClassroom")
   students     User[]  @relation(name: "StudentInClassroom")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }

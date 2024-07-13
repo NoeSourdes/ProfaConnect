@@ -1,9 +1,14 @@
-import { BreadcrumbComponent } from "@/src/components/dashboard/Breadcrumb";
-import { requiredCurrentUser } from "@/src/lib/auth/current-user";
+"use client";
 
-export default async function Page() {
-  const user = await requiredCurrentUser();
-  const surname = user?.name?.split(" ")[0];
+import { getClassroomsByProfessorIdAction } from "@/actions/classroom/classroom.actions";
+import { BreadcrumbComponent } from "@/src/components/dashboard/Breadcrumb";
+import { useQuery } from "@tanstack/react-query";
+import { useSession } from "next-auth/react";
+
+export default function Page() {
+  const { data: session } = useSession();
+  const surname = session?.user?.name?.split(" ")[0];
+
   return (
     <>
       <BreadcrumbComponent

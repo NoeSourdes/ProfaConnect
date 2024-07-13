@@ -72,9 +72,9 @@ export function getPages(pathname: string, userRole?: string): Group[] {
       icon: Gamepad2,
       submenus: [],
     },
-    userRole === "TEACHER" && {
+    {
       href: "/classroom",
-      label: "Ma classe",
+      label: "Mes classes",
       active: pathname.includes("/classroom"),
       icon: Shapes,
       submenus: [],
@@ -230,7 +230,7 @@ export async function pagesUrl(pathname: string): Promise<Group[]> {
         },
         {
           href: "/classroom",
-          label: "Ma classe",
+          label: "Mes classes",
           active: pathname.includes("/classroom"),
           icon: Shapes,
           submenus: [],
