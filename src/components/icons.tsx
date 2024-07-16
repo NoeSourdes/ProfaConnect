@@ -1,5 +1,3 @@
-import React from "react";
-
 import type { IconProps } from "@radix-ui/react-icons/dist/types";
 
 import { cva } from "class-variance-authority";
@@ -47,8 +45,6 @@ import {
   List,
   ListOrdered,
   Loader2,
-  type LucideIcon,
-  type LucideProps,
   MessageSquare,
   MessageSquarePlus,
   Minus,
@@ -84,7 +80,10 @@ import {
   Unlink,
   WrapText,
   X,
+  type LucideIcon,
+  type LucideProps,
 } from "lucide-react";
+import { FaGoogle } from "react-icons/fa";
 
 export type Icon = LucideIcon;
 
@@ -426,6 +425,7 @@ export const Icons = {
   excalidraw: PenTool,
   externalLink: ExternalLink,
   gitHub,
+  google: FaGoogle,
   h1: Heading1,
   h2: Heading2,
   h3: Heading3,
