@@ -39,7 +39,11 @@ export default function RootLayout({
           />
           <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
           <Providers>
-            <TooltipProvider>{children}</TooltipProvider>
+            <TooltipProvider>
+              <div vaul-drawer-wrapper="" className="bg-background">
+                {children}
+              </div>
+            </TooltipProvider>
           </Providers>
         </body>
       </html>
