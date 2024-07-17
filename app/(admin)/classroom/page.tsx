@@ -3,21 +3,21 @@
 import { getClassroomsByProfessorIdAction } from "@/actions/classroom/classroom.actions";
 import { BreadcrumbComponent } from "@/src/components/dashboard/Breadcrumb";
 import { Button } from "@/src/components/ui/button";
+import {
+  Credenza,
+  CredenzaBody,
+  CredenzaClose,
+  CredenzaContent,
+  CredenzaDescription,
+  CredenzaFooter,
+  CredenzaHeader,
+  CredenzaTitle,
+  CredenzaTrigger,
+} from "@/src/components/ui/credenza";
 import { useQuery } from "@tanstack/react-query";
 import { Undo2 } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-
-import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerDescription,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from "@/src/components/ui/drawer";
 
 export default function Page() {
   const { data: session } = useSession();
@@ -52,57 +52,28 @@ export default function Page() {
       </div>
       <div className="w-full h-full flex justify-between ">
         <section className="mt-2 w-full h-full">
-          <Drawer>
-            <DrawerTrigger asChild>
-              <Button variant="outline">Open Drawer</Button>
-            </DrawerTrigger>
-            <DrawerContent>
-              <div className="mx-auto w-full max-w-sm">
-                <DrawerHeader>
-                  <DrawerTitle>Move Goal</DrawerTitle>
-                  <DrawerDescription>
-                    Set your daily activity goal.
-                  </DrawerDescription>
-                </DrawerHeader>
-                <div className="p-4 pb-0 max-h-[200px] h-full flex flex-col overflow-y-auto">
-                  <span>bonjout</span>
-                  <span>bonjout</span>
-                  <span>bonjout</span>
-                  <span>bonjout</span>
-                  <span>bonjout</span>
-                  <span>bonjout</span>
-                  <span>bonjout</span>
-                  <span>bonjout</span>
-                  <span>bonjout</span>
-                  <span>bonjout</span>
-                  <span>bonjout</span>
-                  <span>bonjout</span>
-                  <span>bonjout</span>
-                  <span>bonjout</span>
-                  <span>bonjout</span>
-                  <span>bonjout</span>
-                  <span>bonjout</span>
-                  <span>bonjout</span>
-                  <span>bonjout</span>
-                  <span>bonjout</span>
-                  <span>bonjout</span>
-                  <span>bonjout</span>
-                  <span>bonjout</span>
-                  <span>bonjout</span>
-                  <span>bonjout</span>
-                  <span>bonjout</span>
-                  <span>bonjout</span>
-                  <span>bonjout</span>
-                </div>
-                <DrawerFooter>
-                  <Button>Submit</Button>
-                  <DrawerClose asChild>
-                    <Button variant="outline">Cancel</Button>
-                  </DrawerClose>
-                </DrawerFooter>
-              </div>
-            </DrawerContent>
-          </Drawer>
+          <Credenza>
+            <CredenzaTrigger asChild>
+              <Button>Open modal</Button>
+            </CredenzaTrigger>
+            <CredenzaContent className="p-6">
+              <CredenzaHeader>
+                <CredenzaTitle>Credenza</CredenzaTitle>
+                <CredenzaDescription>
+                  A responsive modal component for shadcn/ui.
+                </CredenzaDescription>
+              </CredenzaHeader>
+              <CredenzaBody>
+                This component is built using shadcn/ui&apos;s dialog and drawer
+                component, which is built on top of Vaul.
+              </CredenzaBody>
+              <CredenzaFooter>
+                <CredenzaClose asChild>
+                  <button>Close</button>
+                </CredenzaClose>
+              </CredenzaFooter>
+            </CredenzaContent>
+          </Credenza>
         </section>
       </div>
     </div>
