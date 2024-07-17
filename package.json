@@ -160,6 +160,7 @@
     "react-resizable-panels": "^2.0.20",
     "react-stately": "^3.31.1",
     "react-tweet": "^3.2.1",
+    "recharts": "^2.12.7",
     "slate": "^0.103.0",
     "slate-history": "^0.100.0",
     "slate-hyperscript": "^0.100.0",
