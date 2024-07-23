@@ -3,11 +3,11 @@
 import { useQuery } from "@tanstack/react-query";
 import { Calendar, EllipsisVertical } from "lucide-react";
 import { useSession } from "next-auth/react";
+import { colorClassesClean } from "../../../../app/(admin)/schedule/color";
+import { getEventAction } from "../../../../app/(admin)/schedule/events/event.action";
+import { checkHour, sortEvents } from "../../../../app/(admin)/schedule/hour";
+import { EventType } from "../../../../app/(admin)/schedule/types/events-type";
 import { Skeleton } from "../../ui/skeleton";
-import { colorClassesClean } from "./actions/color";
-import { getEventAction } from "./actions/events/event.action";
-import { checkHour, sortEvents } from "./actions/hour";
-import { EventType } from "./actions/types/events-type";
 import { ModalEventForm } from "./components/ModalEventForm";
 import { PopoverManagementEvents } from "./components/popoverManagementEvents";
 

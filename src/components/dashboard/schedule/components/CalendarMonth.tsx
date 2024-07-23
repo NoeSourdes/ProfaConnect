@@ -9,9 +9,15 @@ import { Ellipsis } from "lucide-react";
 import moment from "moment";
 import "moment/locale/fr";
 import { useEffect, useState } from "react";
-import { colorClasses15, colorClassesBorderClean } from "../actions/color";
-import { checkHour, sortEvents } from "../actions/hour";
-import { EventType } from "../actions/types/events-type";
+import {
+  colorClasses15,
+  colorClassesBorderClean,
+} from "../../../../../app/(admin)/schedule/color";
+import {
+  checkHour,
+  sortEvents,
+} from "../../../../../app/(admin)/schedule/hour";
+import { EventType } from "../../../../../app/(admin)/schedule/types/events-type";
 import { PopoverManagementEvents } from "./popoverManagementEvents";
 
 export type CalendarMonthProps = {

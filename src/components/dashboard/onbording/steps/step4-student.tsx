@@ -1,6 +1,6 @@
 "use client";
 
-import { getAllClassroomsAction } from "@/actions/classroom/classroom.actions";
+import { getAllClassroomsAction } from "@/actions/admin/classroom/classroom.actions";
 import {
   MultiSelector,
   MultiSelectorContent,

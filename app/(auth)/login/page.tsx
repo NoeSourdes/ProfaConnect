@@ -1,16 +1,10 @@
-import { Metadata } from "next";
 import Link from "next/link";
 
 import { UserAuthForm } from "@/src/components/auth/user-auth-form";
 import { buttonVariants } from "@/src/components/ui/button";
+import Particles from "@/src/components/ui/particles";
 import { cn } from "@/src/lib/utils";
 import Image from "next/image";
-
-export const metadata: Metadata = {
-  title: "Authentification",
-  description:
-    "Formulaires d'authentification construits en utilisant les composants.",
-};
 
 export default function Page() {
   return (
@@ -24,16 +18,30 @@ export default function Page() {
       >
         Retour
       </Link>
-      <div className="relative hidden h-full flex-col bg-secondary p-10 dark:border-r lg:flex">
-        <div className="relative z-20 flex items-center gap-2 text-lg font-medium">
+      <div className="relative hidden h-full flex-col bg-secondary p-10 dark:border-r lg:flex items-center justify-center">
+        <div className="absolute top-8 left-8 z-20 flex items-center gap-2">
           <Image
-            src="/img/logo.svg"
+            src="/svg/logo.svg"
             alt="ProfaConnect"
             width={30}
             height={30}
           />
-          ProfaConnect
+          <span className="font-bold text-lg">ProfaConnect</span>
         </div>
+        <Image
+          src="/svg/to-do-list.svg"
+          alt="Authentification"
+          height={700}
+          width={700}
+          className="z-[1000]"
+        />
+        <Particles
+          className="absolute inset-0"
+          quantity={100}
+          ease={80}
+          color={`#5BBFC8`}
+          refresh
+        />
       </div>
       <div className="lg:p-8">
         <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">

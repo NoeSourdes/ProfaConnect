@@ -17,7 +17,10 @@ import Link from "next/link";
 import { useState } from "react";
 import { toast } from "sonner";
 import { ClientUploadedFileData } from "uploadthing/types";
-import { getLesson, updateLessonPdf } from "./lesson.action";
+import {
+  getLesson,
+  updateLessonPdf,
+} from "../../../../../../actions/admin/lessons/lesson.action";
 
 export type EditPdfComponentProps = {
   courseId: string;

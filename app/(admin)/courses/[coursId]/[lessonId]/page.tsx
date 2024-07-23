@@ -10,7 +10,7 @@ import type { PageParams } from "@/src/types/next";
 import { useQuery } from "@tanstack/react-query";
 import { Undo2 } from "lucide-react";
 import Link from "next/link";
-import { getLesson } from "./edit/lesson.action";
+import { getLesson } from "../../../../../actions/admin/lessons/lesson.action";
 
 type LessonParams = {
   lessonId: string;

@@ -66,7 +66,7 @@ export function GlareCardComp() {
             </div>
             <div>
               <Image
-                src="/img/logo_card.svg"
+                src="/svg/logo_card.svg"
                 alt="ProfaConnect"
                 width={32}
                 height={32}

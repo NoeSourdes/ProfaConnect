@@ -5,7 +5,7 @@ import { useSession } from "next-auth/react";
 import {
   getClassroomTitleByIdAction,
   updateCLassroomAddStudent,
-} from "@/actions/classroom/classroom.actions";
+} from "@/actions/admin/classroom/classroom.actions";
 import { updateUserAction } from "@/actions/user/user";
 import {
   ResponsiveModal,

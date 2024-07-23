@@ -2,6 +2,7 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import NextAuth from "next-auth";
 import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
+import Resend from "next-auth/providers/resend";
 import { prisma } from "../prisma";
 
 export const {
@@ -14,7 +15,10 @@ export const {
   session: {
     strategy: "jwt",
   },
-  providers: [GithubProvider, GoogleProvider],
+  pages: {
+    signIn: "/login",
+  },
+  providers: [GithubProvider, GoogleProvider, Resend],
   callbacks: {
     async jwt({ token, user }) {
       if (user) {

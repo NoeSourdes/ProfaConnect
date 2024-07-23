@@ -21,7 +21,10 @@ import {
   Pen,
   Plus,
 } from "lucide-react";
-import { eventSchema, eventType } from "../actions/events/event.schema";
+import {
+  eventSchema,
+  eventType,
+} from "../../../../../app/(admin)/schedule/events/event.schema";
 
 import { Calendar } from "@/src/components/ui/calendar";
 import {
@@ -56,21 +59,21 @@ import {
   checkNameCategoryAction,
   createCategoryAction,
   getCategoriesAction,
-} from "../actions/category/category.action";
+} from "../../../../../app/(admin)/schedule/category/category.action";
 import {
   categorySchema,
   categoryType,
-} from "../actions/category/category.schema";
+} from "../../../../../app/(admin)/schedule/category/category.schema";
 import {
   colorClasses,
   colorClassesBorder,
   colorClassesBorderClean,
   colors,
-} from "../actions/color";
+} from "../../../../../app/(admin)/schedule/color";
 import {
   createEventAction,
   updateEventAction,
-} from "../actions/events/event.action";
+} from "../../../../../app/(admin)/schedule/events/event.action";
 import { ButtonCreateCategoryPopover } from "./buttonCreateCategoryPopover";
 
 export type ModalEventFormProps = {

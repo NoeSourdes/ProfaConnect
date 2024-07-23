@@ -30,6 +30,17 @@ export const getUserCourses = async (authorId: string) => {
   return courses;
 };
 
+export const getNameCourse = async (id: string) => {
+  return await prisma.course.findUnique({
+    where: {
+      id: id,
+    },
+    select: {
+      title: true,
+    },
+  });
+};
+
 export const updateCourseAction = userAction(
   z.object({
     id: z.string(),

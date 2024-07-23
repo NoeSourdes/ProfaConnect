@@ -26,8 +26,11 @@ import {
   checkTitleCourseAction,
   createCourseAction,
   updateCourseAction,
-} from "./course.actions";
-import { CreateCourseType, createCourseSchema } from "./course.schema";
+} from "../../../../../actions/admin/courses/course.actions";
+import {
+  CreateCourseType,
+  createCourseSchema,
+} from "../../../../../actions/admin/courses/course.schema";
 
 export type CourseFormProps = {
   defaultValues?: CreateCourseType;

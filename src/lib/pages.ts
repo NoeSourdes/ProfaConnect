@@ -1,5 +1,5 @@
-import { getNameCourse } from "@/actions/courses/courses";
-import { getNameLesson } from "@/app/(admin)/courses/[coursId]/[lessonId]/edit/lesson.action";
+import { getNameCourse } from "@/actions/admin/courses/course.actions";
+import { getNameLesson } from "@/actions/admin/lessons/lesson.action";
 import {
   CalendarDays,
   CircleHelp,

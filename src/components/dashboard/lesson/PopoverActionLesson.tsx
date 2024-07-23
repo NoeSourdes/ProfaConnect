@@ -3,8 +3,8 @@
 import {
   deleteLessonAction,
   renameLessonAction,
-} from "@/app/(admin)/courses/[coursId]/[lessonId]/edit/lesson.action";
-import { lessonTypeGlobal } from "@/app/(admin)/courses/[coursId]/[lessonId]/edit/lesson.schema";
+} from "@/actions/admin/lessons/lesson.action";
+import { lessonTypeGlobal } from "@/actions/admin/lessons/lesson.schema";
 import {
   ResponsiveModal,
   ResponsiveModalClose,

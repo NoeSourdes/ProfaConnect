@@ -6,9 +6,12 @@ import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import { EllipsisVertical } from "lucide-react";
 import Link from "next/link";
-import { colorClassesClean } from "../actions/color";
-import { checkHour, sortEventsByDate } from "../actions/hour";
-import { EventType } from "../actions/types/events-type";
+import { colorClassesClean } from "../../../../../app/(admin)/schedule/color";
+import {
+  checkHour,
+  sortEventsByDate,
+} from "../../../../../app/(admin)/schedule/hour";
+import { EventType } from "../../../../../app/(admin)/schedule/types/events-type";
 import { ModalEventForm } from "./ModalEventForm";
 import { PopoverManagementEvents } from "./popoverManagementEvents";
 

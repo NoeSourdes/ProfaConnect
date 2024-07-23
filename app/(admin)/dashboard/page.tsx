@@ -1,6 +1,5 @@
 "use client";
 
-import { getClassroomsByProfessorIdAction } from "@/actions/classroom/classroom.actions";
 import { BreadcrumbComponent } from "@/src/components/dashboard/Breadcrumb";
 import { useQuery } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";

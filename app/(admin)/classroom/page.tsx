@@ -1,6 +1,6 @@
 "use client";
 
-import { getClassroomsByProfessorIdAction } from "@/actions/classroom/classroom.actions";
+import { getClassroomsByProfessorIdAction } from "@/actions/admin/classroom/classroom.actions";
 import { BreadcrumbComponent } from "@/src/components/dashboard/Breadcrumb";
 import { Button } from "@/src/components/ui/button";
 import {

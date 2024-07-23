@@ -1,9 +1,7 @@
-"use client";
-
 import * as React from "react";
 
+import { signIn } from "@/src/lib/auth/auth";
 import { cn } from "@/src/lib/utils";
-import { signIn } from "next-auth/react";
 import { Icons } from "../icons";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
@@ -12,20 +10,14 @@ import { Label } from "../ui/label";
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
-  const [isLoading, setIsLoading] = React.useState<boolean>(false);
-
-  async function onSubmit(event: React.SyntheticEvent) {
-    event.preventDefault();
-    setIsLoading(true);
-
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 3000);
-  }
-
   return (
     <div className={cn("grid gap-6", className)} {...props}>
-      <form onSubmit={onSubmit}>
+      <form
+        action={async (formData) => {
+          "use server";
+          await signIn("resend", formData);
+        }}
+      >
         <div className="grid gap-2">
           <div className="grid gap-1">
             <Label className="sr-only" htmlFor="email">
@@ -33,20 +25,15 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
             </Label>
             <Input
               id="email"
+              name="email"
               placeholder="nom@example.com"
               type="email"
               autoCapitalize="none"
               autoComplete="email"
               autoCorrect="off"
-              disabled={isLoading}
             />
           </div>
-          <Button disabled={isLoading}>
-            {isLoading && (
-              <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-            )}
-            Se connecter par e-mail
-          </Button>
+          <Button type="submit">Se connecter par e-mail</Button>
         </div>
       </form>
       <div className="relative">
@@ -59,19 +46,8 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
           </span>
         </div>
       </div>
-      <Button
-        variant="outline"
-        type="button"
-        disabled={isLoading}
-        onClick={() => {
-          signIn("google", { callbackUrl: "/dashboard" });
-        }}
-      >
-        {isLoading ? (
-          <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-        ) : (
-          <Icons.google className="mr-2 h-4 w-4" />
-        )}{" "}
+      <Button variant="outline" type="button">
+        <Icons.google className="mr-2 h-4 w-4" />
         Google
       </Button>
     </div>

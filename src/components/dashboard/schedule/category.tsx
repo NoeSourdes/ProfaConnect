@@ -25,21 +25,21 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { EllipsisVertical, Flag, Pen, Trash } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
-import { Checkbox } from "../../ui/checkbox";
-import { Input } from "../../ui/input";
-import { Popover, PopoverContent, PopoverTrigger } from "../../ui/popover";
-import { Skeleton } from "../../ui/skeleton";
 import {
   checkNameCategoryAction,
   createCategoryAction,
   deleteCategoryAction,
   getCategoriesAction,
   updateCategoryAction,
-} from "./actions/category/category.action";
+} from "../../../../app/(admin)/schedule/category/category.action";
 import {
   categorySchema,
   categoryType,
-} from "./actions/category/category.schema";
+} from "../../../../app/(admin)/schedule/category/category.schema";
+import { Checkbox } from "../../ui/checkbox";
+import { Input } from "../../ui/input";
+import { Popover, PopoverContent, PopoverTrigger } from "../../ui/popover";
+import { Skeleton } from "../../ui/skeleton";
 import { ButtonCreateCategory } from "./components/buttonCreateCategory";
 
 export type categoriesProps = {};
