@@ -3,17 +3,17 @@
 import {
   deleteCourseAction,
   renameCourseAction,
-} from "@/app/(admin)/courses/[coursId]/edit/course.actions";
-import { CourseType } from "@/app/(admin)/courses/[coursId]/edit/course.schema";
+} from "@/actions/admin/courses/course.actions";
+import { CourseType } from "@/actions/admin/courses/course.schema";
 import {
-  ResponsiveModal,
-  ResponsiveModalClose,
-  ResponsiveModalContent,
-  ResponsiveModalFooter,
-  ResponsiveModalHeader,
-  ResponsiveModalTitle,
-  ResponsiveModalTrigger,
-} from "@/src/components/expenssion/modal-responsive";
+  Credenza,
+  CredenzaClose,
+  CredenzaContent,
+  CredenzaFooter,
+  CredenzaHeader,
+  CredenzaTitle,
+  CredenzaTrigger,
+} from "@/src/components/ui/credenza";
 import { Input } from "@/src/components/ui/input";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ExternalLink, FolderPen, Loader2, Pen, Trash } from "lucide-react";
@@ -97,9 +97,9 @@ export const PopoverActionCourse = (props: PopoverActionCourseProps) => {
           name: "delete",
         },
       ].map((button, index) => (
-        <ResponsiveModal open={open} onOpenChange={setOpen} key={index}>
+        <Credenza open={open} onOpenChange={setOpen} key={index}>
           {button.name === "rename" ? (
-            <ResponsiveModalTrigger asChild>
+            <CredenzaTrigger asChild>
               <Button
                 className={`flex justify-start items-center gap-2 pl-2 rounded`}
                 variant="ghost"
@@ -110,7 +110,7 @@ export const PopoverActionCourse = (props: PopoverActionCourseProps) => {
                 {button.icon}
                 {button.text}
               </Button>
-            </ResponsiveModalTrigger>
+            </CredenzaTrigger>
           ) : (
             <Button
               className={`flex justify-start items-center gap-2 pl-2 rounded transition-all ${
@@ -128,11 +128,11 @@ export const PopoverActionCourse = (props: PopoverActionCourseProps) => {
             </Button>
           )}
           {button.text === "Renommer" && (
-            <ResponsiveModalContent className="p-6 shadow-lg">
+            <CredenzaContent className="p-6 shadow-lg">
               <div className="flex flex-col gap-4">
-                <ResponsiveModalHeader>
-                  <ResponsiveModalTitle>Renommer le cours</ResponsiveModalTitle>
-                </ResponsiveModalHeader>
+                <CredenzaHeader>
+                  <CredenzaTitle>Renommer le cours</CredenzaTitle>
+                </CredenzaHeader>
 
                 <Input
                   id="name"
@@ -143,10 +143,12 @@ export const PopoverActionCourse = (props: PopoverActionCourseProps) => {
                   }}
                 />
 
-                <ResponsiveModalFooter>
-                  <ResponsiveModalClose>
-                    <Button variant="ghost">Annuler</Button>
-                  </ResponsiveModalClose>
+                <CredenzaFooter>
+                  <CredenzaClose>
+                    <Button variant="ghost" className="max-lg:w-full">
+                      Annuler
+                    </Button>
+                  </CredenzaClose>
                   <Button
                     disabled={isPending}
                     onClick={() => {
@@ -162,11 +164,11 @@ export const PopoverActionCourse = (props: PopoverActionCourseProps) => {
                     )}
                     Renommer
                   </Button>
-                </ResponsiveModalFooter>
+                </CredenzaFooter>
               </div>
-            </ResponsiveModalContent>
+            </CredenzaContent>
           )}
-        </ResponsiveModal>
+        </Credenza>
       ))}
     </>
   );

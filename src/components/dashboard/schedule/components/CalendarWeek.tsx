@@ -14,10 +14,10 @@ import {
   colorClasses15,
   colorClassesBorderClean,
   colorClassesClean,
-} from "../actions/color";
-import { deleteEventAction } from "../actions/events/event.action";
-import { checkHour } from "../actions/hour";
-import { EventType } from "../actions/types/events-type";
+} from "../../../../../app/(admin)/schedule/color";
+import { deleteEventAction } from "../../../../../app/(admin)/schedule/events/event.action";
+import { checkHour } from "../../../../../app/(admin)/schedule/hour";
+import { EventType } from "../../../../../app/(admin)/schedule/types/events-type";
 import { ModalEventForm } from "./ModalEventForm";
 import { Time } from "./time/time";
 

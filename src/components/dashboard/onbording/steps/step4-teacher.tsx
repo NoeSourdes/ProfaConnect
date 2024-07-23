@@ -4,11 +4,11 @@ import {
   createClassroomAction,
   deleteClassroomAction,
   getAllClassroomsAction,
-} from "@/actions/classroom/classroom.actions";
+} from "@/actions/admin/classroom/classroom.actions";
 import {
   CreateClassroomType,
   createClassroomSchema,
-} from "@/actions/classroom/classroom.schema";
+} from "@/actions/admin/classroom/classroom.schema";
 import { Button } from "@/src/components/ui/button";
 import {
   Form,

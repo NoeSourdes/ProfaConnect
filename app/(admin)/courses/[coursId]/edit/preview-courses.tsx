@@ -18,7 +18,7 @@ import { FolderOpen, Pencil, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { deleteCourseAction } from "./course.actions";
+import { deleteCourseAction } from "../../../../../actions/admin/courses/course.actions";
 
 export default async function PreviewComponent(props: PageParams<{}>) {
   const router = useRouter();

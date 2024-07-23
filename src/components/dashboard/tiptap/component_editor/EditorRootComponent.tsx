@@ -50,6 +50,7 @@ export const EditorRootComponent = (props: EditorRootComponentProps) => {
         props.initialContent.content[1].attrs.height = img.height;
       };
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [imageUrl]);
   return (
     <EditorRoot>

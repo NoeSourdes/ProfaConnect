@@ -69,6 +69,7 @@ export function Menu({ isOpen }: MenuProps) {
       localStorage.setItem("showCardPremiumLastUpdated", now.toString());
       setShowCardPremium(true);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {

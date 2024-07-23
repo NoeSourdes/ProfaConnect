@@ -1,9 +1,9 @@
 "use client";
 
-import { getNameCourse } from "@/actions/courses/courses";
+import { getNameCourse } from "@/actions/admin/courses/course.actions";
+import { useViewSelect } from "@/actions/admin/courses/viewSelect.store";
 import { BreadcrumbComponent } from "@/src/components/dashboard/Breadcrumb";
 import { ViewSelect } from "@/src/components/dashboard/courses/ViewSelect";
-import { useViewSelect } from "@/src/components/dashboard/courses/viewSelect.store";
 import { PopoverActionLesson } from "@/src/components/dashboard/lesson/PopoverActionLesson";
 import {
   AlertDialog,
@@ -52,7 +52,7 @@ import { toast } from "sonner";
 import {
   deleteLessonAction,
   getlessons,
-} from "./[lessonId]/edit/lesson.action";
+} from "../../../../actions/admin/lessons/lesson.action";
 
 export default function RoutePage(
   props: PageParams<{

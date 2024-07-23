@@ -1,6 +1,6 @@
 import { Tabs, TabsList, TabsTrigger } from "@/src/components/ui/tabs";
 import { AlignJustify, LayoutGrid } from "lucide-react";
-import { useViewSelect } from "./viewSelect.store";
+import { useViewSelect } from "../../../../actions/admin/courses/viewSelect.store";
 
 export type ViewSelectProps = {};
 

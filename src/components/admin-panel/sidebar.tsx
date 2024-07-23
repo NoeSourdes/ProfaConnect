@@ -33,7 +33,7 @@ export function Sidebar() {
         >
           <Link href="/dashboard" className="flex items-center gap-2">
             <Image
-              src="/img/logo.svg"
+              src="/svg/logo.svg"
               alt="ProfaConnect"
               width={32}
               height={32}

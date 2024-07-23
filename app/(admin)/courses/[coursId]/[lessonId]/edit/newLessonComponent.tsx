@@ -34,8 +34,11 @@ import {
   getLesson,
   updateLesson,
   updateLessonPdf,
-} from "./lesson.action";
-import { lessonType, lessonTypePDF } from "./lesson.schema";
+} from "../../../../../../actions/admin/lessons/lesson.action";
+import {
+  lessonType,
+  lessonTypePDF,
+} from "../../../../../../actions/admin/lessons/lesson.schema";
 
 export type NewLessonComponentProps = {
   courseId: string;
