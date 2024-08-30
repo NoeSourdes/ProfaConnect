@@ -19,8 +19,8 @@ export default function IsErrorComponent() {
           <BreadcrumbComponent
             array={[
               {
-                item: "Cours",
-                link: "/courses",
+                item: "Mes documents",
+                link: "/documents",
               },
             ]}
           />
@@ -34,8 +34,8 @@ export default function IsErrorComponent() {
                     Une erreur s'est produite
                   </h3>
                   <p className="text-sm text-muted-foreground">
-                    Impossible de charger les cours. Veuillez réessayer plus
-                    tard.
+                    Impossible de charger les cours et les leçons. Veuillez
+                    réessayer plus tard.
                   </p>
                 </div>
               </div>

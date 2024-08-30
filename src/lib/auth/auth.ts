@@ -18,7 +18,13 @@ export const {
   pages: {
     signIn: "/login",
   },
-  providers: [GithubProvider, GoogleProvider, Resend],
+  providers: [
+    GithubProvider,
+    GoogleProvider,
+    Resend({
+      from: "auth@app.company.com",
+    }),
+  ],
   callbacks: {
     async jwt({ token, user }) {
       if (user) {

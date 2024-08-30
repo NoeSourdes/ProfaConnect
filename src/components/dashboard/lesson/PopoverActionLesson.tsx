@@ -71,7 +71,9 @@ export const PopoverActionLesson = (props: PopoverActionLessonProps) => {
           icon: <ExternalLink size={18} />,
           text: "Ouvrir le cours",
           action: () => {
-            router.push(`/courses/${props.courseId}/${props.lesson.lessonId}`);
+            router.push(
+              `/documents/${props.courseId}/${props.lesson.lessonId}`
+            );
           },
           name: "open",
         },
@@ -86,7 +88,7 @@ export const PopoverActionLesson = (props: PopoverActionLessonProps) => {
           text: "Modifier",
           action: () => {
             router.push(
-              `/courses/${props.courseId}/${props.lesson.lessonId}/edit`
+              `/documents/${props.courseId}/${props.lesson.lessonId}/edit`
             );
           },
           name: "edit",

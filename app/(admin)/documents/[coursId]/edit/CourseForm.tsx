@@ -20,7 +20,7 @@ import {
 import { Input } from "@/src/components/ui/input";
 import { Textarea } from "@/src/components/ui/textarea";
 import { useMutation } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { toast } from "sonner";
 import {
   checkTitleCourseAction,
@@ -44,6 +44,10 @@ export const CourseForm = (props: CourseFormProps) => {
   });
   const isCreate = !Boolean(props.defaultValues);
   const router = useRouter();
+  const pathname = usePathname();
+  const lastSlashIndex = pathname.lastIndexOf("/");
+  const newPathname = pathname.substring(0, lastSlashIndex) + "/";
+  console.log(newPathname);
 
   const mutation = useMutation({
     mutationFn: async (values: CreateCourseType) => {
@@ -65,7 +69,7 @@ export const CourseForm = (props: CourseFormProps) => {
       isCreate
         ? toast.success("Le cours a été créé avec succès")
         : toast.success("Le cours a été modifié avec succès");
-      router.push(`/courses/${data.id}`);
+      router.push(newPathname + data.id);
     },
   });
 

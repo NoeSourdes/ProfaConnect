@@ -64,7 +64,7 @@ export default async function PreviewComponent(props: PageParams<{}>) {
             key={course.id}
             className="h-48 sm:max-w-80 grow flex flex-col p-4 justify-between border rounded-2xl shadow-lg hover:ring ring-primary/70 cursor-pointer transition-all hover:shadow-blue"
             onDoubleClick={() => {
-              router.push(`/courses/${course.id}`);
+              router.push(`/documents/${course.id}`);
             }}
           >
             <div>
@@ -95,10 +95,10 @@ export default async function PreviewComponent(props: PageParams<{}>) {
               </div>
               <div className="flex flex-row-reverse gap-1 items-center justify-between">
                 <div className="flex flex-row-reverse items-center gap-1">
-                  <Link className="w-full grow" href={`courses/${course.id}`}>
+                  <Link className="w-full grow" href={`documents/${course.id}`}>
                     <Button>Voir le cours</Button>
                   </Link>
-                  <Link href={`courses/${course.id}/edit`}>
+                  <Link href={`documents/${course.id}/edit`}>
                     <Button variant="secondary" size="icon" className="p-3">
                       <Pencil />
                     </Button>

@@ -1,7 +1,9 @@
+"use client";
+
 import * as React from "react";
 
-import { signIn } from "@/src/lib/auth/auth";
 import { cn } from "@/src/lib/utils";
+import { signIn } from "next-auth/react";
 import { Icons } from "../icons";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
@@ -12,12 +14,7 @@ interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   return (
     <div className={cn("grid gap-6", className)} {...props}>
-      <form
-        action={async (formData) => {
-          "use server";
-          await signIn("resend", formData);
-        }}
-      >
+      <form>
         <div className="grid gap-2">
           <div className="grid gap-1">
             <Label className="sr-only" htmlFor="email">
@@ -25,7 +22,6 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
             </Label>
             <Input
               id="email"
-              name="email"
               placeholder="nom@example.com"
               type="email"
               autoCapitalize="none"
@@ -33,7 +29,13 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
               autoCorrect="off"
             />
           </div>
-          <Button type="submit">Se connecter par e-mail</Button>
+          <Button
+            onClick={() => {
+              signIn("resend", { callbackUrl: "/dashboard" });
+            }}
+          >
+            Se connecter par e-mail
+          </Button>
         </div>
       </form>
       <div className="relative">
@@ -46,7 +48,13 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
           </span>
         </div>
       </div>
-      <Button variant="outline" type="button">
+      <Button
+        variant="outline"
+        type="button"
+        onClick={() => {
+          signIn("google", { callbackUrl: "/dashboard" });
+        }}
+      >
         <Icons.google className="mr-2 h-4 w-4" />
         Google
       </Button>

@@ -74,7 +74,7 @@ export function CommandBar() {
           <CommandGroup heading="Liens">
             {[
               { icon: LayoutGrid, label: "Tableau de bord", url: "/dashboard" },
-              { icon: FolderOpenDot, label: "Cours", url: "/courses" },
+              { icon: FolderOpenDot, label: "Cours", url: "/documents" },
               { icon: CalendarDays, label: "Calendrier", url: "/schedule" },
               {
                 icon: MessageCircleMore,
@@ -92,7 +92,7 @@ export function CommandBar() {
             ))}
           </CommandGroup>
           <CommandGroup heading="Actions">
-            <CommandItem onSelect={() => handleSelect("/courses/new_course")}>
+            <CommandItem onSelect={() => handleSelect("/documents/new_course")}>
               Créer un cours
             </CommandItem>
             <CommandItem onSelect={() => handleSelect("/schedule")}>

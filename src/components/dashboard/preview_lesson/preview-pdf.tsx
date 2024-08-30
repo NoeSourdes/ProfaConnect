@@ -66,18 +66,18 @@ export const PreviewPdf = (props: PreviewPdfProps) => {
       {props.viewBreadcrumb !== false && (
         <div className="flex items-center justify-between gap-3 w-full">
           <div className="flex items-center gap-3">
-            <Link href={`/courses/${props.courseId}`}>
+            <Link href={`/documents/${props.courseId}`}>
               <Button size="icon" variant="outline">
                 <Undo2 size={18} />
               </Button>
             </Link>
             <BreadcrumbComponent
               array={[
-                { item: "Cours", link: "/courses" },
-                { item: "Leçons", link: `/courses/${props.courseId}` },
+                { item: "Mes documents", link: "/documents" },
+                { item: "Leçons", link: `/documents/${props.courseId}` },
                 {
                   item: props.lessonTitle,
-                  link: `/courses/${props.courseId}/${props.lessonId}`,
+                  link: `/documents/${props.courseId}/${props.lessonId}`,
                 },
               ]}
             />
@@ -107,7 +107,7 @@ export const PreviewPdf = (props: PreviewPdfProps) => {
               </div>
               <DialogFooter className="flex items-center">
                 <Link
-                  href={`/courses/${props.courseId}/${props.lessonId}/edit`}
+                  href={`/documents/${props.courseId}/${props.lessonId}/edit`}
                 >
                   <Button type="submit" variant="secondary">
                     <span>Plus d'options</span>

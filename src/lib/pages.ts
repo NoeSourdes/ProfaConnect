@@ -35,19 +35,19 @@ export function getPages(pathname: string, userRole?: string): Group[] {
   const contentMenus: (Menu | false)[] = [
     {
       href: "",
-      label: "Cours",
-      active: pathname.includes("/courses"),
+      label: "Documents",
+      active: pathname.includes("/documents"),
       icon: FolderOpenDot,
       submenus: [
         {
-          href: "/courses",
-          label: "Tous les cours",
-          active: pathname === "/courses",
+          href: "/documents",
+          label: "Mes documents",
+          active: pathname === "/documents",
         },
         {
-          href: "/courses/new_course",
+          href: "/documents/new_documents",
           label: "Créer un cours",
-          active: pathname === "/courses/new_course",
+          active: pathname === "/documents/new_documents",
         },
       ],
     },
@@ -171,39 +171,44 @@ export async function pagesUrl(pathname: string): Promise<Group[]> {
       menus: [
         {
           href: "",
-          label: "Cours",
-          active: /\/courses(\/[a-z0-9]+)?/.test(pathname),
+          label: "Documents",
+          active: /\/documents(\/[a-z0-9]+)?/.test(pathname),
           icon: FolderOpenDot,
           submenus: [
             {
-              href: "/courses",
-              label: "Tous les cours",
-              active: pathname === "/courses",
+              href: "/documents",
+              label: "Mes documents",
+              active: pathname === "/documents",
             },
             {
-              href: "/courses/new_course",
+              href: "/documents/new_course",
               label: "Ajouter un cours",
-              active: pathname === "/courses/new_course",
+              active: pathname === "/documents/new_course",
             },
             {
-              href: "/courses/:id/new_lesson",
+              href: "/documents/new_lesson",
               label: "Ajouter une leçon",
-              active: /\/courses\/[a-z0-9]+\/new_lesson/.test(pathname),
+              active: pathname === "/documents/new_lesson",
             },
             {
-              href: "/courses/:id/edit",
+              href: "/documents/:id/new_lesson",
+              label: "Ajouter une leçon",
+              active: /\/\documents\/[a-z0-9]+\/new_lesson/.test(pathname),
+            },
+            {
+              href: "/documents/:id/edit",
               label: "Modifier le cours",
-              active: /\/courses\/[a-z0-9]+\/edit/.test(pathname),
+              active: /\/documents\/[a-z0-9]+\/edit/.test(pathname),
             },
             {
-              href: "/courses/:id/:id",
+              href: "/documents/:id/:id",
               label: "Details de la leçon ",
-              active: /\/courses\/[a-z0-9]+\/[a-z0-9]+/.test(pathname),
+              active: /\/\documents\/[a-z0-9]+\/[a-z0-9]+/.test(pathname),
             },
             {
-              href: "/courses/:id",
+              href: "/documents/:id",
               label: "Details du cours ",
-              active: /\/courses\/[a-z0-9]+/.test(pathname),
+              active: /\/documents\/[a-z0-9]+/.test(pathname),
             },
           ],
         },

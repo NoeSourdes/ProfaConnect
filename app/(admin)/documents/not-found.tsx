@@ -11,7 +11,7 @@ export default function RouteError() {
     <div className="h-full w-full">
       <main className="flex flex-1 flex-col gap-4 lg:gap-5 h-full">
         <div className="flex items-center gap-3">
-          <Link href={`/courses/`}>
+          <Link href={`/documents/`}>
             <Button size="icon" variant="outline">
               <Undo2 size={18} />
             </Button>
@@ -19,8 +19,8 @@ export default function RouteError() {
           <BreadcrumbComponent
             array={[
               {
-                item: "Cours",
-                link: "/courses",
+                item: "Mes documents",
+                link: "/documents",
               },
             ]}
           />
@@ -36,7 +36,7 @@ export default function RouteError() {
                   <p className="text-sm text-muted-foreground">
                     Veuillez réessayer plus tard.
                   </p>
-                  <Link href="/courses" className="mt-4">
+                  <Link href="/documents" className="mt-4">
                     <Button>Retourner à la liste des cours</Button>
                   </Link>
                 </div>

@@ -131,12 +131,12 @@ export default function RoutePage(
             <BreadcrumbComponent
               array={[
                 {
-                  item: "Cours ",
-                  link: "/courses",
+                  item: "Mes documents",
+                  link: "/documents",
                 },
                 {
                   item: "Chargement...",
-                  link: `/courses/${props.params.coursId}`,
+                  link: `/documents/${props.params.coursId}`,
                 },
               ]}
             />
@@ -164,12 +164,12 @@ export default function RoutePage(
             <BreadcrumbComponent
               array={[
                 {
-                  item: "Cours ",
-                  link: "/courses",
+                  item: "Mes documents",
+                  link: "/documents",
                 },
                 {
                   item: "Chargement...",
-                  link: `/courses/${props.params.coursId}`,
+                  link: `/documents/${props.params.coursId}`,
                 },
               ]}
             />
@@ -197,12 +197,12 @@ export default function RoutePage(
             <BreadcrumbComponent
               array={[
                 {
-                  item: "Cours ",
-                  link: "/courses",
+                  item: "Mes documents",
+                  link: "/documents",
                 },
                 {
                   item: "Erreur",
-                  link: `/courses/${props.params.coursId}`,
+                  link: `/documents/${props.params.coursId}`,
                 },
               ]}
             />
@@ -242,12 +242,12 @@ export default function RoutePage(
             <BreadcrumbComponent
               array={[
                 {
-                  item: "Cours ",
-                  link: "/courses",
+                  item: "Mes documents",
+                  link: "/documents",
                 },
                 {
                   item: nameCourse ? nameCourse : "inconnu",
-                  link: `/courses/${props.params.coursId}`,
+                  link: `/documents/${props.params.coursId}`,
                 },
               ]}
             />
@@ -264,7 +264,9 @@ export default function RoutePage(
                       Tu n'as pas encore de leçon pour le cours{" "}
                       {nameCourse ? nameCourse : "inconnu"}. Créez-en une !
                     </p>
-                    <Link href={`/courses/${props.params.coursId}/new_lesson`}>
+                    <Link
+                      href={`/documents/${props.params.coursId}/new_lesson`}
+                    >
                       <Button className="mt-4">Créer une leçon</Button>
                     </Link>
                   </div>
@@ -285,12 +287,12 @@ export default function RoutePage(
               <BreadcrumbComponent
                 array={[
                   {
-                    item: "Cours ",
-                    link: "/courses",
+                    item: "Mes documents",
+                    link: "/documents",
                   },
                   {
                     item: nameCourse ? nameCourse : "inconnu",
-                    link: `/courses/${props.params.coursId}`,
+                    link: `/documents/${props.params.coursId}`,
                   },
                 ]}
               />
@@ -300,8 +302,8 @@ export default function RoutePage(
           <div className="h-full w-full" x-chunk="dashboard-02-chunk-1">
             <div className="flex gap-3 pb-5">
               <Link
-                href="/courses/[coursId]/new_lesson"
-                as={`/courses/${props.params.coursId}/new_lesson`}
+                href="/documents/[coursId]/new_lesson"
+                as={`/documents/${props.params.coursId}/new_lesson`}
               >
                 <Button className="flex items-center gap-2">
                   {" "}
@@ -343,7 +345,7 @@ export default function RoutePage(
                       className="h-48 sm:max-w-80 grow flex flex-col p-4 justify-between border rounded-2xl shadow-lg hover:ring ring-primary/70 cursor-pointer transition-all hover:shadow-blue bg-background"
                       onDoubleClick={() => {
                         router.push(
-                          `/courses/${props.params.coursId}/${lesson.lessonId}`
+                          `/documents/${props.params.coursId}/${lesson.lessonId}`
                         );
                       }}
                     >
@@ -387,12 +389,12 @@ export default function RoutePage(
                           <div className="flex flex-row-reverse items-center gap-1">
                             <Link
                               className="w-full grow"
-                              href={`/courses/${props.params.coursId}/${lesson.lessonId}`}
+                              href={`/documents/${props.params.coursId}/${lesson.lessonId}`}
                             >
                               <Button>Voir la leçon</Button>
                             </Link>
                             <Link
-                              href={`/courses/${props.params.coursId}/${lesson.lessonId}/edit`}
+                              href={`/documents/${props.params.coursId}/${lesson.lessonId}/edit`}
                             >
                               <Button
                                 variant="secondary"
@@ -470,7 +472,7 @@ export default function RoutePage(
                         <TableRow>
                           <TableCell>
                             <Link
-                              href={`/courses/${props.params.coursId}/${lesson.lessonId}`}
+                              href={`/documents/${props.params.coursId}/${lesson.lessonId}`}
                             >
                               <span className="text-primary">
                                 {lesson.title.length > 20

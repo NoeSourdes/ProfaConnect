@@ -13,7 +13,7 @@ export const createLesson = userAction(
       data: {
         title: inputs.title,
         document: content,
-        courseId: inputs.courseId,
+        courseId: inputs.courseId === "" ? null : inputs.courseId,
         authorId: context.user.id,
       },
     });
@@ -48,7 +48,7 @@ export const createLesssonPDF = userAction(
       data: {
         title: inputs.title,
         url: inputs.url,
-        courseId: inputs.courseId,
+        courseId: inputs.courseId === "" ? null : inputs.courseId,
         authorId: context.user.id,
       },
     });

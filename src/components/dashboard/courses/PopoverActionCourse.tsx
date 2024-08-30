@@ -70,7 +70,7 @@ export const PopoverActionCourse = (props: PopoverActionCourseProps) => {
           icon: <ExternalLink size={18} />,
           text: "Ouvrir le cours",
           action: () => {
-            router.push(`/courses/${props.course.id}`);
+            router.push(`/documents/${props.course.id}`);
           },
           name: "open",
         },
@@ -84,7 +84,7 @@ export const PopoverActionCourse = (props: PopoverActionCourseProps) => {
           icon: <Pen size={18} />,
           text: "Modifier",
           action: () => {
-            router.push(`/courses/${props.course.id}/edit`);
+            router.push(`/documents/${props.course.id}/edit`);
           },
           name: "edit",
         },

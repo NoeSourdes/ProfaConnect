@@ -41,7 +41,7 @@ import {
 } from "../../../../../../actions/admin/lessons/lesson.schema";
 
 export type NewLessonComponentProps = {
-  courseId: string;
+  courseId?: string;
   lessonId?: string;
 };
 
@@ -87,7 +87,7 @@ export const NewLessonComponent = (props: NewLessonComponentProps) => {
           content: [""],
         })
       );
-      router.push(`/courses/${data.courseId}`);
+      router.push(`/documents/${data.courseId}`);
     },
   });
 
@@ -113,7 +113,7 @@ export const NewLessonComponent = (props: NewLessonComponentProps) => {
       isCreate
         ? toast.success("La leçon a été créée avec succès")
         : toast.success("La leçon a été modifiée avec succès");
-      router.push(`/courses/${data.courseId}`);
+      router.push(`/documents/${data.courseId}`);
     },
   });
 
@@ -171,7 +171,7 @@ export const NewLessonComponent = (props: NewLessonComponentProps) => {
                 onClick={() =>
                   mutation.mutateAsync({
                     title,
-                    courseId: props.courseId,
+                    courseId: props.courseId ?? "",
                     content: JSON.stringify(content),
                   })
                 }
@@ -247,7 +247,7 @@ export const NewLessonComponent = (props: NewLessonComponentProps) => {
               <div className="px-6">
                 <PreviewPdf
                   url={files[0].url}
-                  courseId={props.courseId}
+                  courseId={props.courseId ?? ""}
                   lessonId={props.lessonId as string}
                   lessonTitle={titleLesson}
                   viewBreadcrumb={false}
@@ -260,7 +260,7 @@ export const NewLessonComponent = (props: NewLessonComponentProps) => {
                   onClick={() =>
                     mutationPDF.mutateAsync({
                       title: titleLesson,
-                      courseId: props.courseId,
+                      courseId: props.courseId ?? "",
                       url: files[0].url,
                     })
                   }
@@ -342,7 +342,7 @@ export const NewLessonComponent = (props: NewLessonComponentProps) => {
         <div className="px-6">
           <PreviewPdf
             url={files.length > 0 ? files[0].url : lesson.url}
-            courseId={props.courseId}
+            courseId={props.courseId ?? ""}
             lessonId={props.lessonId as string}
             lessonTitle={lesson.title}
             viewBreadcrumb={false}
@@ -355,7 +355,7 @@ export const NewLessonComponent = (props: NewLessonComponentProps) => {
                 onClick={() =>
                   mutationPDF.mutateAsync({
                     title: titleLesson ? titleLesson : lesson.title,
-                    courseId: props.courseId,
+                    courseId: props.courseId ?? "",
                     url:
                       files.length > 0 ? files[0].url : (lesson.url as string),
                   })
@@ -405,7 +405,7 @@ export const NewLessonComponent = (props: NewLessonComponentProps) => {
             onClick={() =>
               mutation.mutateAsync({
                 title: title ? title : lesson.title,
-                courseId: props.courseId,
+                courseId: props.courseId ?? "",
                 content: content
                   ? JSON.stringify(content)
                   : JSON.stringify(lesson.document),
