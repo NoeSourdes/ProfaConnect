@@ -70,8 +70,8 @@ export default function IsSuccessComponent({
             <BreadcrumbComponent
               array={[
                 {
-                  item: "Cours",
-                  link: "/courses",
+                  item: "Mes documents",
+                  link: "/documents",
                 },
               ]}
             />
@@ -82,14 +82,19 @@ export default function IsSuccessComponent({
                 <div className="flex flex-col relative">
                   <div className="flex flex-col items-center gap-1 text-center">
                     <h3 className="text-2xl font-bold tracking-tight">
-                      Tu n'as pas encore de cours
+                      Vous n'avez pas encore de cours ni de leçons
                     </h3>
                     <p className="text-sm text-muted-foreground">
-                      Créez votre premier cours pour commencer à enseigner.
+                      Créez un cours ou une leçon pour commencer à partagez
                     </p>
-                    <Link href="/courses/new_course">
-                      <Button className="mt-4">Créer un cours</Button>
-                    </Link>
+                    <div className="flex items-center gap-5">
+                      <Link href="/documents/new_course">
+                        <Button className="mt-4">Créer un cours</Button>
+                      </Link>
+                      <Link href="/documents/new_lesson">
+                        <Button className="mt-4">Créer une leçon</Button>
+                      </Link>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -108,8 +113,8 @@ export default function IsSuccessComponent({
               <BreadcrumbComponent
                 array={[
                   {
-                    item: "Cours",
-                    link: "/courses",
+                    item: "Mes documents",
+                    link: "/documents",
                   },
                 ]}
               />
@@ -118,11 +123,11 @@ export default function IsSuccessComponent({
           </div>
           <div className="h-full w-full space-y-5">
             <div className="flex gap-3">
-              <Link href="/courses/new_course">
+              <Link href="/documents/new_course">
                 <Button className="flex items-center gap-2">
                   {" "}
                   <CirclePlus />
-                  <span className="sm:block hidden">Créer un cours</span>
+                  <span className="sm:block hidden">Nouveau</span>
                 </Button>
               </Link>
               <Input
@@ -149,8 +154,8 @@ export default function IsSuccessComponent({
                           <p className="text-sm text-muted-foreground">
                             Créez un cours pour commencer à enseigner.
                           </p>
-                          <Link href="/courses/new_course">
-                            <Button className="mt-4">Créer un cours</Button>
+                          <Link href="/documents/new_course">
+                            <Button className="mt-4">Nouveau</Button>
                           </Link>
                         </div>
                       </div>
@@ -172,7 +177,7 @@ export default function IsSuccessComponent({
                           key={course.id}
                           className="h-48 sm:max-w-80 grow flex flex-col p-4 justify-between border rounded-2xl shadow-lg hover:ring ring-primary/70 cursor-pointer transition-all hover:shadow-blue bg-background"
                           onDoubleClick={() => {
-                            router.push(`/courses/${course.id}`);
+                            router.push(`/documents/${course.id}`);
                           }}
                         >
                           <div>
@@ -223,11 +228,11 @@ export default function IsSuccessComponent({
                               <div className="flex flex-row-reverse items-center gap-1">
                                 <Link
                                   className="w-full grow"
-                                  href={`courses/${course.id}`}
+                                  href={`documents/${course.id}`}
                                 >
                                   <Button>Voir le cours</Button>
                                 </Link>
-                                <Link href={`courses/${course.id}/edit`}>
+                                <Link href={`documents/${course.id}/edit`}>
                                   <Button
                                     variant="secondary"
                                     size="icon"
@@ -304,7 +309,7 @@ export default function IsSuccessComponent({
                           <TableBody className="max-sm:text-xs" key={course.id}>
                             <TableRow>
                               <TableCell>
-                                <Link href={`/courses/${course.id}`}>
+                                <Link href={`/documents/${course.id}`}>
                                   <span className="text-primary">
                                     {course.title.length > 20
                                       ? course.title.slice(0, 20) + "..."

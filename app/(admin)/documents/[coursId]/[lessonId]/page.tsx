@@ -30,15 +30,15 @@ export default function RoutePage(props: PageParams<LessonParams>) {
     return (
       <>
         <div className="flex items-center gap-3 w-full">
-          <Link href={`/courses/${props.params.coursId}`}>
+          <Link href={`/documents/${props.params.coursId}`}>
             <Button size="icon" variant="outline">
               <Undo2 size={18} />
             </Button>
           </Link>
           <BreadcrumbComponent
             array={[
-              { item: "Cours", link: "/courses" },
-              { item: "Leçons", link: `/courses/${props.params.coursId}` },
+              { item: "Mes documents", link: "/documents" },
+              { item: "Leçons", link: `/documents/${props.params.coursId}` },
             ]}
           />
         </div>
@@ -56,7 +56,7 @@ export default function RoutePage(props: PageParams<LessonParams>) {
       <div className="h-full w-full">
         <main className="flex flex-1 flex-col gap-4 lg:gap-5 h-full">
           <div className="flex items-center gap-3">
-            <Link href={`/courses/${props.params.coursId}`}>
+            <Link href={`/documents/${props.params.coursId}`}>
               <Button size="icon" variant="outline">
                 <Undo2 size={18} />
               </Button>
@@ -64,16 +64,16 @@ export default function RoutePage(props: PageParams<LessonParams>) {
             <BreadcrumbComponent
               array={[
                 {
-                  item: "Cours",
-                  link: "/courses",
+                  item: "Mes documents",
+                  link: "/documents",
                 },
                 {
                   item: "Leçons",
-                  link: `/courses/${props.params.coursId}`,
+                  link: `/documents/${props.params.coursId}`,
                 },
                 {
                   item: "Erreur",
-                  link: `/courses/${props.params.coursId}/${props.params.lessonId}`,
+                  link: `/documents/${props.params.coursId}/${props.params.lessonId}`,
                 },
               ]}
             />

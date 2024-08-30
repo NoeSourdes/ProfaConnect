@@ -20,8 +20,8 @@ export default function IsLoadingComponent() {
             <BreadcrumbComponent
               array={[
                 {
-                  item: "Cours",
-                  link: "/courses",
+                  item: "Mes documents",
+                  link: "/documents",
                 },
               ]}
             />

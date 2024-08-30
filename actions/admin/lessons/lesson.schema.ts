@@ -2,13 +2,13 @@ import { z } from "zod";
 
 export const lessonSchema = z.object({
   title: z.string().max(255),
-  courseId: z.string(),
+  courseId: z.string().optional(),
   content: z.string(),
 });
 
 export const lessonSchemaPDF = z.object({
   title: z.string().max(255),
-  courseId: z.string(),
+  courseId: z.string().optional(),
   url: z.string().url(),
 });
 
@@ -17,9 +17,9 @@ export const lessonShemaGlobal = z.object({
   document: z.string().nullable().optional(),
   updatedAt: z.date().optional(),
   title: z.string().max(255),
-  courseId: z.string(),
+  courseId: z.string().optional().nullable(),
   content: z.string().optional(),
-  url: z.string().url().nullable(),
+  url: z.string().url().nullable().optional(),
   author: z
     .object({
       id: z.string(),
