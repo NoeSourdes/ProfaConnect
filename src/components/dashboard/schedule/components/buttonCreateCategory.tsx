@@ -74,7 +74,9 @@ export const ButtonCreateCategory = (props: ButtonCreateCategoryProps) => {
     <Popover>
       <PopoverTrigger asChild>
         {props.buttonString2 ? (
-          <Button className="w-full">Créer une catégorie</Button>
+          <Button variant="secondary" className="w-full">
+            Créer une catégorie
+          </Button>
         ) : (
           <Button
             variant="secondary"

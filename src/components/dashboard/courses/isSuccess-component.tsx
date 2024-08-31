@@ -4,6 +4,7 @@ import { CourseType } from "@/actions/admin/courses/course.schema";
 import {
   CirclePlus,
   EllipsisVertical,
+  FileText,
   FolderOpen,
   Pencil,
   Trash2,
@@ -123,13 +124,43 @@ export default function IsSuccessComponent({
           </div>
           <div className="h-full w-full space-y-5">
             <div className="flex gap-3">
-              <Link href="/documents/new_course">
-                <Button className="flex items-center gap-2">
-                  {" "}
-                  <CirclePlus />
-                  <span className="sm:block hidden">Nouveau</span>
-                </Button>
-              </Link>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button className="flex items-center gap-2">
+                    {" "}
+                    <CirclePlus />
+                    <span className="sm:block hidden">Nouveau</span>
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="p-2">
+                  <div className="flex flex-col gap-2">
+                    <Button
+                      variant="outline"
+                      className="flex items-center justify-between gap-5 px-2"
+                    >
+                      <div className="flex items-center gap-2">
+                        <FolderOpen width={18} />
+                        Nouveau dossier
+                      </div>
+                      <kbd className="pointer-events-none inline-flex h-5 select-none items-center rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100 group-hover:text-accent-foreground transition-all">
+                        <span className="text-xs">⌘</span>+K+U
+                      </kbd>
+                    </Button>
+                    <Button
+                      variant="outline"
+                      className="flex items-center justify-between gap-2 px-2"
+                    >
+                      <div className="flex items-center gap-2">
+                        <FileText width={18} />
+                        Nouveau fichier
+                      </div>
+                      <kbd className="pointer-events-none inline-flex h-5 select-none items-center rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100 group-hover:text-accent-foreground transition-all">
+                        <span className="text-xs">⌘</span>+K+I
+                      </kbd>
+                    </Button>
+                  </div>
+                </PopoverContent>
+              </Popover>
               <Input
                 defaultValue={search}
                 className="w-full max-w-96"
