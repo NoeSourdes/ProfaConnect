@@ -180,7 +180,7 @@ export const Categories = (props: categoriesProps) => {
         ) : isError ? (
           <div>Une erreur est survenue</div>
         ) : categories?.length === 0 ? (
-          <div className=" p-3 text-center border rounded">
+          <div className=" p-3 text-center  rounded">
             <p className="text-sm text-muted-foreground font-medium p-2">
               Aucune catégorie n'a été créée
             </p>
