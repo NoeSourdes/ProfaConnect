@@ -56,8 +56,8 @@ model User {
   profile       UserProfile?
   accounts      Account[]
   sessions      Session[]
-  courses       Course[]
-  lessons       Lesson[]
+  folders       Folders[]
+  files       Files[]
   events        Event[]
   classrooms    Classroom[] @relation(name: "ProfessorInClassroom")
   enrolledClassrooms Classroom[] @relation(name: "StudentInClassroom")
@@ -66,21 +66,22 @@ model User {
 
 
 
-model Course {
+model Folders {
   id          String   @id @default(cuid())
   title       String
-  description String
-  lessons     Lesson[]
+  description String?
+  files     Files[]
   author      User?    @relation(fields: [authorId], references: [id])
   authorId    String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   published   Boolean?
   category    String?
+	@@map("Folders")
 }
 
-model Lesson {
-  lessonId        String   @id @default(uuid())
+model Files {
+  fileId        String   @id @default(uuid()) @map("fileId")
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @updatedAt
   title         String        @db.VarChar(255)
@@ -88,8 +89,9 @@ model Lesson {
   authorId     String?
   document      Json?
   url           String?       
-  courseId      String?
-  course        Course?      @relation(fields: [courseId], references: [id])
+  folderId      String?
+  folder        Folders?      @relation(fields: [folderId], references: [id])
+	@@map("Files")
 }
 
 // gestion du calendrier
@@ -116,7 +118,7 @@ model Category {
   events  Event[]
 }
 
-model file{
+model fileUpload {
   key String @id
   name String
   userId String

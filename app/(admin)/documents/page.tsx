@@ -1,51 +1,63 @@
 "use client";
 
-import { useViewSelect } from "@/actions/admin/courses/viewSelect.store";
-import IsErrorComponent from "@/src/components/dashboard/courses/isError-component";
-import IsLoadingComponent from "@/src/components/dashboard/courses/isLoading-component";
-import IsSuccessComponent from "@/src/components/dashboard/courses/isSuccess-component";
+import { getUserFiles } from "@/actions/admin/files/file.action";
+import { useViewSelect } from "@/actions/admin/folders/viewSelect.store";
+import IsErrorComponent from "@/src/components/dashboard/documents/isError-component";
+import IsLoadingComponent from "@/src/components/dashboard/documents/isLoading-component";
+import IsSuccessComponent from "@/src/components/dashboard/documents/isSuccess-component";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
-import { useState } from "react";
 import { toast } from "sonner";
 import {
-  deleteCourseAction,
-  getUserCourses,
-} from "../../../actions/admin/courses/course.actions";
+  deleteFolderAction,
+  getUserFolders,
+} from "../../../actions/admin/folders/folder.actions";
 
-export default function Course() {
+export default function Documents() {
   const { data: user } = useSession();
   const queryClient = useQueryClient();
-
-  const [search, setSearch] = useState("");
 
   const { view } = useViewSelect();
 
   const {
-    data: courses,
+    data: folders,
     isLoading,
     isError,
   } = useQuery({
-    queryKey: ["courses", user?.user?.id ? user.user.id : ""],
+    queryKey: ["folders", user?.user?.id ? user.user.id : ""],
     queryFn: async () => {
-      const courses = await getUserCourses(user?.user?.id ? user.user.id : "");
-      return courses.map((course) => ({
-        ...course,
-        published: course.published ?? false,
+      const folders = await getUserFolders(user?.user?.id ? user.user.id : "");
+      return folders.map((folder) => ({
+        ...folder,
+        published: folder.published ?? false,
       }));
     },
   });
 
+  const {
+    data: files,
+    isError: Errorfile,
+    isLoading: Loadingfile,
+  } = useQuery({
+    queryKey: ["getFiles", user?.user?.id ? user.user.id : ""],
+    queryFn: async () => {
+      const files = await getUserFiles(user?.user?.id ? user.user.id : "");
+      return files;
+    },
+  });
+
+  console.log("files", files);
+
   const deleteMutation = useMutation({
-    mutationFn: (idCourse: { id: string }) => deleteCourseAction(idCourse.id),
+    mutationFn: (idFolder: { id: string }) => deleteFolderAction(idFolder.id),
     onSuccess: ({ data, serverError }) => {
       if (serverError || !data) {
         throw new Error(serverError);
       }
-      toast.success("Le cours a été supprimé avec succès");
+      toast.success("Le dossier a été supprimé avec succès");
 
       queryClient.invalidateQueries({
-        queryKey: ["courses", user?.user?.id ? user.user.id : ""],
+        queryKey: ["folders", user?.user?.id ? user.user.id : ""],
       });
     },
   });
@@ -58,14 +70,21 @@ export default function Course() {
     return <IsErrorComponent />;
   }
 
+  if (Errorfile) {
+    return <IsErrorComponent />;
+  }
+
+  if (Loadingfile) {
+    return <IsLoadingComponent />;
+  }
+
   return (
     <IsSuccessComponent
-      courses={courses}
+      files={files}
+      folders={folders}
       user={user}
       deleteMutation={deleteMutation}
       view={view}
-      search={search}
-      setSearch={setSearch}
     />
   );
 }

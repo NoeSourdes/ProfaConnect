@@ -31,13 +31,13 @@ export default function RouteError() {
               <div className="flex flex-col relative">
                 <div className="flex flex-col items-center gap-1 text-center">
                   <h3 className="text-2xl font-bold tracking-tight">
-                    Le cours n'existe pas
+                    Le dossier n'existe pas
                   </h3>
                   <p className="text-sm text-muted-foreground">
                     Veuillez réessayer plus tard.
                   </p>
                   <Link href="/documents" className="mt-4">
-                    <Button>Retourner à la liste des cours</Button>
+                    <Button>Retourner à la liste des dossier</Button>
                   </Link>
                 </div>
               </div>
