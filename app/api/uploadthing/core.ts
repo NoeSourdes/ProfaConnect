@@ -3,11 +3,13 @@ import { prisma } from "@/src/lib/prisma";
 import { requiredCurrentUser } from "@/src/lib/auth/current-user";
 import { createUploadthing, type FileRouter } from "uploadthing/next";
 import { UploadThingError } from "uploadthing/server";
+import { z } from "zod";
 
 const f = createUploadthing();
 
 export const ourFileRouter = {
-  pdfUploader: f({ pdf: { maxFileSize: "4MB" } })
+  pdfUploader: f({ pdf: { maxFileSize: "16MB" } })
+    .input(z.object({ configId: z.string().optional() }))
     .middleware(async ({ req }) => {
       const user = await requiredCurrentUser();
 
@@ -16,14 +18,16 @@ export const ourFileRouter = {
       return { userId: user.id };
     })
     .onUploadComplete(async ({ metadata, file }) => {
-      const createdFile = await prisma.file.create({
+      console.log("metadata", file, metadata);
+      const createdFile = await prisma.fileUpload.create({
         data: {
           key: file.key,
           name: file.name,
           userId: metadata.userId,
-          url: `https://uploadthing-prod.s3.us-west-2.amazonaws.com/${file.key}`,
+          url: `https://utfs.io/f/${file.key}`,
         },
       });
+      return createdFile;
     }),
 } satisfies FileRouter;
 

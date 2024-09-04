@@ -47,13 +47,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/src/components/ui/select";
-import { TimePicker } from "@/src/components/ui/time-picker";
+import { TimePickerComponent } from "@/src/components/ui/time-picker-component";
 import { cn } from "@/src/lib/utils";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { fr } from "date-fns/locale";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { TimeValue } from "react-aria";
 import { toast } from "sonner";
 import {
   checkNameCategoryAction,
@@ -318,13 +317,7 @@ export const ModalEventForm = (props: ModalEventFormProps) => {
                       <span className="text-destructive">*</span>
                     </FormLabel>
                     <FormControl className="w-full">
-                      <TimePicker
-                        granularity="minute"
-                        value={
-                          field.value as unknown as TimeValue | null | undefined
-                        }
-                        onChange={field.onChange}
-                      />
+                      <TimePickerComponent date={date} setDate={setDate} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -341,12 +334,7 @@ export const ModalEventForm = (props: ModalEventFormProps) => {
                       <span className="text-destructive">*</span>
                     </FormLabel>
                     <FormControl className="w-full">
-                      <TimePicker
-                        value={
-                          field.value as unknown as TimeValue | null | undefined
-                        }
-                        onChange={field.onChange}
-                      />
+                      <TimePickerComponent date={date} setDate={setDate} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

@@ -493,39 +493,41 @@ export function PlateEditor() {
   const [isFullScreen, setIsFullScreen] = useState(false);
 
   return (
-    <DndProvider backend={HTML5Backend}>
-      <div
-        className={`bg-background z-[4002] transition-all ${
-          isFullScreen ? "fixed inset-0" : "relative"
-        }`}
-      >
-        <CommentsProvider users={{}} myUserId="1">
-          <Plate
-            plugins={plugins}
-            initialValue={JSON.parse(value || "null")}
-            onChange={(newValue) => {
-              setValue(JSON.stringify(newValue));
-            }}
-          >
-            <FixedToolbar>
-              <FixedToolbarButtons
-                isFullScreen={isFullScreen}
-                setIsFullScreen={setIsFullScreen}
+    <div className={`${isFullScreen ? "" : "sticky"}`}>
+      <DndProvider backend={HTML5Backend}>
+        <div
+          className={`bg-background z-[4002] transition-all ${
+            isFullScreen ? "fixed inset-0" : "relative"
+          }`}
+        >
+          <CommentsProvider users={{}} myUserId="1">
+            <Plate
+              plugins={plugins}
+              initialValue={JSON.parse(value || "null")}
+              onChange={(newValue) => {
+                setValue(JSON.stringify(newValue));
+              }}
+            >
+              <FixedToolbar>
+                <FixedToolbarButtons
+                  isFullScreen={isFullScreen}
+                  setIsFullScreen={setIsFullScreen}
+                />
+              </FixedToolbar>
+
+              <Editor
+                focusRing={false}
+                className="border-none mt-1 rounded-none max-w-5xl mr-auto ml-auto"
               />
-            </FixedToolbar>
 
-            <Editor
-              focusRing={false}
-              className="border-none mt-1 rounded-none"
-            />
-
-            <FloatingToolbar className="z-[5001] border rounded-lg px-1">
-              <FloatingToolbarButtons />
-            </FloatingToolbar>
-            <CommentsPopover />
-          </Plate>
-        </CommentsProvider>
-      </div>
-    </DndProvider>
+              <FloatingToolbar className="z-[5001] border rounded-lg px-1 max-md:hidden">
+                <FloatingToolbarButtons />
+              </FloatingToolbar>
+              <CommentsPopover />
+            </Plate>
+          </CommentsProvider>
+        </div>
+      </DndProvider>
+    </div>
   );
 }

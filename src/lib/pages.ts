@@ -1,5 +1,5 @@
-import { getNameCourse } from "@/actions/admin/courses/course.actions";
-import { getNameLesson } from "@/actions/admin/lessons/lesson.action";
+import { getNameFile } from "@/actions/admin/files/file.action";
+import { getNameFolder } from "@/actions/admin/folders/folder.actions";
 import {
   CalendarDays,
   CircleHelp,
@@ -34,22 +34,11 @@ export type Group = {
 export function getPages(pathname: string, userRole?: string): Group[] {
   const contentMenus: (Menu | false)[] = [
     {
-      href: "",
+      href: "/documents",
       label: "Documents",
       active: pathname.includes("/documents"),
       icon: FolderOpenDot,
-      submenus: [
-        {
-          href: "/documents",
-          label: "Mes documents",
-          active: pathname === "/documents",
-        },
-        {
-          href: "/documents/new_documents",
-          label: "Créer un cours",
-          active: pathname === "/documents/new_documents",
-        },
-      ],
+      submenus: [],
     },
     {
       href: "/schedule",
@@ -127,32 +116,29 @@ export function getPages(pathname: string, userRole?: string): Group[] {
   ];
 }
 
-const handleNameCourse = async (id: string) => {
+const handleNameFolder = async (id: string) => {
   if (!id) {
     return;
   }
-  const response = await getNameCourse(id);
+  const response = await getNameFolder(id);
   if (!response) {
-    return "Le cours n'existe pas";
+    return "Le dossier n'existe pas";
   }
   return response?.title;
 };
 
-const handleNameLesson = async (id: string) => {
+const handleNameFile = async (id: string) => {
   if (!id) {
     return;
   }
-  const response = await getNameLesson(id);
+  const response = await getNameFile(id);
   if (!response) {
-    return "La leçon n'existe pas";
+    return "La fichier n'existe pas";
   }
   return response?.title;
 };
 
 export async function pagesUrl(pathname: string): Promise<Group[]> {
-  const courseName = await handleNameCourse(pathname.split("/")[2]);
-  const lessonName = await handleNameLesson(pathname.split("/")[3]);
-
   return [
     {
       groupLabel: "",
@@ -181,33 +167,33 @@ export async function pagesUrl(pathname: string): Promise<Group[]> {
               active: pathname === "/documents",
             },
             {
-              href: "/documents/new_course",
-              label: "Ajouter un cours",
-              active: pathname === "/documents/new_course",
+              href: "/documents/new_folder",
+              label: "Ajouter un dossier",
+              active: pathname === "/documents/new_folder",
             },
             {
-              href: "/documents/new_lesson",
-              label: "Ajouter une leçon",
-              active: pathname === "/documents/new_lesson",
+              href: "/documents/new_file",
+              label: "Ajouter une fichier",
+              active: pathname === "/documents/new_file",
             },
             {
-              href: "/documents/:id/new_lesson",
-              label: "Ajouter une leçon",
-              active: /\/\documents\/[a-z0-9]+\/new_lesson/.test(pathname),
+              href: "/documents/:id/new_file",
+              label: "Ajouter une fichier",
+              active: /\/\documents\/[a-z0-9]+\/new_file/.test(pathname),
             },
             {
               href: "/documents/:id/edit",
-              label: "Modifier le cours",
+              label: "Modifier le dossier",
               active: /\/documents\/[a-z0-9]+\/edit/.test(pathname),
             },
             {
               href: "/documents/:id/:id",
-              label: "Details de la leçon ",
+              label: "Details de la fichier ",
               active: /\/\documents\/[a-z0-9]+\/[a-z0-9]+/.test(pathname),
             },
             {
               href: "/documents/:id",
-              label: "Details du cours ",
+              label: "Details du dossier",
               active: /\/documents\/[a-z0-9]+/.test(pathname),
             },
           ],

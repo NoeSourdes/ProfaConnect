@@ -114,16 +114,6 @@ export function FixedToolbarButtons(props: FixedToolbarButtonsProps) {
               <EmojiDropdownMenu />
 
               <MoreDropdownMenu />
-              <ToolbarButton
-                onClick={() => {
-                  props.setIsFullScreen(!props.isFullScreen);
-                }}
-                tooltip={
-                  props.isFullScreen ? "Quitter le plein écran" : "Plein écran"
-                }
-              >
-                {props.isFullScreen ? <Minimize /> : <Maximize />}
-              </ToolbarButton>
             </ToolbarGroup>
           </>
         )}
@@ -131,6 +121,16 @@ export function FixedToolbarButtons(props: FixedToolbarButtonsProps) {
         <div className="grow" />
 
         <ToolbarGroup noSeparator>
+          <ToolbarButton
+            onClick={() => {
+              props.setIsFullScreen(!props.isFullScreen);
+            }}
+            tooltip={
+              props.isFullScreen ? "Quitter le plein écran" : "Plein écran"
+            }
+          >
+            {props.isFullScreen ? <Minimize /> : <Maximize />}
+          </ToolbarButton>
           <CommentToolbarButton />
         </ToolbarGroup>
       </div>

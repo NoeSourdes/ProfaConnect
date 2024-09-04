@@ -22,6 +22,7 @@ export const Providers = (props: ProvidersProps) => {
         <QueryClientProvider client={queryClient}>
           <Toaster />
           {props.children}
+          {/* <ReactQueryDevtools initialIsOpen={false} /> */}
         </QueryClientProvider>
       </ThemeProvider>
     </SessionProvider>
