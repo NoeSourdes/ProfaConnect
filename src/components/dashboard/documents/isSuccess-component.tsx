@@ -308,7 +308,7 @@ export default function IsSuccessComponent({
                                   "ring-2 ring-primary"
                                 }`}
                                 onDoubleClick={() => {
-                                  router.push(`/documents/${file.id}`);
+                                  // router.push(file.url ? file.url : "");
                                 }}
                                 onClick={(e) => {
                                   e.stopPropagation();
