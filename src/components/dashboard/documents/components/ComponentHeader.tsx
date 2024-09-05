@@ -9,7 +9,7 @@ import { NavbarDocument } from "./NavbarDocument";
 
 export const ComponentHeader = () => {
   const pathname = usePathname();
-  const getLastSlash = pathname.split("/")[pathname.split("/").length - 1];
+  const getLastSlash = pathname.split("/").pop(); // Utilisation de pop pour obtenir le dernier élément
 
   if (getLastSlash !== "new_file") {
     return (
@@ -35,4 +35,6 @@ export const ComponentHeader = () => {
       </div>
     );
   }
+
+  return null;
 };
