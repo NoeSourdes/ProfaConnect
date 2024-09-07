@@ -59,7 +59,7 @@ export const ComponentDropZone = (props: ComponentDropZoneProps) => {
     >
       {({ getRootProps, getInputProps }) => (
         <div
-          className=" w-full flex-1 flex flex-col items-center justify-center min-h-[calc(83vh-56px-64px-20px-24px-56px-48px)]"
+          className=" w-full flex-1 flex flex-col items-center justify-center"
           {...getRootProps()}
         >
           <input {...getInputProps()} />
