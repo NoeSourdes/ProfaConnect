@@ -66,9 +66,7 @@ export const NewFileComponent = (props: NewFileComponentProps) => {
   const redirect = pathname.split("/")[pathname.split("/").length - 2];
   const queryClient = useQueryClient();
   const { data: user } = useSession();
-  const [value, setValue] = useState<string>(
-    localStorage.getItem("editorContent") || ""
-  );
+  const [value, setValue] = useState<string>("");
 
   const isCreate = !Boolean(props.fileId);
 

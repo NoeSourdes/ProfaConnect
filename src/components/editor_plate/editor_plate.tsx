@@ -510,7 +510,6 @@ export function PlateEditor(props: PlateEditorProps) {
               initialValue={JSON.parse(props.value || "null")}
               onChange={(newValue) => {
                 props.setValue(JSON.stringify(newValue));
-                localStorage.setItem("editorContent", JSON.stringify(newValue));
               }}
             >
               <FixedToolbar>
