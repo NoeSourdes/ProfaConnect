@@ -39,9 +39,9 @@ export function FixedToolbarButtons(props: FixedToolbarButtonsProps) {
   const readOnly = useEditorReadOnly();
 
   return (
-    <div className="w-full overflow-hidden">
+    <div className="w-full overflow-x-scroll h-10 no-scrollbar">
       <div
-        className="flex flex-wrap"
+        className="flex"
         style={{
           transform: "translateX(calc(-1px))",
         }}

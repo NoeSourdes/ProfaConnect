@@ -3,7 +3,6 @@ import Link from "next/link";
 import { Button } from "../../ui/button";
 import { Card, CardContent } from "../../ui/card";
 import { BreadcrumbComponent } from "../Breadcrumb";
-import TailwindAdvancedEditor from "../tiptap/Editor";
 
 export type previewProps = {
   content: any;
@@ -34,12 +33,7 @@ export const PreviewLesson = (props: previewProps) => {
       </div>
       <Card className="rounded-lg border-none mt-6 shadow-none">
         <CardContent className="p-6 pb-7 border-t max-sm:px-0">
-          <div className="flex justify-center min-h-[calc(100vh-56px-64px-20px-24px-56px-48px)] rounded-lg">
-            <TailwindAdvancedEditor
-              editable={false}
-              initialContent={props.content}
-            />
-          </div>
+          <div className="flex justify-center min-h-[calc(100vh-56px-64px-20px-24px-56px-48px)] rounded-lg"></div>
         </CardContent>
       </Card>
     </div>

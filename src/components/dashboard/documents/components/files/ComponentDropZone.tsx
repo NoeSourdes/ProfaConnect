@@ -1,5 +1,6 @@
 "use client";
 
+import { fileTypeUpload } from "@/actions/admin/files/file.schema";
 import { Progress } from "@/src/components/ui/progress";
 import { useUploadThing } from "@/src/utils/uploadthing";
 import { FileText, Loader2, MousePointerSquareDashed } from "lucide-react";
@@ -9,7 +10,7 @@ import Dropzone, { FileRejection } from "react-dropzone";
 import { toast } from "sonner";
 
 interface ComponentDropZoneProps {
-  setFiles: (files: string) => void;
+  setFiles: (files: fileTypeUpload) => void;
 }
 
 export const ComponentDropZone = (props: ComponentDropZoneProps) => {
@@ -21,12 +22,12 @@ export const ComponentDropZone = (props: ComponentDropZoneProps) => {
   const { startUpload, isUploading } = useUploadThing("pdfUploader", {
     onClientUploadComplete: ([data]) => {
       startTransition(() => {
-        props.setFiles(data.serverData.url);
+        props.setFiles(data.serverData);
         toast.success("Le fichier a été téléchargé avec succès");
       });
     },
     onUploadProgress: (progress) => {
-      props.setFiles("");
+      props.setFiles({} as fileTypeUpload);
 
       setUploadProgress(progress);
     },

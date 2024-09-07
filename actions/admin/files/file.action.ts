@@ -13,6 +13,8 @@ export const createFile = userAction(fileSchema, async (inputs, context) => {
       document: content,
       folderId: inputs.folderId === "" ? null : inputs.folderId,
       authorId: context.user.id,
+      format: "text",
+      size: 45678,
     },
   });
   return file;
@@ -47,6 +49,8 @@ export const createFilePDF = userAction(
         url: inputs.url,
         folderId: inputs.folderId === "" ? null : inputs.folderId,
         authorId: context.user.id,
+        format: "pdf",
+        size: inputs.size,
       },
     });
     return file;

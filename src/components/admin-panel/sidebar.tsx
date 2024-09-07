@@ -3,11 +3,11 @@ import Link from "next/link";
 import { Menu } from "@/src/components/admin-panel/menu";
 import { SidebarToggle } from "@/src/components/admin-panel/sidebar-toggle";
 import { Button } from "@/src/components/ui/button";
+import { useFullScreen } from "@/src/hooks/documents/use-fullscreen";
 import { useSidebarToggle } from "@/src/hooks/use-sidebar-toggle";
 import { useStore } from "@/src/hooks/use-store";
 import { cn } from "@/src/lib/utils";
 import Image from "next/image";
-import { useFullScreen } from "../dashboard/tiptap/fullScreen.store";
 
 export function Sidebar() {
   const sidebar = useStore(useSidebarToggle, (state) => state);

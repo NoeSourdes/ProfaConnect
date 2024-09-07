@@ -91,6 +91,8 @@ model Files {
   url           String?       
   folderId      String?
   folder        Folders?      @relation(fields: [folderId], references: [id])
+  format        String       @db.VarChar(255)
+  size          Float
 	@@map("Files")
 }
 
@@ -123,6 +125,8 @@ model fileUpload {
   name String
   userId String
   url String
+  type String
+  size Float
 }
 
 model VerificationToken {
