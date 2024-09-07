@@ -2,9 +2,10 @@ import { PageTitle } from "@/src/components/admin-panel/page-title";
 import { SheetMenu } from "@/src/components/admin-panel/sheet-menu";
 import { UserNav } from "@/src/components/admin-panel/user-nav";
 import { ModeToggle } from "@/src/components/mode-toggle";
-import { useFullScreen } from "../dashboard/tiptap/fullScreen.store";
+
 import { CommandBar } from "./CommandeBar";
 import { UserNotification } from "./user-notification";
+import { useFullScreen } from "@/src/hooks/documents/use-fullscreen";
 
 export function Navbar() {
   const { isFullScreen, setIsFullScreen } = useFullScreen();

@@ -1,11 +1,12 @@
 "use client";
 
+import { fileTypeGlobal } from "@/actions/admin/files/file.schema";
 import { FolderType } from "@/actions/admin/folders/folder.schema";
 import { useGetInfo } from "@/src/hooks/documents/use-get-info";
 import { useGetTreeView } from "@/src/hooks/documents/use-get-tree-view";
 import { useSearchDocuments } from "@/src/hooks/documents/use-search-documents";
 import { useSelectedDocuments } from "@/src/hooks/documents/use-selected-documents";
-import { EllipsisVertical, Folder, X } from "lucide-react";
+import { EllipsisVertical, File, Folder, Star, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -27,7 +28,7 @@ import { ButtonCreateFolder } from "./components/folders/ButtonCreateFolder";
 
 interface IsSuccessComponentProps {
   folders: any;
-  files: any;
+  files: fileTypeGlobal[];
   user: any;
   deleteMutation: any;
   view: any;
@@ -68,7 +69,7 @@ export default function IsSuccessComponent({
         isOpenModalInfo ? "pr-5" : ""
       }`}
     >
-      {folders?.length === 0 ? (
+      {folders?.length === 0 && files?.length === 0 ? (
         <>
           <Card className="rounded-lg shadow-none border-dashed">
             <CardContent className=" bg-transparent flex items-center justify-center min-h-[calc(100vh-56px-64px-20px-24px-56px-48px)]">
@@ -97,33 +98,36 @@ export default function IsSuccessComponent({
             <div className="w-full flex flex-wrap">
               {folders?.filter((folder: FolderType) =>
                 folder.title.toLowerCase().includes(search?.toLowerCase() ?? "")
-              ).length === 0 && (
-                <Card className="rounded-lg shadow-none border-dashed w-full">
-                  <CardContent className=" bg-transparent flex items-center justify-center min-h-[calc(100vh-56px-64px-20px-24px-56px-48px)]">
-                    <div className="flex flex-col relative">
+              ).length === 0 &&
+                files?.filter((file: fileTypeGlobal) =>
+                  file.title.toLowerCase().includes(search?.toLowerCase() ?? "")
+                ).length === 0 && (
+                  <Card className="rounded-lg shadow-none border-dashed w-full">
+                    <CardContent className=" bg-transparent flex items-center justify-center min-h-[calc(100vh-56px-64px-20px-24px-56px-48px)]">
                       <div className="flex flex-col relative">
-                        <div className="flex flex-col items-center gap-1 text-center">
-                          <h3 className="text-2xl font-bold tracking-tight">
-                            Aucun résultat trouvé
-                          </h3>
-                          <p className="text-sm text-muted-foreground">
-                            Aucun document ne correspond à votre recherche.
-                            Veuillez réessayer avec un autre mot-clé.
-                          </p>
-                          <div className="flex items-center gap-5">
-                            <ButtonCreateFolder />
-                            <Link href="/documents/new_file">
-                              <Button className="mt-4">
-                                Créer une fichier
-                              </Button>
-                            </Link>
+                        <div className="flex flex-col relative">
+                          <div className="flex flex-col items-center gap-1 text-center">
+                            <h3 className="text-2xl font-bold tracking-tight">
+                              Aucun résultat trouvé
+                            </h3>
+                            <p className="text-sm text-muted-foreground">
+                              Aucun document ne correspond à votre recherche.
+                              Veuillez réessayer avec un autre mot-clé.
+                            </p>
+                            <div className="flex items-center gap-5">
+                              <ButtonCreateFolder />
+                              <Link href="/documents/new_file">
+                                <Button className="mt-4">
+                                  Créer une fichier
+                                </Button>
+                              </Link>
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              )}
+                    </CardContent>
+                  </Card>
+                )}
               <div
                 className={`w-full ${
                   selectedDocuments.length > 0 ? "space-y-5" : ""
@@ -286,7 +290,7 @@ export default function IsSuccessComponent({
                         </div>
                       </div>
                     )}
-                    {files?.filter((file: FolderType) =>
+                    {files?.filter((file: fileTypeGlobal) =>
                       file.title
                         .toLowerCase()
                         .includes(search?.toLowerCase() ?? "")
@@ -295,20 +299,20 @@ export default function IsSuccessComponent({
                         <h6 className="text-sm">fichiers</h6>
                         <div className="w-full flex flex-wrap gap-4">
                           {files
-                            ?.filter((file: FolderType) =>
+                            ?.filter((file: fileTypeGlobal) =>
                               file.title
                                 .toLowerCase()
                                 .includes(search?.toLowerCase() ?? "")
                             )
-                            .map((file: FolderType) => (
+                            .map((file: fileTypeGlobal) => (
                               <div
-                                key={file.id}
-                                className={`relative bg-background z-50 w-48 max-w-64 px-4 py-2 grow flex flex-col justify-between border rounded-lg  hover:ring-2 ring-primary/70 cursor-pointer transition-all folder-item ${
+                                key={file.fileId}
+                                className={`relative bg-background z-50 w-48 max-w-64 p-4 grow flex flex-col justify-between border rounded-lg  hover:ring-2 ring-primary/70 cursor-pointer transition-all folder-item ${
                                   selectedDocuments.includes(file) &&
                                   "ring-2 ring-primary"
                                 }`}
                                 onDoubleClick={() => {
-                                  // router.push(file.url ? file.url : "");
+                                  window.open(file.url ?? "");
                                 }}
                                 onClick={(e) => {
                                   e.stopPropagation();
@@ -352,23 +356,9 @@ export default function IsSuccessComponent({
                                   }
                                 }}
                               >
-                                <div>
-                                  <div className="flex items-center justify-between gap-2">
-                                    <div className="flex items-center gap-2">
-                                      <div className="relative">
-                                        <span className="absolute w-2 h-[2px] rounded bg-white bottom-[6px] left-[5px]"></span>
-                                        <Folder
-                                          fill="#2463EB"
-                                          size={25}
-                                          className="text-primary"
-                                        />
-                                      </div>
-                                      <h2 className="text-lg font-semibold">
-                                        {file.title.length > 20
-                                          ? file.title.slice(0, 20) + "..."
-                                          : file.title}
-                                      </h2>
-                                    </div>
+                                <div className="w-full space-y-5">
+                                  <div className="w-full flex items-center justify-between">
+                                    <Star size={18} />
                                     <Popover>
                                       <PopoverTrigger asChild>
                                         <EllipsisVertical
@@ -384,12 +374,55 @@ export default function IsSuccessComponent({
                                       </PopoverContent>
                                     </Popover>
                                   </div>
-                                  <p className="text-sm text-muted-foreground">
-                                    {file.description ?? "".length > 80
-                                      ? file.description ??
-                                        "".slice(0, 80) + "..."
-                                      : file.description}
-                                  </p>
+                                  <div className=" flex flex-col items-center justify-center gap-3">
+                                    <div className="relative">
+                                      <File
+                                        size={50}
+                                        strokeWidth={1}
+                                        className="text-muted-foreground"
+                                      />
+                                      {file.format === "pdf" ? (
+                                        <Image
+                                          src="/svg/PDF_file_icon.svg"
+                                          alt="svg logo pdf"
+                                          height={40}
+                                          width={40}
+                                          className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+                                        />
+                                      ) : (
+                                        <span className="text-sm text-primary font-medium absolute top-5 left-1/2 transform -translate-x-1/2">
+                                          TXT
+                                        </span>
+                                      )}
+                                    </div>
+                                    <h3 className="text-sm font-semibold">
+                                      {file.title}.{file.format}
+                                    </h3>
+                                  </div>
+                                  <div className="h-[1px] w-full bg-border rounded"></div>
+                                  <div className="w-full flex items-center justify-between">
+                                    <p className="text-xs">
+                                      <span className="font-semibold">
+                                        taille du fichier :
+                                      </span>{" "}
+                                      <br />{" "}
+                                      <span className="text-muted-foreground">
+                                        {(file.size / (1024 * 1024)).toFixed(1)}{" "}
+                                        MB
+                                      </span>
+                                    </p>
+                                    <Image
+                                      src={
+                                        user.user.image
+                                          ? user.user.image
+                                          : "/user.png"
+                                      }
+                                      alt="user image"
+                                      width={30}
+                                      height={30}
+                                      className="rounded-md border-2"
+                                    />
+                                  </div>
                                 </div>
                               </div>
                             ))}{" "}

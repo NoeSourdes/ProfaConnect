@@ -488,8 +488,12 @@ const plugins = createPlugins(
   }
 );
 
-export function PlateEditor() {
-  const [value, setValue] = useState<string>();
+interface PlateEditorProps {
+  value: string;
+  setValue: (value: string) => void;
+}
+
+export function PlateEditor(props: PlateEditorProps) {
   const [isFullScreen, setIsFullScreen] = useState(false);
 
   return (
@@ -503,9 +507,10 @@ export function PlateEditor() {
           <CommentsProvider users={{}} myUserId="1">
             <Plate
               plugins={plugins}
-              initialValue={JSON.parse(value || "null")}
+              initialValue={JSON.parse(props.value || "null")}
               onChange={(newValue) => {
-                setValue(JSON.stringify(newValue));
+                props.setValue(JSON.stringify(newValue));
+                localStorage.setItem("editorContent", JSON.stringify(newValue));
               }}
             >
               <FixedToolbar>

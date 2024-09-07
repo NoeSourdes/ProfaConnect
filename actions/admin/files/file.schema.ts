@@ -10,16 +10,31 @@ export const fileSchemaPDF = z.object({
   title: z.string().max(255),
   folderId: z.string().optional(),
   url: z.string().url(),
+  size: z.number(),
+  format: z.string(),
+});
+
+export const fileShemaUpload = z.object({
+  name: z.string(),
+  size: z.number(),
+  type: z.string(),
+  key: z.string(),
+  url: z.string(),
+  userId: z.string(),
 });
 
 export const fileShemaGlobal = z.object({
   fileId: z.string(),
-  document: z.string().nullable().optional(),
+  createdAt: z.date(),
   updatedAt: z.date().optional(),
   title: z.string().max(255),
-  folderId: z.string().optional().nullable(),
-  content: z.string().optional(),
+  authorId: z.string(),
+  document: z.string().nullable().optional(),
   url: z.string().url().nullable().optional(),
+  folderId: z.string().optional().nullable(),
+  // content: z.string().optional(),
+  format: z.string(),
+  size: z.number(),
   author: z
     .object({
       id: z.string(),
@@ -33,4 +48,5 @@ export const fileShemaGlobal = z.object({
 
 export type fileType = z.infer<typeof fileSchema>;
 export type fileTypePDF = z.infer<typeof fileSchemaPDF>;
+export type fileTypeUpload = z.infer<typeof fileShemaUpload>;
 export type fileTypeGlobal = z.infer<typeof fileShemaGlobal>;

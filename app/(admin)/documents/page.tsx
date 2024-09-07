@@ -1,6 +1,7 @@
 "use client";
 
 import { getUserFiles } from "@/actions/admin/files/file.action";
+import { fileTypeGlobal } from "@/actions/admin/files/file.schema";
 import { useViewSelect } from "@/actions/admin/folders/viewSelect.store";
 import IsErrorComponent from "@/src/components/dashboard/documents/isError-component";
 import IsLoadingComponent from "@/src/components/dashboard/documents/isLoading-component";
@@ -46,8 +47,6 @@ export default function Documents() {
     },
   });
 
-  console.log("files", files);
-
   const deleteMutation = useMutation({
     mutationFn: (idFolder: { id: string }) => deleteFolderAction(idFolder.id),
     onSuccess: ({ data, serverError }) => {
@@ -80,7 +79,7 @@ export default function Documents() {
 
   return (
     <IsSuccessComponent
-      files={files}
+      files={files as fileTypeGlobal[]}
       folders={folders}
       user={user}
       deleteMutation={deleteMutation}

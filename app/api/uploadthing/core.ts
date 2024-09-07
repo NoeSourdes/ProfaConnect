@@ -25,6 +25,8 @@ export const ourFileRouter = {
           name: file.name,
           userId: metadata.userId,
           url: `https://utfs.io/f/${file.key}`,
+          type: file.type,
+          size: file.size,
         },
       });
       return createdFile;
