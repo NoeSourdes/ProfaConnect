@@ -501,7 +501,7 @@ export function PlateEditor(props: PlateEditorProps) {
       <DndProvider backend={HTML5Backend}>
         <div
           className={`bg-background z-[4002] transition-all ${
-            isFullScreen ? "fixed inset-0" : "relative"
+            isFullScreen ? "fixed inset-0 overflow-scroll" : "relative"
           }`}
         >
           <CommentsProvider users={{}} myUserId="1">
@@ -512,22 +512,25 @@ export function PlateEditor(props: PlateEditorProps) {
                 props.setValue(JSON.stringify(newValue));
               }}
             >
-              <FixedToolbar>
-                <FixedToolbarButtons
+              <div className="min-h-[calc(92vh-56px-64px-20px-24px-56px-48px)]">
+                <FixedToolbar>
+                  <FixedToolbarButtons
+                    isFullScreen={isFullScreen}
+                    setIsFullScreen={setIsFullScreen}
+                  />
+                </FixedToolbar>
+
+                <Editor
                   isFullScreen={isFullScreen}
-                  setIsFullScreen={setIsFullScreen}
+                  focusRing={false}
+                  className="border-none mt-1 rounded-none max-w-5xl mr-auto ml-auto"
                 />
-              </FixedToolbar>
 
-              <Editor
-                focusRing={false}
-                className="border-none mt-1 rounded-none max-w-5xl mr-auto ml-auto"
-              />
-
-              <FloatingToolbar className="z-[5001] border rounded-lg px-1 max-md:hidden">
-                <FloatingToolbarButtons />
-              </FloatingToolbar>
-              <CommentsPopover />
+                <FloatingToolbar className="z-[5001] border rounded-lg px-1 max-md:hidden">
+                  <FloatingToolbarButtons />
+                </FloatingToolbar>
+                <CommentsPopover />
+              </div>
             </Plate>
           </CommentsProvider>
         </div>

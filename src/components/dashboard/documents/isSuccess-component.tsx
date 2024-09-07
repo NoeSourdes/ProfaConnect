@@ -395,7 +395,7 @@ export default function IsSuccessComponent({
                                         </span>
                                       )}
                                     </div>
-                                    <h3 className="text-sm font-semibold">
+                                    <h3 className="text-sm font-semibold text-center">
                                       {file.title}.{file.format}
                                     </h3>
                                   </div>
