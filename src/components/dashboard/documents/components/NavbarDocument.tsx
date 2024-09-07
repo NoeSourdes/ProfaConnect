@@ -36,7 +36,7 @@ export const NavbarDocument = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
-    <div className="flex w-full">
+    <div className="flex w-full overflow-x-scroll">
       <div className="flex items-center gap-3 w-full">
         <ButtonCreateFolder buttonInTop />
         <TooltipProvider>
