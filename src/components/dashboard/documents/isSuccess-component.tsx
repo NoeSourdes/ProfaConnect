@@ -6,6 +6,7 @@ import { useGetInfo } from "@/src/hooks/documents/use-get-info";
 import { useGetTreeView } from "@/src/hooks/documents/use-get-tree-view";
 import { useSearchDocuments } from "@/src/hooks/documents/use-search-documents";
 import { useSelectedDocuments } from "@/src/hooks/documents/use-selected-documents";
+import { motion } from "framer-motion";
 import { EllipsisVertical, File, Folder, Star, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -62,6 +63,19 @@ export default function IsSuccessComponent({
       document.body.removeEventListener("click", handleClick);
     };
   }, [setSelectedDocuments]);
+
+  const variants = {
+    open: {
+      opacity: 1,
+      display: "flex",
+      alignItems: "center",
+    },
+    closed: {
+      opacity: 0,
+      display: "flex",
+      alignItems: "center",
+    },
+  };
 
   return (
     <div
@@ -128,55 +142,65 @@ export default function IsSuccessComponent({
                     </CardContent>
                   </Card>
                 )}
-              <div
-                className={`w-full ${
-                  selectedDocuments.length > 0 ? "space-y-5" : ""
-                }`}
-              >
-                <div
-                  className={`flex w-full rounded-lg items-center gap-3 transition-all ${
-                    selectedDocuments.length > 0
-                      ? "border px-4 py-2 visible"
-                      : "h-0 invisible"
-                  }`}
-                >
-                  <Button
-                    variant="ghost"
-                    size="icon_sm"
-                    className={` ${
-                      selectedDocuments.length > 0 ? "opacity-1" : "opacity-0"
-                    }`}
+              <div className={`w-full space-y-5 `}>
+                {/* bloc filter and selected documents */}
+                <div className="flex items-center justify-between gap-3 relative">
+                  <motion.div
+                    variants={variants}
+                    animate={selectedDocuments.length > 0 ? "closed" : "open"}
+                    className={`h-10 flex rounded-lg w-full items-center gap-3`}
                   >
-                    <X
-                      size={18}
-                      className={`"text-muted-foreground cursor-pointer"`}
-                      onClick={() => {
-                        setSelectedDocuments([]);
-                      }}
-                    />
-                  </Button>
-                  <span
-                    className={`text-muted-foreground text-sm ${
-                      selectedDocuments.length > 0 ? "opacity-1" : "opacity-0"
-                    }`}
+                    <Button variant="outline">je suis un filtre</Button>
+                    <Button variant="outline">je suis un autre filtre</Button>
+                  </motion.div>
+
+                  <motion.div
+                    variants={variants}
+                    animate={selectedDocuments.length > 0 ? "open" : "closed"}
+                    className="absolute w-full bg-secondary rounded-lg h-10 px-1 gap-3"
                   >
-                    {selectedDocuments.length} {""}
-                    élément{selectedDocuments.length > 1 ? "s" : ""} sélectionné
-                    {selectedDocuments.length > 1 ? "s" : ""} sur{" "}
-                    {folders?.length}
-                  </span>
-                  <Button
-                    variant="ghost"
-                    size="icon_sm"
-                    className={` ${
-                      selectedDocuments.length > 0 ? "opacity-1" : "opacity-0"
-                    }`}
-                  >
-                    <EllipsisVertical
-                      size={18}
-                      className={`"cursor-pointer"`}
-                    />
-                  </Button>
+                    <Button
+                      variant="ghost"
+                      size="icon_sm"
+                      className={` ${
+                        selectedDocuments.length > 0 ? "opacity-1" : "opacity-0"
+                      } bg-secondary hover:bg-border`}
+                    >
+                      <X
+                        size={18}
+                        className={`"text-muted-foreground cursor-pointer"`}
+                        onClick={() => {
+                          setSelectedDocuments([]);
+                        }}
+                      />
+                    </Button>
+                    <span
+                      className={`text-muted-foreground text-sm ${
+                        selectedDocuments.length > 0 ? "opacity-1" : "opacity-0"
+                      }`}
+                    >
+                      <span className="text-primary font-medium">
+                        {selectedDocuments.length}
+                      </span>{" "}
+                      {""}
+                      élément{selectedDocuments.length > 1 ? "s" : ""}{" "}
+                      sélectionné
+                      {selectedDocuments.length > 1 ? "s" : ""} sur{" "}
+                      {folders?.length}
+                    </span>
+                    <Button
+                      variant="ghost"
+                      size="icon_sm"
+                      className={` ${
+                        selectedDocuments.length > 0 ? "opacity-1" : "opacity-0"
+                      } bg-secondary hover:bg-border`}
+                    >
+                      <EllipsisVertical
+                        size={18}
+                        className={`"cursor-pointer"`}
+                      />
+                    </Button>
+                  </motion.div>
                 </div>
                 {view === "grid_view" ? (
                   <div className="space-y-5">
@@ -203,6 +227,7 @@ export default function IsSuccessComponent({
                                 }`}
                                 onDoubleClick={() => {
                                   router.push(`/documents/${folder.id}`);
+                                  setSelectedDocuments([]);
                                 }}
                                 onClick={(e) => {
                                   e.stopPropagation();
@@ -313,6 +338,7 @@ export default function IsSuccessComponent({
                                 }`}
                                 onDoubleClick={() => {
                                   window.open(file.url ?? "");
+                                  setSelectedDocuments([]);
                                 }}
                                 onClick={(e) => {
                                   e.stopPropagation();
