@@ -46,6 +46,10 @@ Pour cloner et exécuter ce projet localement, suivez ces étapes :
 
 ```bash
    npm install
+   # ou
+   yarn install
+   # ou
+   pnpm install
 ```
 
 3. Configurez l'environnement
@@ -83,10 +87,22 @@ Pour cloner et exécuter ce projet localement, suivez ces étapes :
    npx prisma migrate dev --name init
 ```
 
+Puis poussez les données initiales.
+
+```bash
+   npx prisma db push
+```
+
 5. Démarrez l'application
 
 ```bash
-   npm run dev
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
 ```
 
 6. Accédez à l'application sur \`http://localhost:3000\`.
