@@ -37,7 +37,7 @@ Pour cloner et exécuter ce projet localement, suivez ces étapes :
 1. Clonez le dépôt
 
    \`\`\`bash
-   git clone https://github.com/votre-utilisateur/profaconnect.git
+   git clone https://github.com/NoeSourdes/ProfaConnect.git
    cd profaconnect
    \`\`\`
 
