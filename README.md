@@ -36,16 +36,17 @@ Pour cloner et exécuter ce projet localement, suivez ces étapes :
 
 1. Clonez le dépôt
 
-   \`\`\`bash
+```bash
    git clone https://github.com/NoeSourdes/ProfaConnect.git
+
    cd profaconnect
-   \`\`\`
+```
 
 2. Installez les dépendances
 
-   \`\`\`bash
+```bash
    npm install
-   \`\`\`
+```
 
 3. Configurez l'environnement
 
@@ -78,15 +79,15 @@ Pour cloner et exécuter ce projet localement, suivez ces étapes :
 
    Synchronisez le schéma de la base de données avec Prisma.
 
-   \`\`\`bash
+```bash
    npx prisma migrate dev --name init
-   \`\`\`
+```
 
 5. Démarrez l'application
 
-   \`\`\`bash
+```bash
    npm run dev
-   \`\`\`
+```
 
 6. Accédez à l'application sur \`http://localhost:3000\`.
 
