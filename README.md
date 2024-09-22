@@ -1,36 +1,103 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+<p align="center">
+  <img src="/public/img/cover.png" alt="Cover ProfaConnect" width="500"/>
+</p>
 
-## Getting Started
+# Profaconnect
 
-First, run the development server:
+**Profaconnect** est une plateforme construite avec Next.js, NextAuth, et Prisma qui permet aux enseignants et aux étudiants de rester connectés via des fonctionnalités interactives telles qu'un calendrier, des cours en ligne, des mini-jeux, une messagerie, et bien plus encore. Le projet est open source, et chacun est invité à contribuer !
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Fonctionnalités
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **Calendrier interactif** : Permet aux enseignants de planifier des cours et des événements.
+- **Cours en ligne** : Les enseignants peuvent ajouter des ressources de cours que les étudiants peuvent consulter.
+- **Mini-jeux éducatifs** : Intégration de mini-jeux pour rendre l'apprentissage ludique.
+- **Messagerie instantanée** : Pour permettre aux professeurs et aux élèves de communiquer en temps réel.
+- **Proposition de fonctionnalités** : Les utilisateurs peuvent soumettre des idées et suggestions pour de nouvelles fonctionnalités.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Technologies utilisées
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- **Next.js** : Framework pour React.js.
+- **NextAuth** : Gestion de l'authentification.
+- **Prisma** : ORM pour interagir avec la base de données.
+- **Tailwind CSS** : Pour la mise en page.
+- **PostgreSQL** : Base de données utilisée pour le projet.
+- **Vercel** : Hébergement du projet.
 
-## Learn More
+## Installation
 
-To learn more about Next.js, take a look at the following resources:
+Pour cloner et exécuter ce projet localement, suivez ces étapes :
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Prérequis
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+- [Node.js](https://nodejs.org/) v14 ou plus récent.
+- [PostgreSQL](https://www.postgresql.org/) comme base de données.
 
-## Deploy on Vercel
+### Étapes
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. Clonez le dépôt
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+   \`\`\`bash
+   git clone https://github.com/votre-utilisateur/profaconnect.git
+   cd profaconnect
+   \`\`\`
+
+2. Installez les dépendances
+
+   \`\`\`bash
+   npm install
+   \`\`\`
+
+3. Configurez l'environnement
+
+   Créez un fichier \`.env\` à la racine du projet avec les variables d'environnement nécessaires (NextAuth, Prisma, etc.). Certaines fonctionnalités nécessitent des clés API spécifiques. Si vous souhaitez participer au développement et obtenir ces clés, contactez-moi par e-mail à **sourdesnoe19@gmail.com**.
+
+   Exemple de fichier \`.env\` :
+
+   \`\`\`
+   DATABASE_URL="" ( Vous pouvez obtenir cette URL en créant une base de données sur PostgreSQL )
+   AUTH_GITHUB_ID="" ( Vous pouvez obtenir ces clés en créant une application sur GitHub )
+   AUTH_GITHUB_SECRET="" ( Vous pouvez obtenir ces clés en créant une application sur GitHub )
+   AUTH_SECRET="" ( Générez une chaîne aléatoire pour cette clé, recommandé : \`openssl rand -hex 32\` )
+   AUTH_GOOGLE_ID="" ( Vous pouvez obtenir ces clés en créant une application sur Google )
+   AUTH_GOOGLE_SECRET="" ( Vous pouvez obtenir ces clés en créant une application sur Google )
+   BLOB_READ_WRITE_TOKEN="" ( Vous pouvez obtenir ces clés en créant un compte sur Vercel )
+   UPLOADTHING_SECRET="" ( Vous pouvez obtenir ces clés en créant un compte sur UploadThing )
+   UPLOADTHING_APP_ID="" ( Vous pouvez obtenir ces clés en créant un compte sur UploadThing )
+   \`\`\`
+
+4. Configurez Prisma
+
+   Synchronisez le schéma de la base de données avec Prisma.
+
+   \`\`\`bash
+   npx prisma migrate dev --name init
+   \`\`\`
+
+5. Démarrez l'application
+
+   \`\`\`bash
+   npm run dev
+   \`\`\`
+
+6. Accédez à l'application sur \`http://localhost:3000\`.
+
+## Participation
+
+Nous accueillons toutes les contributions pour améliorer ce projet ! Voici quelques idées pour démarrer :
+
+- Ajouter de nouvelles fonctionnalités.
+- Corriger des bugs.
+- Optimiser les performances.
+- Proposer des améliorations UX/UI.
+
+### Comment contribuer
+
+1. Forkez ce dépôt.
+2. Créez une branche (\`git checkout -b feature/amazing-feature\`).
+3. Faites vos modifications et validez-les (\`git commit -m 'Add amazing feature'\`).
+4. Poussez votre branche (\`git push origin feature/amazing-feature\`).
+5. Ouvrez une Pull Request.
+
+### API et Clés secrètes
+
+Certaines fonctionnalités nécessitent des clés API spécifiques. Si vous souhaitez participer au développement et obtenir ces clés, contactez-moi par e-mail à **sourdesnoe19@gmail.com**.
