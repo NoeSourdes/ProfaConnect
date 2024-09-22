@@ -55,14 +55,23 @@ Pour cloner et exécuter ce projet localement, suivez ces étapes :
 
    \`\`\`
    DATABASE_URL="postgresql:" (Vous pouvez obtenir cette URL en créant une base de données PostgreSQL)
+
    AUTH_GITHUB_ID="" (Vous pouvez obtenir ces clés en créant une application OAuth sur GitHub)
+
    AUTH_GITHUB_SECRET="" (Vous pouvez obtenir ces clés en créant une application OAuth sur GitHub)
+
    AUTH_SECRET="" (Générez une chaîne aléatoire pour le secret, vous pouvez la générer en utilisant la commande \`openssl rand -hex 32\`)
+
    AUTH_GOOGLE_ID="" (Vous pouvez obtenir ces clés en créant une application OAuth sur Google)
+
    AUTH_GOOGLE_SECRET="" (Vous pouvez obtenir ces clés en créant une application OAuth sur Google)
+
    BLOB_READ_WRITE_TOKEN="" (Vous pouvez obtenir ces clés en créant un compte sur Vercel et en créant un projet Blob Storage)
+
    UPLOADTHING_SECRET="" (Vous pouvez obtenir ces clés en créant un compte sur UploadThing)
+
    UPLOADTHING_APP_ID="" (Vous pouvez obtenir ces clés en créant un compte sur UploadThing)
+
    \`\`\`
 
 4. Configurez Prisma
