@@ -11,6 +11,7 @@ export default function page() {
       <Card className="rounded-lg shadow-none border-0 mt-5">
         <CardContent className="p-6 pb-7 relative">
           <div className="flex min-h-[calc(100vh-56px-64px-20px-24px-56px-48px)]">
+            <div>Demander à l'IA</div>
             <div className="absolute inset-0">
               <div className="absolute bottom-0 left-1/2 -translate-x-1/2 rounded-[25px] border border-input bg-background w-full max-w-3xl flex items-end p-4">
                 <TextareaAutosize
