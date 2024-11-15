@@ -18,6 +18,7 @@ import { getPages } from "@/src/lib/pages";
 import { cn } from "@/src/lib/utils";
 import { useQuery } from "@tanstack/react-query";
 import { signOut, useSession } from "next-auth/react";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import {
   Card,
@@ -79,7 +80,7 @@ export function Menu({ isOpen }: MenuProps) {
 
   return (
     <ScrollArea className="[&>div>div[style]]:!block">
-      <nav className="mt-7 h-full w-full">
+      <nav className="mt-7 w-full">
         <ul className="flex flex-col min-h-[calc(100vh-48px-36px-16px-32px)] lg:min-h-[calc(100vh-32px-40px-32px)] items-start space-y-1 px-2">
           {pages.map(({ groupLabel, menus }, index) => (
             <li className={cn("w-full", groupLabel ? "pt-5" : "")} key={index}>
@@ -197,6 +198,45 @@ export function Menu({ isOpen }: MenuProps) {
             )}
           </li>
           <li className="w-full">
+            <div className="p-0.5 bg-[linear-gradient(120deg,#6EB6F2,#6EB6F2,#a855f7,#ea580c,#eab308)] rounded-lg">
+              <Button
+                variant="ghost"
+                className={`w-full justify-between h-10 ${
+                  isOpen === false ? "p-0 flex items-center justify-center" : ""
+                }`}
+                asChild
+              >
+                <Link href={"/profaBot"}>
+                  <span>
+                    <Image
+                      src="/svg/star.svg"
+                      alt="Logo ai assistant"
+                      width={24}
+                      height={24}
+                      className={`min-w-[24px]`}
+                    />
+                  </span>
+                  <p
+                    className={cn(
+                      "max-w-[200px] truncate bg-[linear-gradient(120deg,#6EB6F2,#6EB6F2,#a855f7,#ea580c,#eab308)] bg-clip-text text-transparent",
+                      isOpen === false
+                        ? "-translate-x-96 opacity-0 hidden"
+                        : "translate-x-0 opacity-100"
+                    )}
+                  >
+                    ProfaBot
+                  </p>
+                  <span className={isOpen === false ? "hidden" : ""}>
+                    <Image
+                      src="/svg/star.svg"
+                      alt="Logo ai assistant"
+                      width={24}
+                      height={24}
+                    />
+                  </span>
+                </Link>
+              </Button>
+            </div>
             <TooltipProvider disableHoverableContent>
               <Tooltip delayDuration={100}>
                 <TooltipTrigger asChild>

@@ -1,18 +1,19 @@
-"use client";
+'use client';
+
+import React from 'react';
 
 import {
   CommentProvider,
-  useCommentById,
+  CommentsPlugin,
   useCommentItemContentState,
-} from "@udecode/plate-comments";
-import { formatDistance } from "date-fns";
+} from '@udecode/plate-comments/react';
+import { useEditorPlugin } from '@udecode/plate-common/react';
+import { formatDistance } from 'date-fns';
 
-import { fr } from "date-fns/locale";
-import { useSession } from "next-auth/react";
-import { CommentAvatar } from "./comment-avatar";
-import { CommentMoreDropdown } from "./comment-more-dropdown";
-import { CommentResolveButton } from "./comment-resolve-button";
-import { CommentValue } from "./comment-value";
+import { CommentAvatar } from './comment-avatar';
+import { CommentMoreDropdown } from './comment-more-dropdown';
+import { CommentResolveButton } from './comment-resolve-button';
+import { CommentValue } from './comment-value';
 
 type PlateCommentProps = {
   commentId: string;
@@ -27,19 +28,16 @@ function CommentItemContent() {
     isReplyComment,
     user,
   } = useCommentItemContentState();
-  const userData = useSession();
 
   return (
     <div>
       <div className="relative flex items-center gap-2">
         <CommentAvatar userId={comment.userId} />
 
-        <h4 className="text-sm font-semibold leading-none">
-          {userData.data?.user?.name?.split(" ")[0] ?? ""}
-        </h4>
+        <h4 className="text-sm font-semibold leading-none">{user?.name}</h4>
 
         <div className="text-xs leading-none text-muted-foreground">
-          il y a {formatDistance(comment.createdAt, Date.now(), { locale: fr })}
+          {formatDistance(comment.createdAt, Date.now())} ago
         </div>
 
         {isMyComment && (
@@ -63,7 +61,8 @@ function CommentItemContent() {
 }
 
 export function CommentItem({ commentId }: PlateCommentProps) {
-  const comment = useCommentById(commentId);
+  const { useOption } = useEditorPlugin(CommentsPlugin);
+  const comment = useOption('commentById', commentId);
 
   if (!comment) return null;
 

@@ -1,7 +1,7 @@
 import { cn } from "@/src/lib/utils";
 import { Info, Phone, Video } from "lucide-react";
 import Link from "next/link";
-import { UserData } from "../../../../../../app/(admin)/messaging/data";
+import { UserData } from "../../../../../../app/(dashboard)/messaging/data";
 import { Avatar, AvatarImage } from "../ui/avatar";
 import { buttonVariants } from "../ui/button";
 

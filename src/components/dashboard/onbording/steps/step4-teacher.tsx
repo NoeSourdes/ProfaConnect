@@ -22,7 +22,7 @@ import {
 import { Input } from "@/src/components/ui/input";
 import { Textarea } from "@/src/components/ui/textarea";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { motion } from "framer-motion";
+import { HTMLMotionProps, motion } from "framer-motion";
 import { Trash } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
@@ -93,8 +93,12 @@ export const Step4Teacher = (props: Step4TeacherProps) => {
     },
   });
 
+  const MotionDiv = motion.div as React.ComponentType<
+    HTMLMotionProps<"div"> & { className?: string }
+  >;
+
   return (
-    <motion.div
+    <MotionDiv
       key="step-4"
       exit="exit"
       custom={props.direction}
@@ -185,6 +189,6 @@ export const Step4Teacher = (props: Step4TeacherProps) => {
           </div>
         </div>
       )}
-    </motion.div>
+    </MotionDiv>
   );
 };

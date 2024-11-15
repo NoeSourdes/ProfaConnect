@@ -2,7 +2,8 @@
 
 import { PreviewPdf } from "@/src/components/dashboard/preview_file/preview-pdf";
 
-import { PlateEditor } from "@/src/components/editor_plate/editor_plate";
+import { PlateEditor } from "@/src/components/editor/plate-editor";
+import { OpenAIProvider } from "@/src/components/editor/use-chat";
 import { Button, buttonVariants } from "@/src/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/src/components/ui/card";
 import {
@@ -153,7 +154,10 @@ export const NewFileComponent = (props: NewFileComponentProps) => {
         <TabsContent value="create" className="">
           <Card className="h-full w-full flex flex-col p-0 shadow-none">
             <CardContent className="w-full overflow-hidden rounded-lg p-0 min-h-[calc(100vh-56px-64px-20px-24px-56px-48px)]">
-              <PlateEditor value={value} setValue={setValue} />
+              <OpenAIProvider>
+                <PlateEditor />
+              </OpenAIProvider>
+
               <CardFooter className="w-full flex justify-end pt-[7px]">
                 <Credenza>
                   <CredenzaTrigger

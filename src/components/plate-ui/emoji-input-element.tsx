@@ -1,7 +1,8 @@
+"use client";
+
 import React, { useMemo, useState } from "react";
 
 import { withRef } from "@udecode/cn";
-import { PlateElement } from "@udecode/plate-common";
 import { EmojiInlineIndexSearch, insertEmoji } from "@udecode/plate-emoji";
 
 import { useDebounce } from "@/src/hooks/use-debounce";
@@ -10,9 +11,11 @@ import {
   InlineCombobox,
   InlineComboboxContent,
   InlineComboboxEmpty,
+  InlineComboboxGroup,
   InlineComboboxInput,
   InlineComboboxItem,
 } from "./inline-combobox";
+import { PlateElement } from "./plate-element";
 
 export const EmojiInputElement = withRef<typeof PlateElement>(
   ({ className, ...props }, ref) => {
@@ -31,35 +34,37 @@ export const EmojiInputElement = withRef<typeof PlateElement>(
 
     return (
       <PlateElement
+        ref={ref}
         as="span"
         data-slate-value={element.value}
-        ref={ref}
         {...props}
       >
         <InlineCombobox
+          value={value}
           element={element}
           filter={false}
-          hideWhenNoValue
           setValue={setValue}
           trigger=":"
-          value={value}
+          hideWhenNoValue
         >
           <InlineComboboxInput />
 
           <InlineComboboxContent>
             {!isPending && (
-              <InlineComboboxEmpty>No matching emoji found</InlineComboboxEmpty>
+              <InlineComboboxEmpty>No results</InlineComboboxEmpty>
             )}
 
-            {filteredEmojis.map((emoji) => (
-              <InlineComboboxItem
-                key={emoji.id}
-                onClick={() => insertEmoji(editor, emoji)}
-                value={emoji.name}
-              >
-                {emoji.skins[0].native} {emoji.name}
-              </InlineComboboxItem>
-            ))}
+            <InlineComboboxGroup>
+              {filteredEmojis.map((emoji) => (
+                <InlineComboboxItem
+                  key={emoji.id}
+                  value={emoji.name}
+                  onClick={() => insertEmoji(editor, emoji)}
+                >
+                  {emoji.skins[0].native} {emoji.name}
+                </InlineComboboxItem>
+              ))}
+            </InlineComboboxGroup>
           </InlineComboboxContent>
         </InlineCombobox>
 

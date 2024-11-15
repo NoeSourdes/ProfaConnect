@@ -16,7 +16,7 @@ import {
   PopoverTrigger,
 } from "@/src/components/ui/popover";
 import { useQuery } from "@tanstack/react-query";
-import { motion } from "framer-motion";
+import { HTMLMotionProps, motion } from "framer-motion";
 import { ShieldQuestion } from "lucide-react";
 import { useEffect, useState } from "react";
 
@@ -59,8 +59,12 @@ export const Step4Student = (props: Step4StudentProps) => {
     }
   }, [classroom]);
 
+  const MotionDiv = motion.div as React.ComponentType<
+    HTMLMotionProps<"div"> & { className?: string }
+  >;
+
   return (
-    <motion.div
+    <MotionDiv
       key="step-4"
       exit="exit"
       custom={props.direction}
@@ -123,6 +127,6 @@ export const Step4Student = (props: Step4StudentProps) => {
           </MultiSelectorContent>
         </MultiSelector>
       </div>
-    </motion.div>
+    </MotionDiv>
   );
 };

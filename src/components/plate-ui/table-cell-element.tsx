@@ -1,14 +1,20 @@
+'use client';
+
 import React from 'react';
 
 import { cn, withProps, withRef } from '@udecode/cn';
-import { PlateElement } from '@udecode/plate-common';
+import { useElement } from '@udecode/plate-common/react';
+import { useBlockSelected } from '@udecode/plate-selection/react';
 import {
+  TableRowPlugin,
   useTableCellElement,
   useTableCellElementResizable,
   useTableCellElementResizableState,
   useTableCellElementState,
-} from '@udecode/plate-table';
+} from '@udecode/plate-table/react';
 
+import { blockSelectionVariants } from './block-selection';
+import { PlateElement } from './plate-element';
 import { ResizeHandle } from './resizable';
 
 export const TableCellElement = withRef<
@@ -19,6 +25,9 @@ export const TableCellElement = withRef<
   }
 >(({ children, className, hideBorder, isHeader, style, ...props }, ref) => {
   const { element } = props;
+
+  const rowElement = useElement(TableRowPlugin.key);
+  const isSelectingRow = useBlockSelected(rowElement.id as string);
 
   const {
     borders,
@@ -42,11 +51,10 @@ export const TableCellElement = withRef<
   const { bottomProps, hiddenLeft, leftProps, rightProps } =
     useTableCellElementResizable(resizableState);
 
-  const Cell = isHeader ? 'th' : 'td';
-
   return (
     <PlateElement
-      asChild
+      ref={ref}
+      as={isHeader ? 'th' : 'td'}
       className={cn(
         'relative h-full overflow-visible border-none bg-background p-0',
         hideBorder && 'before:border-none',
@@ -68,7 +76,6 @@ export const TableCellElement = withRef<
           ),
         className
       )}
-      ref={ref}
       {...cellProps}
       {...props}
       style={
@@ -78,60 +85,62 @@ export const TableCellElement = withRef<
         } as React.CSSProperties
       }
     >
-      <Cell>
+      <div
+        className="relative z-20 box-border h-full px-3 py-2"
+        style={{
+          minHeight: rowSize,
+        }}
+      >
+        {children}
+      </div>
+
+      {!isSelectingCell && (
         <div
-          className="relative z-20 box-border h-full px-3 py-2"
-          style={{
-            minHeight: rowSize,
-          }}
+          className="group absolute top-0 size-full select-none"
+          contentEditable={false}
+          suppressContentEditableWarning={true}
         >
-          {children}
+          {!readOnly && (
+            <>
+              <ResizeHandle
+                {...rightProps}
+                className="-top-3 right-[-5px] w-[10px]"
+              />
+              <ResizeHandle
+                {...bottomProps}
+                className="bottom-[-5px] h-[10px]"
+              />
+              {!hiddenLeft && (
+                <ResizeHandle
+                  {...leftProps}
+                  className="-top-3 left-[-5px] w-[10px]"
+                />
+              )}
+
+              {hovered && (
+                <div
+                  className={cn(
+                    'absolute -top-3 z-30 h-[calc(100%_+_12px)] w-1 bg-ring',
+                    'right-[-1.5px]'
+                  )}
+                />
+              )}
+              {hoveredLeft && (
+                <div
+                  className={cn(
+                    'absolute -top-3 z-30 h-[calc(100%_+_12px)] w-1 bg-ring',
+                    'left-[-1.5px]'
+                  )}
+                />
+              )}
+            </>
+          )}
         </div>
+      )}
 
-        {!isSelectingCell && (
-          <div
-            className="group absolute top-0 size-full select-none"
-            contentEditable={false}
-            suppressContentEditableWarning={true}
-          >
-            {!readOnly && (
-              <>
-                <ResizeHandle
-                  {...rightProps}
-                  className="-top-3 right-[-5px] w-[10px]"
-                />
-                <ResizeHandle
-                  {...bottomProps}
-                  className="bottom-[-5px] h-[10px]"
-                />
-                {!hiddenLeft && (
-                  <ResizeHandle
-                    {...leftProps}
-                    className="-top-3 left-[-5px] w-[10px]"
-                  />
-                )}
-
-                {hovered && (
-                  <div
-                    className={cn(
-                      'absolute -top-3 z-30 h-[calc(100%_+_12px)] w-1 bg-ring',
-                      'right-[-1.5px]'
-                    )}
-                  />
-                )}
-                {hoveredLeft && (
-                  <div
-                    className={cn(
-                      'absolute -top-3 z-30 h-[calc(100%_+_12px)] w-1 bg-ring',
-                      'left-[-1.5px]'
-                    )}
-                  />
-                )}
-              </>
-            )}
-          </div>
-        )}
-      </Cell>
+      {isSelectingRow && (
+        <div className={blockSelectionVariants()} contentEditable={false} />
+      )}
     </PlateElement>
   );
 });

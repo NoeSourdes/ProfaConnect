@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 
 import type { DropdownMenuProps } from "@radix-ui/react-dropdown-menu";
@@ -7,9 +9,8 @@ import {
   useEditorReadOnly,
   useEditorRef,
   usePlateStore,
-} from "@udecode/plate-common";
-
-import { Icons } from "@/src/components/icons";
+} from "@udecode/plate-common/react";
+import { Eye, Pen } from "lucide-react";
 
 import {
   DropdownMenu,
@@ -34,14 +35,14 @@ export function ModeDropdownMenu(props: DropdownMenuProps) {
   const item: any = {
     editing: (
       <>
-        <Icons.editing className="mr-2 size-5" />
-        <span className="hidden lg:inline">Editing</span>
+        <Pen />
+        <span className="hidden lg:inline">Édition</span>
       </>
     ),
     viewing: (
       <>
-        <Icons.viewing className="mr-2 size-5" />
-        <span className="hidden lg:inline">Viewing</span>
+        <Eye />
+        <span className="hidden lg:inline">Lecture</span>
       </>
     ),
   };
@@ -50,18 +51,17 @@ export function ModeDropdownMenu(props: DropdownMenuProps) {
     <DropdownMenu modal={false} {...openState} {...props}>
       <DropdownMenuTrigger asChild>
         <ToolbarButton
-          className="min-w-[auto] lg:min-w-[130px]"
-          isDropdown
           pressed={openState.open}
-          tooltip="Editing mode"
+          tooltip="Mode d'édition"
+          isDropdown
         >
           {item[value]}
         </ToolbarButton>
       </DropdownMenuTrigger>
 
-      <DropdownMenuContent align="start" className="min-w-[180px]">
+      <DropdownMenuContent className="min-w-[180px]" align="start">
         <DropdownMenuRadioGroup
-          className="flex flex-col gap-0.5"
+          value={value}
           onValueChange={(newValue) => {
             if (newValue !== "viewing") {
               setReadOnly(false);
@@ -77,7 +77,6 @@ export function ModeDropdownMenu(props: DropdownMenuProps) {
               return;
             }
           }}
-          value={value}
         >
           <DropdownMenuRadioItem value="editing">
             {item.editing}

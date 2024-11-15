@@ -1,27 +1,43 @@
-import { withRef } from "@udecode/cn";
-import { PlateElement, useElement } from "@udecode/plate-common";
-import { useToggleButton, useToggleButtonState } from "@udecode/plate-toggle";
+'use client';
 
-import { Icons } from "@/src/components/icons";
+import { cn, withRef } from '@udecode/cn';
+import { useElement } from '@udecode/plate-common/react';
+import {
+  useToggleButton,
+  useToggleButtonState,
+} from '@udecode/plate-toggle/react';
+import { ChevronRight } from 'lucide-react';
+
+import { Button } from './button';
+import { PlateElement } from './plate-element';
 
 export const ToggleElement = withRef<typeof PlateElement>(
-  ({ children, ...props }, ref) => {
+  ({ children, className, ...props }, ref) => {
     const element = useElement();
     const state = useToggleButtonState(element.id as string);
     const { buttonProps, open } = useToggleButton(state);
 
     return (
-      <PlateElement asChild ref={ref} {...props}>
-        <div className="relative pl-6">
-          <span
-            className="absolute -left-0.5 -top-0.5 flex cursor-pointer select-none items-center justify-center rounded-sm p-px transition-colors hover:bg-slate-200"
-            contentEditable={false}
-            {...buttonProps}
-          >
-            {open ? <Icons.chevronDown /> : <Icons.chevronRight />}
-          </span>
-          {children}
-        </div>
+      <PlateElement
+        ref={ref}
+        className={cn('relative pl-6', className)}
+        {...props}
+      >
+        <Button
+          size="icon"
+          variant="ghost"
+          className="absolute -left-0.5 top-0 size-6 cursor-pointer select-none items-center justify-center rounded-md p-px text-muted-foreground transition-colors hover:bg-accent [&_svg]:size-4"
+          contentEditable={false}
+          {...buttonProps}
+        >
+          <ChevronRight
+            className={cn(
+              'transition-transform duration-75',
+              open ? 'rotate-90' : 'rotate-0'
+            )}
+          />
+        </Button>
+        {children}
       </PlateElement>
     );
   }

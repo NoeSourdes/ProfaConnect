@@ -4,11 +4,11 @@ import React from 'react';
 
 import { cn, withRef } from '@udecode/cn';
 import {
-  PortalBody,
   useComposedRef,
+  useEditorId,
+  useEditorRef,
   useEventEditorSelectors,
-  usePlateSelectors,
-} from '@udecode/plate-common';
+} from '@udecode/plate-common/react';
 import {
   type FloatingToolbarState,
   flip,
@@ -25,12 +25,16 @@ export const FloatingToolbar = withRef<
     state?: FloatingToolbarState;
   }
 >(({ children, state, ...props }, componentRef) => {
-  const editorId = usePlateSelectors().id();
+  const editor = useEditorRef();
+  const editorId = useEditorId();
   const focusedEditorId = useEventEditorSelectors.focus();
+  const isFloatingLinkOpen = !!editor.useOption({ key: 'a' }, 'mode');
+  const isAIChatOpen = editor.useOption({ key: 'aiChat' }, 'open');
 
   const floatingToolbarState = useFloatingToolbarState({
     editorId,
     focusedEditorId,
+    hideToolbar: isFloatingLinkOpen || isAIChatOpen,
     ...state,
     floatingOptions: {
       middleware: [
@@ -51,6 +55,7 @@ export const FloatingToolbar = withRef<
   });
 
   const {
+    clickOutsideRef,
     hidden,
     props: rootProps,
     ref: floatingRef,
@@ -61,17 +66,18 @@ export const FloatingToolbar = withRef<
   if (hidden) return null;
 
   return (
-    <PortalBody>
+    <div ref={clickOutsideRef}>
       <Toolbar
-        className={cn(
-          'absolute z-50 whitespace-nowrap border bg-popover px-1 opacity-100 shadow-md print:hidden'
-        )}
         ref={ref}
+        className={cn(
+          'absolute z-50 overflow-x-auto whitespace-nowrap rounded-md border bg-popover p-1 opacity-100 shadow-md scrollbar-hide print:hidden',
+          'max-w-[80vw]'
+        )}
         {...rootProps}
         {...props}
       >
         {children}
       </Toolbar>
-    </PortalBody>
+    </div>
   );
 });

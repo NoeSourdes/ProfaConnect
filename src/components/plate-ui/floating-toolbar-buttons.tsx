@@ -1,20 +1,30 @@
+"use client";
+
 import {
-  MARK_BOLD,
-  MARK_CODE,
-  MARK_ITALIC,
-  MARK_STRIKETHROUGH,
-  MARK_UNDERLINE,
-} from "@udecode/plate-basic-marks";
-import { useEditorReadOnly } from "@udecode/plate-common";
+  BoldPlugin,
+  CodePlugin,
+  ItalicPlugin,
+  StrikethroughPlugin,
+  UnderlinePlugin,
+} from "@udecode/plate-basic-marks/react";
+import { useEditorReadOnly } from "@udecode/plate-common/react";
+import {
+  BoldIcon,
+  Code2Icon,
+  ItalicIcon,
+  StrikethroughIcon,
+  UnderlineIcon,
+} from "lucide-react";
 
-import { Icons, iconVariants } from "@/src/components/icons";
-
-import { MARK_BG_COLOR, MARK_COLOR } from "@udecode/plate-font";
-import { AlignDropdownMenu } from "./align-dropdown-menu";
-import { ColorDropdownMenu } from "./color-dropdown-menu";
+import { AIToolbarButton } from "./ai-toolbar-button";
+import { CommentToolbarButton } from "./comment-toolbar-button";
+import { LinkToolbarButton } from "./link-toolbar-button";
 import { MarkToolbarButton } from "./mark-toolbar-button";
 import { MoreDropdownMenu } from "./more-dropdown-menu";
+import { ToolbarGroup } from "./toolbar";
 import { TurnIntoDropdownMenu } from "./turn-into-dropdown-menu";
+
+import Image from "next/image";
 
 export function FloatingToolbarButtons() {
   const readOnly = useEditorReadOnly();
@@ -23,43 +33,64 @@ export function FloatingToolbarButtons() {
     <>
       {!readOnly && (
         <>
-          <TurnIntoDropdownMenu />
+          <ToolbarGroup>
+            <AIToolbarButton
+              className="bg-[linear-gradient(120deg,#6EB6F2,#6EB6F2,#a855f7,#ea580c,#eab308)] bg-clip-text text-transparent hover:bg-[linear-gradient(120deg,#6EB6F2_10%,#a855f7,#ea580c,#eab308)] hover:text-transparent hover:bg-clip-text"
+              tooltip="Éditer, générer, et plus"
+            >
+              <Image
+                src="/svg/star.svg"
+                alt="logo star ai"
+                width={24}
+                height={24}
+                layout="fixed"
+              />
+              Demander à l'IA
+            </AIToolbarButton>
+          </ToolbarGroup>
 
-          <MarkToolbarButton nodeType={MARK_BOLD} tooltip="Gras (⌘+B)">
-            <Icons.bold />
-          </MarkToolbarButton>
-          <MarkToolbarButton nodeType={MARK_ITALIC} tooltip="Italique (⌘+I)">
-            <Icons.italic />
-          </MarkToolbarButton>
-          <MarkToolbarButton
-            nodeType={MARK_UNDERLINE}
-            tooltip="Souligner (⌘+U)"
-          >
-            <Icons.underline />
-          </MarkToolbarButton>
-          <ColorDropdownMenu nodeType={MARK_COLOR} tooltip="Couleur du texte">
-            <Icons.color className={iconVariants({ variant: "toolbar" })} />
-          </ColorDropdownMenu>
-          <ColorDropdownMenu
-            nodeType={MARK_BG_COLOR}
-            tooltip="Couleur de surlignage"
-          >
-            <Icons.bg className={iconVariants({ variant: "toolbar" })} />
-          </ColorDropdownMenu>
-          <MarkToolbarButton
-            nodeType={MARK_STRIKETHROUGH}
-            tooltip="Barré (⌘+⇧+M)"
-          >
-            <Icons.strikethrough />
-          </MarkToolbarButton>
-          <MarkToolbarButton nodeType={MARK_CODE} tooltip="Code (⌘+E)">
-            <Icons.code />
-          </MarkToolbarButton>
-          <AlignDropdownMenu />
+          <ToolbarGroup>
+            <TurnIntoDropdownMenu />
+
+            <MarkToolbarButton nodeType={BoldPlugin.key} tooltip="Gras (⌘+B)">
+              <BoldIcon />
+            </MarkToolbarButton>
+
+            <MarkToolbarButton
+              nodeType={ItalicPlugin.key}
+              tooltip="Italique (⌘+I)"
+            >
+              <ItalicIcon />
+            </MarkToolbarButton>
+
+            <MarkToolbarButton
+              nodeType={UnderlinePlugin.key}
+              tooltip="Souligné (⌘+U)"
+            >
+              <UnderlineIcon />
+            </MarkToolbarButton>
+
+            <MarkToolbarButton
+              nodeType={StrikethroughPlugin.key}
+              tooltip="Barré (⌘+⇧+M)"
+            >
+              <StrikethroughIcon />
+            </MarkToolbarButton>
+
+            <MarkToolbarButton nodeType={CodePlugin.key} tooltip="Code (⌘+E)">
+              <Code2Icon />
+            </MarkToolbarButton>
+
+            <LinkToolbarButton />
+          </ToolbarGroup>
         </>
       )}
 
-      <MoreDropdownMenu />
+      <ToolbarGroup>
+        <CommentToolbarButton />
+
+        {!readOnly && <MoreDropdownMenu />}
+      </ToolbarGroup>
     </>
   );
 }

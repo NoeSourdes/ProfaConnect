@@ -49,7 +49,7 @@ export const BreadcrumbComponent = (props: BreadcrumbProps) => {
   const shouldTruncate = array.length >= 3;
 
   return (
-    <Breadcrumb>
+    <Breadcrumb className="">
       <BreadcrumbList>
         <BreadcrumbItem>
           <BreadcrumbLink asChild>

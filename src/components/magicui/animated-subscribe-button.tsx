@@ -1,7 +1,16 @@
 "use client";
 
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, HTMLMotionProps, motion } from "framer-motion";
 import React, { useState } from "react";
+
+// Alias pour typer correctement motion.button et motion.span avec className
+const MotionButton = motion.button as React.ComponentType<
+  HTMLMotionProps<"button"> &
+    React.HTMLAttributes<HTMLDivElement> & { className?: string }
+>;
+const MotionSpan = motion.span as React.ComponentType<
+  HTMLMotionProps<"span"> & { className?: string }
+>;
 
 interface AnimatedSubscribeButtonProps {
   buttonColor: string;
@@ -27,8 +36,8 @@ export const AnimatedSubscribeButton: React.FC<
   return (
     <AnimatePresence mode="wait">
       {isIdCopy ? (
-        <motion.button
-          className="relative flex items-center w-full justify-center overflow-hidden rounded-md bg-secondary p-[10px]  outline-border"
+        <MotionButton
+          className="relative flex items-center w-full justify-center overflow-hidden rounded-md bg-secondary p-[10px] outline-border"
           onClick={() => {
             navigator.clipboard.writeText(userId);
             setIsIdCopy(false);
@@ -37,7 +46,7 @@ export const AnimatedSubscribeButton: React.FC<
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
         >
-          <motion.span
+          <MotionSpan
             key="action"
             className="relative block h-full w-full font-semibold"
             initial={{ y: -50 }}
@@ -45,10 +54,10 @@ export const AnimatedSubscribeButton: React.FC<
             style={{ color: buttonColor }}
           >
             {changeText}
-          </motion.span>
-        </motion.button>
+          </MotionSpan>
+        </MotionButton>
       ) : (
-        <motion.button
+        <MotionButton
           className="relative flex w-full cursor-pointer items-center justify-center rounded-md border-none p-[10px]"
           style={{ backgroundColor: buttonColor, color: buttonTextColor }}
           onClick={() => {
@@ -59,15 +68,15 @@ export const AnimatedSubscribeButton: React.FC<
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
         >
-          <motion.span
+          <MotionSpan
             key="reaction"
             className="relative block font-semibold"
             initial={{ x: 0 }}
             exit={{ x: 50, transition: { duration: 0.1 } }}
           >
             {initialText}
-          </motion.span>
-        </motion.button>
+          </MotionSpan>
+        </MotionButton>
       )}
     </AnimatePresence>
   );

@@ -20,11 +20,11 @@ import { toast } from "sonner";
 import {
   checkNameCategoryAction,
   createCategoryAction,
-} from "../../../../../app/(admin)/schedule/category/category.action";
+} from "../../../../../app/(dashboard)/schedule/category/category.action";
 import {
   categorySchema,
   categoryType,
-} from "../../../../../app/(admin)/schedule/category/category.schema";
+} from "../../../../../app/(dashboard)/schedule/category/category.schema";
 
 export type ButtonCreateCategoryProps = {
   buttonString?: boolean;

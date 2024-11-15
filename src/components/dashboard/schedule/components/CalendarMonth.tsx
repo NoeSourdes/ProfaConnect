@@ -12,12 +12,12 @@ import { useEffect, useState } from "react";
 import {
   colorClasses15,
   colorClassesBorderClean,
-} from "../../../../../app/(admin)/schedule/color";
+} from "../../../../../app/(dashboard)/schedule/color";
 import {
   checkHour,
   sortEvents,
-} from "../../../../../app/(admin)/schedule/hour";
-import { EventType } from "../../../../../app/(admin)/schedule/types/events-type";
+} from "../../../../../app/(dashboard)/schedule/hour";
+import { EventType } from "../../../../../app/(dashboard)/schedule/types/events-type";
 import { PopoverManagementEvents } from "./popoverManagementEvents";
 
 export type CalendarMonthProps = {

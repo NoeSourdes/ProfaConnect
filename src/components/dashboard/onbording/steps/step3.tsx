@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { HTMLMotionProps, motion } from "framer-motion";
 
 export type step3Props = {
   direction: number;
@@ -8,9 +8,13 @@ export type step3Props = {
   dict_levels: any;
 };
 
+const MotionDiv = motion.div as React.ComponentType<
+  HTMLMotionProps<"div"> & { className?: string }
+>;
+
 export const Step3 = (props: step3Props) => {
   return (
-    <motion.div
+    <MotionDiv
       key="step-3"
       exit="exit"
       custom={props.direction}
@@ -55,6 +59,6 @@ export const Step3 = (props: step3Props) => {
           </div>
         ))}
       </div>
-    </motion.div>
+    </MotionDiv>
   );
 };

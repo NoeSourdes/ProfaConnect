@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { HTMLMotionProps, motion } from "framer-motion";
 import { FaFemale, FaGenderless, FaMale } from "react-icons/fa";
 
 export type step1Props = {
@@ -11,9 +11,13 @@ export type step1Props = {
   dict_gender_user: any;
 };
 
+const MotionDiv = motion.div as React.ComponentType<
+  HTMLMotionProps<"div"> & { className?: string }
+>;
+
 export const Step1 = (props: step1Props) => {
   return (
-    <motion.div
+    <MotionDiv
       key="step-1"
       exit="exit"
       custom={props.direction}
@@ -58,6 +62,6 @@ export const Step1 = (props: step1Props) => {
           </div>
         ))}
       </div>
-    </motion.div>
+    </MotionDiv>
   );
 };

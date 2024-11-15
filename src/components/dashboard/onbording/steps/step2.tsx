@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { HTMLMotionProps, motion } from "framer-motion";
 import { GiTeacher } from "react-icons/gi";
 import { PiStudentFill } from "react-icons/pi";
 import { RiParentFill } from "react-icons/ri";
@@ -11,9 +11,13 @@ export type step2Props = {
   dict_roles_user: any;
 };
 
+const MotionDiv = motion.div as React.ComponentType<
+  HTMLMotionProps<"div"> & { className?: string }
+>;
+
 export const Step2 = (props: step2Props) => {
   return (
-    <motion.div
+    <MotionDiv
       key="step-2"
       exit="exit"
       custom={props.direction}
@@ -58,6 +62,6 @@ export const Step2 = (props: step2Props) => {
           </div>
         ))}
       </div>
-    </motion.div>
+    </MotionDiv>
   );
 };

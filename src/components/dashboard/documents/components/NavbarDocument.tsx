@@ -49,7 +49,7 @@ export const NavbarDocument = () => {
               >
                 <div className="flex items-center gap-2">
                   <File width={18} />
-                  Nouveau Fichier
+                  Créer un fichier
                 </div>
               </TooltipTrigger>
             </Link>

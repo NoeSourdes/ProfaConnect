@@ -2,7 +2,7 @@ import React from "react";
 import {
   Message,
   UserData,
-} from "../../../../../../app/(admin)/messaging/data";
+} from "../../../../../../app/(dashboard)/messaging/data";
 import { ChatList } from "./chat-list";
 import ChatTopbar from "./chat-topbar";
 

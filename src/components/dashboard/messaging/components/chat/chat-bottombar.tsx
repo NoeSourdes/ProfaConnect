@@ -1,5 +1,5 @@
 import { cn } from "@/src/lib/utils";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, HTMLMotionProps, motion } from "framer-motion";
 import {
   FileImage,
   Mic,
@@ -13,11 +13,16 @@ import React, { useRef, useState } from "react";
 import {
   Message,
   loggedInUserData,
-} from "../../../../../../app/(admin)/messaging/data";
+} from "../../../../../../app/(dashboard)/messaging/data";
 import { EmojiPicker } from "../emoji-picker";
 import { buttonVariants } from "../ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Textarea } from "../ui/textarea";
+
+// Alias pour typer correctement motion.div avec className
+const MotionDiv = motion.div as React.ComponentType<
+  HTMLMotionProps<"div"> & { className?: string }
+>;
 
 interface ChatBottombarProps {
   sendMessage: (newMessage: Message) => void;
@@ -149,7 +154,7 @@ export default function ChatBottombar({
       </div>
 
       <AnimatePresence initial={false}>
-        <motion.div
+        <MotionDiv
           key="input"
           className="w-full relative"
           layout
@@ -172,9 +177,9 @@ export default function ChatBottombar({
             onChange={handleInputChange}
             name="message"
             placeholder="Aa"
-            className=" w-full border rounded-full flex items-center h-9 resize-none overflow-hidden bg-background"
-          ></Textarea>
-          <div className="absolute right-2 bottom-0.5  ">
+            className="w-full border rounded-full flex items-center h-9 resize-none overflow-hidden bg-background"
+          />
+          <div className="absolute right-2 bottom-0.5">
             <EmojiPicker
               onChange={(value) => {
                 setMessage(message + value);
@@ -184,7 +189,7 @@ export default function ChatBottombar({
               }}
             />
           </div>
-        </motion.div>
+        </MotionDiv>
 
         {message.trim() ? (
           <Link
@@ -202,8 +207,7 @@ export default function ChatBottombar({
             href="#"
             className={cn(
               buttonVariants({ variant: "ghost", size: "icon" }),
-              "h-9 w-9",
-              "shrink-0"
+              "h-9 w-9 shrink-0"
             )}
             onClick={handleThumbsUp}
           >

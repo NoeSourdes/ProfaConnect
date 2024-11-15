@@ -31,11 +31,11 @@ import {
   deleteCategoryAction,
   getCategoriesAction,
   updateCategoryAction,
-} from "../../../../app/(admin)/schedule/category/category.action";
+} from "../../../../app/(dashboard)/schedule/category/category.action";
 import {
   categorySchema,
   categoryType,
-} from "../../../../app/(admin)/schedule/category/category.schema";
+} from "../../../../app/(dashboard)/schedule/category/category.schema";
 import { Checkbox } from "../../ui/checkbox";
 import { Input } from "../../ui/input";
 import { Popover, PopoverContent, PopoverTrigger } from "../../ui/popover";

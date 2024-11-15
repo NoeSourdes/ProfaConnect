@@ -142,7 +142,7 @@ export function UserNav() {
                   </DialogDescription>
                 </ResponsiveModalHeader>
                 <div className="flex items-start max-sm:flex-col max-lg:mt-5 max-sm:items-center gap-6">
-                  <div id="glareCard">
+                  <div id="glareCard" className="">
                     <GlareCardComp />
                   </div>
                   <div className="flex flex-col w-full justify-between h-full gap-5">

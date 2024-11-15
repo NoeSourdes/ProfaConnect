@@ -1,8 +1,9 @@
 "use client";
 
-import { useCommentAddButton } from "@udecode/plate-comments";
+import React from "react";
 
-import { Icons } from "@/src/components/icons";
+import { useCommentAddButton } from "@udecode/plate-comments/react";
+import { MessageSquarePlus } from "lucide-react";
 
 import { ToolbarButton } from "./toolbar";
 
@@ -13,7 +14,7 @@ export function CommentToolbarButton() {
 
   return (
     <ToolbarButton tooltip="Commentaire (⌘+⇧+M)" {...props}>
-      <Icons.commentAdd />
+      <MessageSquarePlus />
     </ToolbarButton>
   );
 }

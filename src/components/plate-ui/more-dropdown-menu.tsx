@@ -1,13 +1,28 @@
+"use client";
+import React from "react";
+
 import type { DropdownMenuProps } from "@radix-ui/react-dropdown-menu";
 
-import { MARK_SUBSCRIPT, MARK_SUPERSCRIPT } from "@udecode/plate-basic-marks";
-import { focusEditor, toggleMark, useEditorRef } from "@udecode/plate-common";
-
-import { Icons } from "@/src/components/icons";
+import {
+  SubscriptPlugin,
+  SuperscriptPlugin,
+} from "@udecode/plate-basic-marks/react";
+import { collapseSelection } from "@udecode/plate-common";
+import { focusEditor, useEditorRef } from "@udecode/plate-common/react";
+import { HighlightPlugin } from "@udecode/plate-highlight/react";
+import { KbdPlugin } from "@udecode/plate-kbd/react";
+import {
+  HighlighterIcon,
+  KeyboardIcon,
+  MoreHorizontalIcon,
+  SubscriptIcon,
+  SuperscriptIcon,
+} from "lucide-react";
 
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuTrigger,
   useOpenState,
@@ -22,40 +37,62 @@ export function MoreDropdownMenu(props: DropdownMenuProps) {
     <DropdownMenu modal={false} {...openState} {...props}>
       <DropdownMenuTrigger asChild>
         <ToolbarButton pressed={openState.open} tooltip="Insérer">
-          <Icons.more />
+          <MoreHorizontalIcon />
         </ToolbarButton>
       </DropdownMenuTrigger>
 
       <DropdownMenuContent
+        className="ignore-click-outside/toolbar flex max-h-[500px] min-w-[180px] flex-col overflow-y-auto"
         align="start"
-        className="flex max-h-[500px] min-w-[180px] flex-col gap-0.5 overflow-y-auto"
       >
-        <DropdownMenuItem
-          onSelect={() => {
-            toggleMark(editor, {
-              clear: MARK_SUPERSCRIPT,
-              key: MARK_SUBSCRIPT,
-            });
-            focusEditor(editor);
-          }}
-        >
-          <Icons.superscript className="mr-2 size-5" />
-          Exposant
-          {/* (⌘+,) */}
-        </DropdownMenuItem>
-        <DropdownMenuItem
-          onSelect={() => {
-            toggleMark(editor, {
-              clear: MARK_SUBSCRIPT,
-              key: MARK_SUPERSCRIPT,
-            });
-            focusEditor(editor);
-          }}
-        >
-          <Icons.subscript className="mr-2 size-5" />
-          Indice
-          {/* (⌘+.) */}
-        </DropdownMenuItem>
+        <DropdownMenuGroup>
+          <DropdownMenuItem
+            onSelect={() => {
+              editor.tf.toggle.mark({ key: HighlightPlugin.key });
+              collapseSelection(editor, { edge: "end" });
+              focusEditor(editor);
+            }}
+          >
+            <HighlighterIcon />
+            Surligner
+          </DropdownMenuItem>
+
+          <DropdownMenuItem
+            onSelect={() => {
+              editor.tf.toggle.mark({ key: KbdPlugin.key });
+              collapseSelection(editor, { edge: "end" });
+              focusEditor(editor);
+            }}
+          >
+            <KeyboardIcon />
+            Entrée clavier
+          </DropdownMenuItem>
+
+          <DropdownMenuItem
+            onSelect={() => {
+              editor.tf.toggle.mark({
+                key: SuperscriptPlugin.key,
+                clear: [SubscriptPlugin.key, SuperscriptPlugin.key],
+              });
+              focusEditor(editor);
+            }}
+          >
+            <SuperscriptIcon />
+            Exposant
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            onSelect={() => {
+              editor.tf.toggle.mark({
+                key: SubscriptPlugin.key,
+                clear: [SuperscriptPlugin.key, SubscriptPlugin.key],
+              });
+              focusEditor(editor);
+            }}
+          >
+            <SubscriptIcon />
+            Indice
+          </DropdownMenuItem>
+        </DropdownMenuGroup>
       </DropdownMenuContent>
     </DropdownMenu>
   );

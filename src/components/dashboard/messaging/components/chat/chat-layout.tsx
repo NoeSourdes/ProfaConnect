@@ -2,7 +2,7 @@
 
 import { cn } from "@/src/lib/utils";
 import React, { useEffect, useState } from "react";
-import { userData } from "../../../../../../app/(admin)/messaging/data";
+import { userData } from "../../../../../../app/(dashboard)/messaging/data";
 import { Sidebar } from "../sidebar";
 import {
   ResizableHandle,

@@ -104,13 +104,6 @@ export function getPages(pathname: string, userRole?: string): Group[] {
           icon: Settings,
           submenus: [],
         },
-        {
-          href: "FAQ",
-          label: "Centre d'aide",
-          active: pathname.includes("/faq"),
-          icon: CircleHelp,
-          submenus: [],
-        },
       ],
     },
   ];
@@ -145,7 +138,7 @@ export async function pagesUrl(pathname: string): Promise<Group[]> {
       menus: [
         {
           href: "/dashboard",
-          label: "Dashboard",
+          label: "Tableau de bord",
           active: pathname.includes("/dashboard"),
           icon: LayoutGrid,
           submenus: [],
@@ -253,9 +246,9 @@ export async function pagesUrl(pathname: string): Promise<Group[]> {
         //   submenus: [],
         // },
         {
-          href: "FAQ",
-          label: "Centre d'aide",
-          active: pathname.includes("/faq"),
+          href: "/profaBot",
+          label: "ProfaBot",
+          active: pathname.includes("/profaBot"),
           icon: CircleHelp,
           submenus: [],
         },

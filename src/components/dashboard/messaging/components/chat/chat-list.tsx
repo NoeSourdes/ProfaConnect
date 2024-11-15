@@ -1,10 +1,10 @@
 import { cn } from "@/src/lib/utils";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, HTMLMotionProps, motion } from "framer-motion";
 import React, { useRef } from "react";
 import {
   Message,
   UserData,
-} from "../../../../../../app/(admin)/messaging/data";
+} from "../../../../../../app/(dashboard)/messaging/data";
 import { Avatar, AvatarImage } from "../ui/avatar";
 import ChatBottombar from "./chat-bottombar";
 
@@ -30,6 +30,10 @@ export function ChatList({
     }
   }, [messages]);
 
+  const MotionDiv = motion.div as React.ComponentType<
+    HTMLMotionProps<"div"> & { className?: string }
+  >;
+
   return (
     <div className="w-full overflow-y-auto overflow-x-hidden h-full flex flex-col">
       <div
@@ -38,7 +42,7 @@ export function ChatList({
       >
         <AnimatePresence>
           {messages?.map((message, index) => (
-            <motion.div
+            <MotionDiv
               key={index}
               layout
               initial={{ opacity: 0, scale: 1, y: 50, x: 0 }}
@@ -86,7 +90,7 @@ export function ChatList({
                   </Avatar>
                 )}
               </div>
-            </motion.div>
+            </MotionDiv>
           ))}
         </AnimatePresence>
       </div>

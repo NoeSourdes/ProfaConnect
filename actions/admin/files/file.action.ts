@@ -187,3 +187,21 @@ export const renameFileAction = userAction(
     return file;
   }
 );
+
+export const getFile = userAction(
+  z.object({ title: z.string() }),
+  async (title, context) => {
+    const file = await prisma.files.findFirst({
+      where: {
+        title: title,
+        authorId: context.user.id,
+      },
+    });
+
+    if (!file) {
+      throw new Error("File not found");
+    }
+
+    return file;
+  }
+);

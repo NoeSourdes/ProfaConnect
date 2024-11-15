@@ -4,133 +4,221 @@ import React from "react";
 
 import type { DropdownMenuProps } from "@radix-ui/react-dropdown-menu";
 
-import { ELEMENT_BLOCKQUOTE } from "@udecode/plate-block-quote";
+import { BlockquotePlugin } from "@udecode/plate-block-quote/react";
+import { CodeBlockPlugin } from "@udecode/plate-code-block/react";
 import {
+  type PlateEditor,
+  ParagraphPlugin,
   focusEditor,
-  insertEmptyElement,
   useEditorRef,
-} from "@udecode/plate-common";
-import { ELEMENT_H1, ELEMENT_H2, ELEMENT_H3 } from "@udecode/plate-heading";
-import { ELEMENT_PARAGRAPH } from "@udecode/plate-paragraph";
+} from "@udecode/plate-common/react";
+import { DatePlugin } from "@udecode/plate-date/react";
+import { ExcalidrawPlugin } from "@udecode/plate-excalidraw/react";
+import { HEADING_KEYS } from "@udecode/plate-heading";
+import { TocPlugin } from "@udecode/plate-heading/react";
+import { HorizontalRulePlugin } from "@udecode/plate-horizontal-rule/react";
+import { INDENT_LIST_KEYS, ListStyleType } from "@udecode/plate-indent-list";
+import { LinkPlugin } from "@udecode/plate-link/react";
+import { ImagePlugin, MediaEmbedPlugin } from "@udecode/plate-media/react";
+import { TablePlugin } from "@udecode/plate-table/react";
+import { TogglePlugin } from "@udecode/plate-toggle/react";
+import {
+  CalendarIcon,
+  ChevronRightIcon,
+  Columns3Icon,
+  FileCodeIcon,
+  FilmIcon,
+  Heading1Icon,
+  Heading2Icon,
+  Heading3Icon,
+  ImageIcon,
+  Link2Icon,
+  ListIcon,
+  ListOrderedIcon,
+  MinusIcon,
+  PenToolIcon,
+  PilcrowIcon,
+  PlusIcon,
+  QuoteIcon,
+  SquareIcon,
+  TableIcon,
+  TableOfContentsIcon,
+} from "lucide-react";
 
-import { Icons } from "@/src/components/icons";
+import {
+  insertBlock,
+  insertInlineElement,
+} from "@/src/components/editor/transforms";
 
-import { ELEMENT_CODE_BLOCK } from "@udecode/plate-code-block";
-import { ELEMENT_EXCALIDRAW } from "@udecode/plate-excalidraw";
-import { ELEMENT_HR } from "@udecode/plate-horizontal-rule";
-import { ELEMENT_LINK } from "@udecode/plate-link";
-import { ELEMENT_IMAGE } from "@udecode/plate-media";
-import { ELEMENT_TABLE } from "@udecode/plate-table";
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
   useOpenState,
 } from "./dropdown-menu";
 import { ToolbarButton } from "./toolbar";
 
-const items = [
+type Group = {
+  group: string;
+  items: Item[];
+};
+
+interface Item {
+  icon: React.ReactNode;
+  onSelect: (editor: PlateEditor, value: string) => void;
+  value: string;
+  focusEditor?: boolean;
+  label?: string;
+}
+
+const groups: Group[] = [
   {
+    group: "Blocs de base",
     items: [
       {
-        description: "Paragraphe",
-        icon: Icons.paragraph,
+        icon: <PilcrowIcon />,
         label: "Paragraphe",
-        value: ELEMENT_PARAGRAPH,
+        value: ParagraphPlugin.key,
       },
       {
-        description: "Titre 1",
-        icon: Icons.h1,
+        icon: <Heading1Icon />,
         label: "Titre 1",
-        value: ELEMENT_H1,
+        value: HEADING_KEYS.h1,
       },
       {
-        description: "Titre 2",
-        icon: Icons.h2,
+        icon: <Heading2Icon />,
         label: "Titre 2",
-        value: ELEMENT_H2,
+        value: HEADING_KEYS.h2,
       },
       {
-        description: "Titre 3",
-        icon: Icons.h3,
+        icon: <Heading3Icon />,
         label: "Titre 3",
-        value: ELEMENT_H3,
+        value: HEADING_KEYS.h3,
       },
       {
-        description: "Citation (⌘+⇧+.)",
-        icon: Icons.blockquote,
-        label: "Citation",
-        value: ELEMENT_BLOCKQUOTE,
+        icon: <TableIcon />,
+        label: "Tableau",
+        value: TablePlugin.key,
       },
       {
-        value: ELEMENT_TABLE,
-        label: "Table",
-        description: "Table",
-        icon: Icons.table,
-      },
-      {
-        value: "ul",
-        label: "Liste à puces",
-        description: "Liste à puces",
-        icon: Icons.ul,
-      },
-      {
-        value: "ol",
-        label: "Liste numérotée",
-        description: "Liste numérotée",
-        icon: Icons.ol,
-      },
-      {
-        value: ELEMENT_HR,
-        label: "Séparateur",
-        description: "Séparateur (---)",
-        icon: Icons.hr,
-      },
-    ],
-    label: "Blocs de base",
-  },
-  {
-    label: "Média",
-    items: [
-      {
-        value: ELEMENT_CODE_BLOCK,
+        icon: <FileCodeIcon />,
         label: "Code",
-        description: "Code (```)",
-        icon: Icons.codeblock,
+        value: CodeBlockPlugin.key,
       },
       {
-        value: ELEMENT_IMAGE,
-        label: "Image",
-        description: "Image",
-        icon: Icons.image,
+        icon: <QuoteIcon />,
+        label: "Citation",
+        value: BlockquotePlugin.key,
       },
-      // {
-      //   value: ELEMENT_MEDIA_EMBED,
-      //   label: "Intégrer",
-      //   description: "Intégrer",
-      //   icon: Icons.embed,
-      // },
       {
-        value: ELEMENT_EXCALIDRAW,
-        label: "Excalidraw",
-        description: "Excalidraw",
-        icon: Icons.excalidraw,
+        icon: <MinusIcon />,
+        label: "Séparateur",
+        value: HorizontalRulePlugin.key,
       },
-    ],
+    ].map((item) => ({
+      ...item,
+      onSelect: (editor, value) => {
+        insertBlock(editor, value);
+      },
+    })),
   },
   {
-    label: "En ligne",
+    group: "Listes",
     items: [
       {
-        value: ELEMENT_LINK,
-        label: "Lien",
-        description: "Lien",
-        icon: Icons.link,
+        icon: <ListIcon />,
+        label: "Liste à puces",
+        value: ListStyleType.Disc,
       },
-    ],
+      {
+        icon: <ListOrderedIcon />,
+        label: "Liste numérotée",
+        value: ListStyleType.Decimal,
+      },
+      {
+        icon: <SquareIcon />,
+        label: "Liste de tâches",
+        value: INDENT_LIST_KEYS.todo,
+      },
+      {
+        icon: <ChevronRightIcon />,
+        label: "Liste déroulante",
+        value: TogglePlugin.key,
+      },
+    ].map((item) => ({
+      ...item,
+      onSelect: (editor, value) => {
+        insertBlock(editor, value);
+      },
+    })),
+  },
+  {
+    group: "Médias",
+    items: [
+      {
+        icon: <ImageIcon />,
+        label: "Image",
+        value: ImagePlugin.key,
+      },
+      {
+        icon: <FilmIcon />,
+        label: "Intégrer",
+        value: MediaEmbedPlugin.key,
+      },
+      {
+        icon: <PenToolIcon />,
+        label: "Excalidraw",
+        value: ExcalidrawPlugin.key,
+      },
+    ].map((item) => ({
+      ...item,
+      onSelect: (editor, value) => {
+        insertBlock(editor, value);
+      },
+    })),
+  },
+  {
+    group: "Blocs avancés",
+    items: [
+      {
+        icon: <TableOfContentsIcon />,
+        label: "Table des matières",
+        value: TocPlugin.key,
+      },
+      {
+        icon: <Columns3Icon />,
+        label: "3 colonnes",
+        value: "action_three_columns",
+      },
+    ].map((item) => ({
+      ...item,
+      onSelect: (editor, value) => {
+        insertBlock(editor, value);
+      },
+    })),
+  },
+  {
+    group: "En ligne",
+    items: [
+      {
+        icon: <Link2Icon />,
+        label: "Lien",
+        value: LinkPlugin.key,
+      },
+      {
+        focusEditor: true,
+        icon: <CalendarIcon />,
+        label: "Date",
+        value: DatePlugin.key,
+      },
+    ].map((item) => ({
+      ...item,
+      onSelect: (editor, value) => {
+        insertInlineElement(editor, value);
+      },
+    })),
   },
 ];
 
@@ -141,88 +229,31 @@ export function InsertDropdownMenu(props: DropdownMenuProps) {
   return (
     <DropdownMenu modal={false} {...openState} {...props}>
       <DropdownMenuTrigger asChild>
-        <ToolbarButton isDropdown pressed={openState.open} tooltip="Insérer">
-          <Icons.add />
+        <ToolbarButton pressed={openState.open} tooltip="Insérer" isDropdown>
+          <PlusIcon />
         </ToolbarButton>
       </DropdownMenuTrigger>
 
       <DropdownMenuContent
+        className="flex max-h-[500px] min-w-0 flex-col overflow-y-auto"
         align="start"
-        className="flex max-h-[500px] min-w-0 flex-col gap-0.5 overflow-y-auto"
       >
-        {items.map(({ items: nestedItems, label }, index) => (
-          <React.Fragment key={label}>
-            {index !== 0 && <DropdownMenuSeparator />}
-
-            <DropdownMenuLabel>{label}</DropdownMenuLabel>
-            {nestedItems.map(
-              ({ icon: Icon, label: itemLabel, value: type }) => (
-                <DropdownMenuItem
-                  className="min-w-[180px]"
-                  key={type}
-                  onSelect={() => {
-                    switch (type) {
-                      // case ELEMENT_CODE_BLOCK: {
-                      //   insertEmptyCodeBlock(editor);
-                      //
-                      //   break;
-                      // }
-                      // case ELEMENT_IMAGE: {
-                      //   await insertMedia(editor, { type: ELEMENT_IMAGE });
-                      //
-                      //   break;
-                      // }
-                      // case ELEMENT_MEDIA_EMBED: {
-                      //   await insertMedia(editor, {
-                      //     type: ELEMENT_MEDIA_EMBED,
-                      //   });
-                      //
-                      //   break;
-                      // }
-                      // case 'ul':
-                      // case 'ol': {
-                      //   insertEmptyElement(editor, ELEMENT_PARAGRAPH, {
-                      //     select: true,
-                      //     nextBlock: true,
-                      //   });
-                      //
-                      //   if (settingsStore.get.checkedId(KEY_LIST_STYLE_TYPE)) {
-                      //     toggleIndentList(editor, {
-                      //       listStyleType: type === 'ul' ? 'disc' : 'decimal',
-                      //     });
-                      //   } else if (settingsStore.get.checkedId('list')) {
-                      //     toggleList(editor, { type });
-                      //   }
-                      //
-                      //   break;
-                      // }
-                      // case ELEMENT_TABLE: {
-                      //   insertTable(editor);
-                      //
-                      //   break;
-                      // }
-                      // case ELEMENT_LINK: {
-                      //   triggerFloatingLink(editor, { focused: true });
-                      //
-                      //   break;
-                      // }
-                      default: {
-                        insertEmptyElement(editor, type, {
-                          nextBlock: true,
-                          select: true,
-                        });
-                      }
-                    }
-
-                    focusEditor(editor);
-                  }}
-                >
-                  <Icon className="mr-2 size-5" />
-                  {itemLabel}
-                </DropdownMenuItem>
-              )
-            )}
-          </React.Fragment>
+        {groups.map(({ group, items: nestedItems }) => (
+          <DropdownMenuGroup key={group} label={group}>
+            {nestedItems.map(({ icon, label, value, onSelect }) => (
+              <DropdownMenuItem
+                key={value}
+                className="min-w-[180px]"
+                onSelect={() => {
+                  onSelect(editor, value);
+                  focusEditor(editor);
+                }}
+              >
+                {icon}
+                {label}
+              </DropdownMenuItem>
+            ))}
+          </DropdownMenuGroup>
         ))}
       </DropdownMenuContent>
     </DropdownMenu>

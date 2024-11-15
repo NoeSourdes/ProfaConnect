@@ -72,7 +72,7 @@ export const ButtonCreateFolder = (props: {
                 >
                   <div className="flex items-center gap-2">
                     <FolderOpen width={18} />
-                    Nouveau dossier
+                    Créer un dossier
                   </div>
                 </TooltipTrigger>
                 <TooltipContent side="bottom">

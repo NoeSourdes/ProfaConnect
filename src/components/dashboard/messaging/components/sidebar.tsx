@@ -12,7 +12,7 @@ import {
 import { cn } from "@/src/lib/utils";
 import { Search, SquarePen } from "lucide-react";
 import Link from "next/link";
-import { Message } from "../../../../../app/(admin)/messaging/data";
+import { Message } from "../../../../../app/(dashboard)/messaging/data";
 import { buttonVariants } from "./ui/button";
 
 interface SidebarProps {

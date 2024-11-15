@@ -24,7 +24,7 @@ import {
 import {
   eventSchema,
   eventType,
-} from "../../../../../app/(admin)/schedule/events/event.schema";
+} from "../../../../../app/(dashboard)/schedule/events/event.schema";
 
 import { Calendar } from "@/src/components/ui/calendar";
 import {
@@ -58,21 +58,21 @@ import {
   checkNameCategoryAction,
   createCategoryAction,
   getCategoriesAction,
-} from "../../../../../app/(admin)/schedule/category/category.action";
+} from "../../../../../app/(dashboard)/schedule/category/category.action";
 import {
   categorySchema,
   categoryType,
-} from "../../../../../app/(admin)/schedule/category/category.schema";
+} from "../../../../../app/(dashboard)/schedule/category/category.schema";
 import {
   colorClasses,
   colorClassesBorder,
   colorClassesBorderClean,
   colors,
-} from "../../../../../app/(admin)/schedule/color";
+} from "../../../../../app/(dashboard)/schedule/color";
 import {
   createEventAction,
   updateEventAction,
-} from "../../../../../app/(admin)/schedule/events/event.action";
+} from "../../../../../app/(dashboard)/schedule/events/event.action";
 import { ButtonCreateCategoryPopover } from "./buttonCreateCategoryPopover";
 
 export type ModalEventFormProps = {

@@ -26,6 +26,9 @@ import {
   CommandSeparator,
 } from "@/src/components/ui/command";
 import { useTheme } from "next-themes";
+import Image from "next/image";
+import { DialogTitle } from "../ui/dialog";
+import { Skeleton } from "../ui/skeleton";
 
 export function CommandBar() {
   const [open, setOpen] = React.useState(false);
@@ -66,11 +69,35 @@ export function CommandBar() {
         </kbd>
       </div>
       <CommandDialog open={open} onOpenChange={setOpen}>
-        <CommandInput placeholder="Recherchez..." />
+        <DialogTitle className="hidden">Commande Bar - Rechercher</DialogTitle>
+        <CommandInput placeholder="Rechercher..." />
+
         <CommandList>
-          <CommandEmpty>
-            Aucun résultat trouvé pour votre recherche.
+          <CommandEmpty className="flex flex-col items-center gap-2 p-3">
+            <p className="text-sm text-muted-foreground text-center">
+              Recherche en cours...
+            </p>
+            <Skeleton className="w-full h-[30px] rounded" />
+            <Skeleton className="w-full h-[30px] rounded" />
+            <Skeleton className="w-full h-[30px] rounded" />
           </CommandEmpty>
+
+          <CommandGroup>
+            <CommandItem
+              key={"/profaBot"}
+              onSelect={() => handleSelect("/profaBot")}
+            >
+              <Image
+                src="/svg/star.svg"
+                alt="logo star ai"
+                width={24}
+                height={24}
+              />
+              <span className="bg-[linear-gradient(120deg,#6EB6F2,#6EB6F2,#a855f7,#ea580c,#eab308)] bg-clip-text text-transparent font-medium pl-2">
+                ProfaBot
+              </span>
+            </CommandItem>
+          </CommandGroup>
           <CommandGroup heading="Liens">
             {[
               { icon: LayoutGrid, label: "Tableau de bord", url: "/dashboard" },
@@ -91,6 +118,9 @@ export function CommandBar() {
               </CommandItem>
             ))}
           </CommandGroup>
+          <CommandSeparator />
+          <CommandSeparator />
+
           <CommandGroup heading="Actions">
             <CommandItem onSelect={() => handleSelect("/documents")}>
               Créer un dossier
@@ -99,6 +129,8 @@ export function CommandBar() {
               Créer un événement
             </CommandItem>
           </CommandGroup>
+          <CommandSeparator />
+
           <CommandGroup heading="Thème">
             {[
               { icon: SunIcon, label: "Light", theme: "light" },

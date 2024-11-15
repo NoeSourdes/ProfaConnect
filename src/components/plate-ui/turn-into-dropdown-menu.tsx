@@ -1,31 +1,39 @@
+"use client";
+
+import React from "react";
+
 import type { DropdownMenuProps } from "@radix-ui/react-dropdown-menu";
 
-import { ELEMENT_BLOCKQUOTE } from "@udecode/plate-block-quote";
+import { BlockquotePlugin } from "@udecode/plate-block-quote/react";
+import { CodeBlockPlugin } from "@udecode/plate-code-block/react";
 import {
-  collapseSelection,
+  ParagraphPlugin,
   focusEditor,
-  getNodeEntries,
-  isBlock,
-  toggleNodeType,
   useEditorRef,
-  useEditorSelector,
-} from "@udecode/plate-common";
+  useSelectionFragmentProp,
+} from "@udecode/plate-common/react";
+import { HEADING_KEYS } from "@udecode/plate-heading";
+import { INDENT_LIST_KEYS, ListStyleType } from "@udecode/plate-indent-list";
+import { TogglePlugin } from "@udecode/plate-toggle/react";
 import {
-  ELEMENT_H1,
-  ELEMENT_H2,
-  ELEMENT_H3,
-  ELEMENT_H4,
-  ELEMENT_H5,
-  ELEMENT_H6,
-} from "@udecode/plate-heading";
-import { ELEMENT_PARAGRAPH } from "@udecode/plate-paragraph";
+  ChevronRightIcon,
+  Columns3Icon,
+  FileCodeIcon,
+  Heading1Icon,
+  Heading2Icon,
+  Heading3Icon,
+  ListIcon,
+  ListOrderedIcon,
+  PilcrowIcon,
+  QuoteIcon,
+  SquareIcon,
+} from "lucide-react";
 
-import { Icons } from "@/src/components/icons";
+import { getBlockType, setBlockType } from "@/src/components/editor/transforms";
 
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuLabel,
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
@@ -33,134 +41,121 @@ import {
 } from "./dropdown-menu";
 import { ToolbarButton } from "./toolbar";
 
-const items = [
+const turnIntoItems = [
   {
-    description: "Paragraphe",
-    icon: Icons.paragraph,
-    label: "Paragraphe",
-    value: ELEMENT_PARAGRAPH,
+    icon: <PilcrowIcon />,
+    keywords: ["paragraphe"],
+    label: "Texte",
+    value: ParagraphPlugin.key,
   },
   {
-    description: "Titre 1",
-    icon: Icons.h1,
+    icon: <Heading1Icon />,
+    keywords: ["titre", "h1"],
     label: "Titre 1",
-    value: ELEMENT_H1,
+    value: HEADING_KEYS.h1,
   },
   {
-    description: "Titre 2",
-    icon: Icons.h2,
+    icon: <Heading2Icon />,
+    keywords: ["sous-titre", "h2"],
     label: "Titre 2",
-    value: ELEMENT_H2,
+    value: HEADING_KEYS.h2,
   },
   {
-    description: "Titre 3",
-    icon: Icons.h3,
+    icon: <Heading3Icon />,
+    keywords: ["sous-titre", "h3"],
     label: "Titre 3",
-    value: ELEMENT_H3,
+    value: HEADING_KEYS.h3,
   },
   {
-    Description: "Titre 4",
-    icon: Icons.h4,
-    label: "Titre 4",
-    value: ELEMENT_H4,
+    icon: <ListIcon />,
+    keywords: ["non ordonnée", "ul", "-"],
+    label: "Liste à puces",
+    value: ListStyleType.Disc,
   },
   {
-    Description: "Titre 5",
-    icon: Icons.h5,
-    label: "Titre 5",
-    value: ELEMENT_H5,
+    icon: <ListOrderedIcon />,
+    keywords: ["ordonnée", "ol", "1"],
+    label: "Liste numérotée",
+    value: ListStyleType.Decimal,
   },
   {
-    Description: "Titre 6",
-    icon: Icons.h6,
-    label: "Titre 6",
-    value: ELEMENT_H6,
+    icon: <SquareIcon />,
+    keywords: ["liste de tâches", "tâche", "checkbox", "[]"],
+    label: "Liste de tâches",
+    value: INDENT_LIST_KEYS.todo,
   },
-
   {
-    description: "Citation (⌘+⇧+.)",
-    icon: Icons.blockquote,
+    icon: <ChevronRightIcon />,
+    keywords: ["repliable", "extensible"],
+    label: "Liste déroulante",
+    value: TogglePlugin.key,
+  },
+  {
+    icon: <FileCodeIcon />,
+    keywords: ["```"],
+    label: "Code",
+    value: CodeBlockPlugin.key,
+  },
+  {
+    icon: <QuoteIcon />,
+    keywords: ["citation", "blockquote", ">"],
     label: "Citation",
-    value: ELEMENT_BLOCKQUOTE,
+    value: BlockquotePlugin.key,
+  },
+  {
+    icon: <Columns3Icon />,
+    label: "3 colonnes",
+    value: "action_three_columns",
   },
 ];
 
-const defaultItem = items.find((item) => item.value === ELEMENT_PARAGRAPH)!;
-
 export function TurnIntoDropdownMenu(props: DropdownMenuProps) {
-  const value: string = useEditorSelector((editor) => {
-    let initialNodeType: string = ELEMENT_PARAGRAPH;
-    let allNodesMatchInitialNodeType = false;
-    const codeBlockEntries = getNodeEntries(editor, {
-      match: (n) => isBlock(editor, n),
-      mode: "highest",
-    });
-    const nodes = Array.from(codeBlockEntries);
-
-    if (nodes.length > 0) {
-      initialNodeType = nodes[0][0].type as string;
-      allNodesMatchInitialNodeType = nodes.every(([node]) => {
-        const type: string = (node?.type as string) || ELEMENT_PARAGRAPH;
-
-        return type === initialNodeType;
-      });
-    }
-
-    return allNodesMatchInitialNodeType ? initialNodeType : ELEMENT_PARAGRAPH;
-  }, []);
-
   const editor = useEditorRef();
   const openState = useOpenState();
 
-  const selectedItem =
-    items.find((item) => item.value === value) ?? defaultItem;
-  const { icon: SelectedItemIcon, label: selectedItemLabel } = selectedItem;
+  const value = useSelectionFragmentProp({
+    defaultValue: ParagraphPlugin.key,
+    getProp: (node) => getBlockType(node as any),
+  });
+  const selectedItem = React.useMemo(
+    () =>
+      turnIntoItems.find(
+        (item) => item.value === (value ?? ParagraphPlugin.key)
+      ) ?? turnIntoItems[0],
+    [value]
+  );
 
   return (
     <DropdownMenu modal={false} {...openState} {...props}>
       <DropdownMenuTrigger asChild>
         <ToolbarButton
-          className="lg:min-w-[130px]"
-          isDropdown
           pressed={openState.open}
           tooltip="Transformer en"
+          isDropdown
         >
-          <SelectedItemIcon className="size-5 lg:hidden" />
-          <span className="max-lg:hidden">{selectedItemLabel}</span>
+          {selectedItem.label}
         </ToolbarButton>
       </DropdownMenuTrigger>
 
-      <DropdownMenuContent align="start" className="min-w-0">
-        <DropdownMenuLabel>Transformer en</DropdownMenuLabel>
-
+      <DropdownMenuContent
+        className="ignore-click-outside/toolbar min-w-0"
+        align="start"
+      >
         <DropdownMenuRadioGroup
-          className="flex flex-col gap-0.5"
+          value={value}
           onValueChange={(type) => {
-            // if (type === 'ul' || type === 'ol') {
-            //   if (settingsStore.get.checkedId(KEY_LIST_STYLE_TYPE)) {
-            //     toggleIndentList(editor, {
-            //       listStyleType: type === 'ul' ? 'disc' : 'decimal',
-            //     });
-            //   } else if (settingsStore.get.checkedId('list')) {
-            //     toggleList(editor, { type });
-            //   }
-            // } else {
-            //   unwrapList(editor);
-            toggleNodeType(editor, { activeType: type });
-            // }
-
-            collapseSelection(editor);
+            setBlockType(editor, type);
             focusEditor(editor);
           }}
-          value={value}
+          label="Transformer en"
         >
-          {items.map(({ icon: Icon, label, value: itemValue }) => (
+          {turnIntoItems.map(({ icon, label, value: itemValue }) => (
             <DropdownMenuRadioItem
-              className="min-w-[180px]"
               key={itemValue}
+              className="min-w-[180px]"
               value={itemValue}
             >
-              <Icon className="mr-2 size-5" />
+              {icon}
               {label}
             </DropdownMenuRadioItem>
           ))}

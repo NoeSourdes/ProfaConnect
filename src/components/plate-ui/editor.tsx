@@ -1,92 +1,114 @@
-import React from "react";
+'use client';
 
-import type { PlateContentProps } from "@udecode/plate-common";
-import type { VariantProps } from "class-variance-authority";
+import React from 'react';
 
-import { cn } from "@udecode/cn";
-import { PlateContent } from "@udecode/plate-common";
-import { cva } from "class-variance-authority";
+import type { PlateContentProps } from '@udecode/plate-common/react';
+import type { VariantProps } from 'class-variance-authority';
+
+import { cn } from '@udecode/cn';
+import {
+  PlateContent,
+  useEditorContainerRef,
+  useEditorRef,
+} from '@udecode/plate-common/react';
+import { cva } from 'class-variance-authority';
+
+const editorContainerVariants = cva(
+  'relative flex w-full cursor-text overflow-y-auto caret-primary selection:bg-brand/25 [&_.slate-selection-area]:border [&_.slate-selection-area]:border-brand/25 [&_.slate-selection-area]:bg-brand/15',
+  {
+    defaultVariants: {
+      variant: 'default',
+    },
+    variants: {
+      variant: {
+        default: 'h-full',
+        demo: 'h-[650px]',
+      },
+    },
+  }
+);
+
+export const EditorContainer = ({
+  className,
+  variant,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement> &
+  VariantProps<typeof editorContainerVariants>) => {
+  const editor = useEditorRef();
+  const containerRef = useEditorContainerRef();
+
+  return (
+    <div
+      id={editor.uid}
+      ref={containerRef}
+      className={cn(
+        'ignore-click-outside/toolbar',
+        editorContainerVariants({ variant }),
+        className
+      )}
+      role="button"
+      {...props}
+    />
+  );
+};
+
+EditorContainer.displayName = 'EditorContainer';
 
 const editorVariants = cva(
   cn(
-    "relative overflow-x-auto whitespace-pre-wrap break-words",
-    "w-full rounded-md bg-background px-6 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none",
-    "[&_[data-slate-placeholder]]:text-muted-foreground [&_[data-slate-placeholder]]:!opacity-100",
-    "[&_[data-slate-placeholder]]:top-[auto_!important]",
-    "[&_strong]:font-bold"
+    'group/editor',
+    'relative w-full overflow-x-hidden whitespace-pre-wrap break-words',
+    'rounded-md ring-offset-background placeholder:text-muted-foreground/80 focus-visible:outline-none',
+    '[&_[data-slate-placeholder]]:text-muted-foreground/80 [&_[data-slate-placeholder]]:!opacity-100',
+    '[&_[data-slate-placeholder]]:top-[auto_!important]',
+    '[&_strong]:font-bold'
   ),
   {
     defaultVariants: {
-      focusRing: true,
-      size: "sm",
-      variant: "outline",
+      variant: 'default',
     },
     variants: {
       disabled: {
-        true: "cursor-not-allowed opacity-50",
-      },
-      focusRing: {
-        false: "",
-        true: "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+        true: 'cursor-not-allowed opacity-50',
       },
       focused: {
-        true: "ring-2 ring-ring ring-offset-2",
-      },
-      size: {
-        md: "text-base",
-        sm: "text-sm",
+        true: 'ring-2 ring-ring ring-offset-2',
       },
       variant: {
-        ghost: "",
-        outline: "border border-input",
+        ai: 'w-full px-0 text-sm',
+        aiChat:
+          'max-h-[min(70vh,320px)] w-full max-w-[700px] overflow-y-auto px-3 py-2 text-sm',
+        default:
+          'min-h-full w-full px-16 pb-72 pt-4 text-base sm:px-[max(64px,calc(50%-350px))]',
+        demo: 'min-h-full w-full px-16 pb-72 pt-14 text-base sm:px-[max(64px,calc(50%-350px))]',
+        fullWidth: 'min-h-full w-full px-16 pb-72 pt-4 text-base sm:px-24',
       },
     },
   }
 );
 
 export type EditorProps = PlateContentProps &
-  VariantProps<typeof editorVariants> & {
-    isFullScreen: boolean;
-  };
+  VariantProps<typeof editorVariants>;
 
-const Editor = React.forwardRef<HTMLDivElement, EditorProps>(
-  (
-    {
-      className,
-      disabled,
-      focusRing,
-      isFullScreen,
-      focused,
-      readOnly,
-      size,
-      variant,
-      ...props
-    },
-    ref
-  ) => {
+export const Editor = React.forwardRef<HTMLDivElement, EditorProps>(
+  ({ className, disabled, focused, variant, ...props }, ref) => {
     return (
-      <div className="relative w-full" ref={ref}>
-        <PlateContent
-          aria-disabled={disabled}
-          className={cn(
-            editorVariants({
-              disabled,
-              focusRing,
-              focused,
-              size,
-              variant,
-            }),
-            className,
-            isFullScreen ? "h-screen" : "max-h-[700px]"
-          )}
-          disableDefaultStyles
-          readOnly={disabled ?? readOnly}
-          {...props}
-        />
-      </div>
+      <PlateContent
+        ref={ref}
+        className={cn(
+          editorVariants({
+            disabled,
+            focused,
+            variant,
+          }),
+          className
+        )}
+        disabled={disabled}
+        disableDefaultStyles
+        {...props}
+      />
     );
   }
 );
-Editor.displayName = "Editor";
 
-export { Editor };
+Editor.displayName = 'Editor';
