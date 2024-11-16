@@ -39,14 +39,19 @@ export default function Chat_profabot({
   return (
     <div
       ref={containerRef}
-      className="absolute inset-0 botton-16 flex flex-col gap-4 p-4 overflow-auto pb-20"
+      className="absolute inset-0 botton-16 flex flex-col gap-4 md:p-4 overflow-auto pb-20"
     >
       <Button
         variant="outline"
-        className="fixed top-[77px] right-9"
+        className="fixed top-[77px] right-9 border-none overflow-hidden"
         onClick={() => setMessages([])}
       >
-        Nouveau message
+        <div className="absolute inset-0 bg-[linear-gradient(120deg,#6EB6F2,#6EB6F2,#a855f7,#ea580c,#eab308)] p-0.5">
+          <div className="size-full bg-background flex items-center justify-center rounded-[8px]">
+            <p className="font-medium text-sm">Nouveau message</p>
+          </div>
+        </div>
+        <p className="text-transparent">Nouveau message</p>
       </Button>
 
       <AnimatePresence>
@@ -74,10 +79,10 @@ export default function Chat_profabot({
             >
               <div
                 className={cn(
-                  "p-3 rounded-lg break-words whitespace-normal max-w-[90%]",
+                  "rounded-lg break-words whitespace-normal max-w-[90%]",
                   message.role === "assistant"
-                    ? "w-full"
-                    : "bg-secondary max-w-xl"
+                    ? "w-full py-3"
+                    : "bg-secondary max-w-xl p-3"
                 )}
               >
                 {message.role === "assistant" ? (
