@@ -1,7 +1,7 @@
 "use client";
 
+import { TextareaAutosize } from "@udecode/plate-caption/react";
 import { ArrowUp } from "lucide-react";
-import TextareaAutosize from "react-textarea-autosize";
 import { Button } from "../../ui/button";
 
 interface Message {
@@ -81,14 +81,14 @@ export default function Input_profabot({
     <div className="absolute bottom-0 left-0 right-0 h-20">
       <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-background to-transparent"></div>
       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 rounded-[25px] border border-input bg-background w-full max-w-3xl flex items-end p-4">
-        {/* <TextareaAutosize
+        <TextareaAutosize
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
           onKeyDown={handleKeyDown}
           maxRows={10}
           placeholder="Écrire un message"
-          className="w-full h-full border-none focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-ring focus-visible:ring-offset-0 disabled:cursor-not-allowed disabled:opacity-50 resize-none no-scrollbar"
-        /> */}
+          className="w-full h-full border-none focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-ring focus-visible:ring-offset-0 disabled:cursor-not-allowed disabled:opacity-50 resize-none no-scrollbar bg-background"
+        />
         <div className="w-12 flex justify-end">
           <Button
             size="icon"

@@ -12,7 +12,7 @@ import { cn } from "@/src/lib/utils";
 import { useQuery } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 import React from "react";
 
@@ -24,6 +24,7 @@ export default function Layout({ children }: Props) {
   const sidebar = useStore(useSidebarToggle, (state) => state);
   const session = useSession();
   const router = useRouter();
+  const pathname = usePathname();
 
   const {
     data: userProfile,
@@ -74,39 +75,42 @@ export default function Layout({ children }: Props) {
 
   return (
     <div className="relative">
-      <Button
-        onClick={() => {
-          router.push("/profaBot");
-        }}
-        size="icon"
-        variant="ghost"
-        className={cn(
-          "group fixed bottom-6 right-6 z-[123456] size-10 overflow-hidden border hover:bg-background ",
-          "rounded-full shadow-md hover:shadow-lg",
-          "transition-all duration-300 ease-in-out hover:w-[245px]"
-        )}
-        data-block-hide
-      >
-        <div className="flex size-full items-center justify-start gap-2">
-          <Image
-            src="/svg/star.svg"
-            alt="logo star ai"
-            width={30}
-            height={30}
-            layout="fixed"
-            className="pl-1.5"
-          />
-          <span
-            className={cn(
-              "whitespace-nowrap opacity-0 transition-all duration-300 ease-in-out bg-[linear-gradient(120deg,#6EB6F2_10%,#a855f7,#ea580c,#eab308)] bg-clip-text text-transparent",
-              "group-hover:translate-x-0 group-hover:opacity-100",
-              "-translate-x-2"
-            )}
-          >
-            Demander l'aide de ProfaBot
-          </span>
-        </div>
-      </Button>
+      {pathname !== "/profaBot" && (
+        <Button
+          onClick={() => {
+            router.push("/profaBot");
+          }}
+          size="icon"
+          variant="ghost"
+          className={cn(
+            "group fixed bottom-6 right-6 z-[123456] size-10 overflow-hidden border hover:bg-background ",
+            "rounded-full shadow-md hover:shadow-lg",
+            "transition-all duration-300 ease-in-out hover:w-[245px]"
+          )}
+          data-block-hide
+        >
+          <div className="flex size-full items-center justify-start gap-2">
+            <Image
+              src="/svg/star.svg"
+              alt="logo star ai"
+              width={30}
+              height={30}
+              layout="fixed"
+              className="pl-1.5"
+            />
+            <span
+              className={cn(
+                "whitespace-nowrap opacity-0 transition-all duration-300 ease-in-out bg-[linear-gradient(120deg,#6EB6F2_10%,#a855f7,#ea580c,#eab308)] bg-clip-text text-transparent",
+                "group-hover:translate-x-0 group-hover:opacity-100",
+                "-translate-x-2"
+              )}
+            >
+              Demander l'aide de ProfaBot
+            </span>
+          </div>
+        </Button>
+      )}
+
       <Sidebar />
       <main
         className={cn(
