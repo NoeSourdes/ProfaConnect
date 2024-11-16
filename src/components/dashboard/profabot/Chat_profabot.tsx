@@ -88,7 +88,7 @@ export default function Chat_profabot({
                 {message.role === "assistant" ? (
                   <div className="w-full flex items-start gap-5 break-words max-w-full">
                     <Image
-                      src="/img/profabot.png"
+                      src="/img/profabot.webp"
                       alt="logo star ai"
                       width={44}
                       height={44}
@@ -121,7 +121,7 @@ export default function Chat_profabot({
             className="flex items-center w-full justify-start"
           >
             <Image
-              src="/img/profabot.png"
+              src="/img/profabot.webp"
               alt="logo star ai"
               width={44}
               height={44}
