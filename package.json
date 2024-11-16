@@ -111,6 +111,7 @@
     "cmdk": "^1.0.4",
     "date-fns": "^3.6.0",
     "effect": "^2.1.2",
+    "eslint-plugin-tailwindcss": "^3.17.5",
     "framer-motion": "^11.5.4",
     "geist": "^1.2.2",
     "html-to-image": "^1.11.11",

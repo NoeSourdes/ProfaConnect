@@ -8,7 +8,7 @@ export async function POST(req: NextRequest) {
   const {
     apiKey: key,
     messages,
-    model = "llama-3.1-70b-instruct	",
+    model = "llama-3.1-70b-instruct",
     system,
   } = await req.json();
 

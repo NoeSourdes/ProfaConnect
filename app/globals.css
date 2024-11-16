@@ -245,3 +245,21 @@ pre {
     width: calc(100% - 16px);
   }
 }
+
+.loader {
+  border-radius: 50%;
+  border: 2px solid #ccc;
+  border-top: 2px solid #000;
+  width: 16px;
+  height: 16px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
