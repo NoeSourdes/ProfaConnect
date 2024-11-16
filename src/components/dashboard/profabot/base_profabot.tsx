@@ -21,7 +21,7 @@ const buttons = [
 export default function Base_profabot({ setInputValue }: Base_profabotProps) {
   return (
     <div className="absolute top-0 left-0 right-0 bottom-16 flex items-center pt-32 flex-col gap-5">
-      <Image src="/img/profabot.png" alt="Logo" width={100} height={100} />
+      <Image src="/img/profabot.webp" alt="Logo" width={100} height={100} />
       <TypingAnimation
         className="sm:text-4xl text-2xl font-bold text-black dark:text-white"
         text="Comment puis-je vous aider ?"
