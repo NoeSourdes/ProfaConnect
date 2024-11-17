@@ -1,23 +1,21 @@
-'use client';
+"use client";
 
-import React from 'react';
-
-import { cn, withRef } from '@udecode/cn';
+import { cn, withRef } from "@udecode/cn";
 import {
   useComposedRef,
   useEditorId,
   useEditorRef,
   useEventEditorSelectors,
-} from '@udecode/plate-common/react';
+} from "@udecode/plate-common/react";
 import {
   type FloatingToolbarState,
   flip,
   offset,
   useFloatingToolbar,
   useFloatingToolbarState,
-} from '@udecode/plate-floating';
+} from "@udecode/plate-floating";
 
-import { Toolbar } from './toolbar';
+import { Toolbar } from "./toolbar";
 
 export const FloatingToolbar = withRef<
   typeof Toolbar,
@@ -28,8 +26,8 @@ export const FloatingToolbar = withRef<
   const editor = useEditorRef();
   const editorId = useEditorId();
   const focusedEditorId = useEventEditorSelectors.focus();
-  const isFloatingLinkOpen = !!editor.useOption({ key: 'a' }, 'mode');
-  const isAIChatOpen = editor.useOption({ key: 'aiChat' }, 'open');
+  const isFloatingLinkOpen = !!editor.useOption({ key: "a" }, "mode");
+  const isAIChatOpen = editor.useOption({ key: "aiChat" }, "open");
 
   const floatingToolbarState = useFloatingToolbarState({
     editorId,
@@ -41,15 +39,15 @@ export const FloatingToolbar = withRef<
         offset(12),
         flip({
           fallbackPlacements: [
-            'top-start',
-            'top-end',
-            'bottom-start',
-            'bottom-end',
+            "top-start",
+            "top-end",
+            "bottom-start",
+            "bottom-end",
           ],
           padding: 12,
         }),
       ],
-      placement: 'top',
+      placement: "top",
       ...state?.floatingOptions,
     },
   });
@@ -70,8 +68,8 @@ export const FloatingToolbar = withRef<
       <Toolbar
         ref={ref}
         className={cn(
-          'absolute z-50 overflow-x-auto whitespace-nowrap rounded-md border bg-popover p-1 opacity-100 shadow-md scrollbar-hide print:hidden',
-          'max-w-[80vw]'
+          "absolute z-50 overflow-x-auto whitespace-nowrap rounded-md border bg-popover p-1 opacity-100 shadow-md scrollbar-hide print:hidden no-scrollbar",
+          "max-w-[80vw]"
         )}
         {...rootProps}
         {...props}

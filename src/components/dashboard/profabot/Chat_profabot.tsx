@@ -3,8 +3,9 @@
 import { cn } from "@/src/lib/utils";
 import { formatMessageContent } from "@/src/utils/formatMessageContent";
 import { AnimatePresence, HTMLMotionProps, motion } from "framer-motion";
+import { Check, Copy } from "lucide-react";
 import Image from "next/image";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "../../ui/button";
 
 interface Message {
@@ -35,6 +36,16 @@ export default function Chat_profabot({
       bottomRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [messages]);
+
+  const [isCopied, setIsCopied] = useState(false);
+
+  const copyToClipboard = (text: string) => {
+    setIsCopied(true);
+    navigator.clipboard.writeText(text);
+    setTimeout(() => {
+      setIsCopied(false);
+    }, 2000);
+  };
 
   return (
     <div
@@ -89,18 +100,36 @@ export default function Chat_profabot({
                   {message.role === "assistant" ? (
                     <div className="w-full flex items-start gap-5 break-words max-w-full">
                       <Image
-                        src="/img/profabot.webp"
+                        src="/svg/star.svg"
                         alt="logo star ai"
                         width={44}
                         height={44}
-                        className="border rounded-full p-1 pr-1.5"
+                        className="border rounded-lg p-2"
                       />
-                      <div
-                        className="formatted-content grow break-words max-w-full"
-                        dangerouslySetInnerHTML={{
-                          __html: formatMessageContent(message.content),
-                        }}
-                      />
+                      <div className="flex flex-col gap-1">
+                        <div
+                          className="formatted-content grow break-words max-w-full"
+                          dangerouslySetInnerHTML={{
+                            __html: formatMessageContent(message.content),
+                          }}
+                        />
+                        <div className="flex items-center gap-2">
+                          <Button
+                            onClick={() => {
+                              copyToClipboard(message.content);
+                            }}
+                            size="icon"
+                            variant="ghost"
+                            className="text-muted-foreground"
+                          >
+                            {isCopied ? (
+                              <Check size={18} className="text-success " />
+                            ) : (
+                              <Copy size={18} />
+                            )}
+                          </Button>
+                        </div>
+                      </div>
                     </div>
                   ) : (
                     <div className="break-words max-w-full">
@@ -112,7 +141,6 @@ export default function Chat_profabot({
             </MotionDiv>
           ))}
 
-          {/* Indicateur de chargement */}
           {loading && (
             <MotionDiv
               key="loading"
@@ -122,11 +150,11 @@ export default function Chat_profabot({
               className="flex items-center w-full justify-start"
             >
               <Image
-                src="/img/profabot.webp"
+                src="/svg/star.svg"
                 alt="logo star ai"
                 width={44}
                 height={44}
-                className="border rounded-full p-1 pr-1.5"
+                className="border rounded-lg p-2"
               />
               <div className="flex items-center gap-3 w-full max-w-full flex-row">
                 <div className="p-3 rounded-lg y max-w-xl">

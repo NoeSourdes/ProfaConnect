@@ -325,6 +325,47 @@ export function SheetMenu() {
                 )}
               </li>
               <li className="w-full">
+                <div className="p-0.5 bg-[linear-gradient(120deg,#6EB6F2,#6EB6F2,#a855f7,#ea580c,#eab308)] rounded-lg">
+                  <Button
+                    variant="ghost"
+                    className={`w-full justify-between h-10 ${
+                      isOpen === false
+                        ? "p-0 flex items-center justify-center"
+                        : ""
+                    }`}
+                    asChild
+                  >
+                    <Link href={"/profaBot"}>
+                      <span>
+                        <Image
+                          src="/svg/star.svg"
+                          alt="Logo ai assistant"
+                          width={24}
+                          height={24}
+                          className={`min-w-[24px]`}
+                        />
+                      </span>
+                      <p
+                        className={cn(
+                          "max-w-[200px] truncate bg-[linear-gradient(120deg,#6EB6F2,#6EB6F2,#a855f7,#ea580c,#eab308)] bg-clip-text text-transparent",
+                          isOpen === false
+                            ? "-translate-x-96 opacity-0 hidden"
+                            : "translate-x-0 opacity-100"
+                        )}
+                      >
+                        ProfaBot
+                      </p>
+                      <span className={isOpen === false ? "hidden" : ""}>
+                        <Image
+                          src="/svg/star.svg"
+                          alt="Logo ai assistant"
+                          width={24}
+                          height={24}
+                        />
+                      </span>
+                    </Link>
+                  </Button>
+                </div>
                 <TooltipProvider disableHoverableContent>
                   <Tooltip delayDuration={100}>
                     <TooltipTrigger asChild>

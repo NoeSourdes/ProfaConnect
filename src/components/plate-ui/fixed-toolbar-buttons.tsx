@@ -53,9 +53,9 @@ export function FixedToolbarButtons() {
     <div className="flex w-full">
       {!readOnly && (
         <>
-          <ToolbarGroup>
+          <ToolbarGroup className="no-scrollbar">
             <AIToolbarButton
-              className="bg-[linear-gradient(120deg,#6EB6F2,#6EB6F2,#a855f7,#ea580c,#eab308)] bg-clip-text text-transparent hover:bg-[linear-gradient(120deg,#6EB6F2,#6EB6F2,#a855f7,#ea580c,#eab308)] hover:text-transparent hover:bg-clip-text"
+              className="bg-[linear-gradient(120deg,#6EB6F2,#6EB6F2,#a855f7,#ea580c,#eab308)] bg-clip-text text-transparent hover:bg-[linear-gradient(120deg,#6EB6F2,#6EB6F2,#a855f7,#ea580c,#eab308)] hover:text-transparent hover:bg-clip-text min-w-[140px]"
               tooltip="Éditer, générer, et plus"
             >
               <Image

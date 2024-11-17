@@ -3,12 +3,14 @@ import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
 import { GeistSans } from "geist/font/sans";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import Head from "next/head";
 import NextTopLoader from "nextjs-toploader";
 import { extractRouterConfig } from "uploadthing/server";
 import { ourFileRouter } from "./api/uploadthing/core";
 import "./globals.css";
 import { Providers } from "./providers";
 import "./style/prosemirror.css";
+import "katex/dist/katex.min.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -26,7 +28,14 @@ export default function RootLayout({
   return (
     <>
       <html lang="fr" suppressHydrationWarning>
-        <head />
+        <Head>
+          <script
+            type="text/javascript"
+            id="MathJax-script"
+            async
+            src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+          />
+        </Head>
         <body className={GeistSans.className}>
           <NextTopLoader
             zIndex={1000000000000000}

@@ -30,7 +30,7 @@ export async function POST(req: NextRequest) {
   try {
     const result = await generateText({
       abortSignal: req.signal,
-      maxTokens: 5000,
+      maxTokens: 2000,
       model: openai(model),
       messages: convertToCoreMessages([
         { role: "system", content: profabotContext },
@@ -39,7 +39,7 @@ export async function POST(req: NextRequest) {
           content: msg.content,
         })),
       ]),
-      temperature: 0.7,
+      temperature: 0.5,
     });
 
     return NextResponse.json(result);

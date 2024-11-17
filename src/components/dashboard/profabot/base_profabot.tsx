@@ -1,5 +1,4 @@
 import { Calendar, Folder, Gamepad, Shapes } from "lucide-react";
-import Image from "next/image";
 
 interface Message {
   role: "user" | "assistant";
@@ -19,8 +18,13 @@ const buttons = [
 
 export default function Base_profabot({ setInputValue }: Base_profabotProps) {
   return (
-    <div className="absolute top-0 left-0 right-0 bottom-16 flex items-center md:pt-32 flex-col gap-5">
-      <Image src="/img/profabot.webp" alt="Logo" width={100} height={100} />
+    <div className="absolute top-0 left-0 right-0 bottom-16 flex items-center md:pt-32 pt-10 flex-col gap-5">
+      <div className="flex flex-col items-center">
+        {/* <Image src="/img/profabot.webp" alt="Logo" width={100} height={100} /> */}
+        <h1 className="sm:text-6xl text-4xl font-bold bg-[linear-gradient(120deg,#6EB6F2_10%,#6EB6F2,#a855f7,#ea580c,#eab308)] bg-clip-text text-transparent">
+          ProfaBot
+        </h1>
+      </div>
       <h2 className="sm:text-4xl text-2xl font-bold">
         Comment puis-je vous aider ?
       </h2>
