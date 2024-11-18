@@ -35,12 +35,21 @@ export const PopoverActionFile = (props: PopoverActionFileProps) => {
   const { setSelectedDocuments } = useSelectedDocuments();
 
   const deleteMutation = useMutation({
-    mutationFn: (idFile: { id: string }) => deleteFileAction(idFile.id),
-    onSuccess: ({ data, serverError }) => {
-      if (serverError || !data) {
-        throw new Error(serverError);
+    mutationFn: async (idFile: { id: string }) => {
+      const result = await deleteFileAction(idFile.id);
+
+      if (!result) {
+        throw new Error("Unexpected undefined result");
       }
-      toast.success("La fichier a été supprimée avec succès");
+
+      if (result.serverError || !result.data) {
+        throw new Error(result.serverError || "An unknown error occurred");
+      }
+
+      return result.data;
+    },
+    onSuccess: () => {
+      toast.success("Le fichier a été supprimé avec succès");
 
       queryClient.invalidateQueries({
         queryKey: ["getFiles", props.user?.user?.id ? props.user.user.id : ""],
@@ -49,17 +58,25 @@ export const PopoverActionFile = (props: PopoverActionFileProps) => {
   });
 
   const { mutate: mutationupdateNameFile, isPending } = useMutation({
-    mutationFn: (data: { id: string; name: string }) =>
-      renameFileAction({ id: data.id, name: data.name }),
-    onSuccess: ({ data, serverError }) => {
-      if (serverError || !data) {
-        throw new Error(serverError);
+    mutationFn: async (data: { id: string; name: string }) => {
+      const result = await renameFileAction({ id: data.id, name: data.name });
+
+      if (!result) {
+        throw new Error("Unexpected undefined result");
       }
-      toast.success("La fichier a été renommée avec succès");
+
+      if (result.serverError || !result.data) {
+        throw new Error(result.serverError || "An unknown error occurred");
+      }
+
+      return result.data;
+    },
+    onSuccess: () => {
+      toast.success("Le fichier a été renommé avec succès");
       setOpen(false);
 
       queryClient.invalidateQueries({
-        queryKey: ["folders", props.user?.user?.id ? props.user.user.id : ""],
+        queryKey: ["getFiles", props.user?.user?.id ? props.user.user.id : ""],
       });
       setSelectedDocuments([]);
     },

@@ -1,75 +1,81 @@
 "use server";
-
 import { prisma } from "@/src/lib/prisma";
-import { userAction } from "@/src/lib/safe-actions";
+import { authAction } from "@/src/lib/safe-actions";
 import { z } from "zod";
 import { eventSchema } from "./event.schema";
-
-export const createEventAction = userAction(
-  eventSchema,
-  async (inputs, context) => {
-    if (!context.user) {
+// Création d'un événement
+export const createEventAction = authAction
+  .schema(eventSchema)
+  .action(async ({ parsedInput: inputs, ctx }) => {
+    if (!ctx.user) {
       throw new Error("User not found");
     }
+
     const event = await prisma.event.create({
       data: {
         ...inputs,
-        start: inputs.start,
-        end: inputs.end,
-        authorId: context.user.id,
-        description: inputs.description || undefined,
-        categoryId: inputs.categoryId || undefined,
+        authorId: ctx.user.id!,
+        description: inputs.description ?? null,
+        categoryId: inputs.categoryId ?? null,
         startTime: inputs.startTime,
         endTime: inputs.endTime,
       },
     });
-    return event;
-  }
-);
 
-export const updateEventAction = userAction(
-  z.object({
-    id: z.string(),
-    data: eventSchema,
-  }),
-  async (inputs, context) => {
-    if (!context.user) {
+    return event;
+  });
+
+// Mise à jour d'un événement
+export const updateEventAction = authAction
+  .schema(
+    z.object({
+      id: z.string(),
+      data: eventSchema,
+    })
+  )
+  .action(async ({ parsedInput: { id, data }, ctx }) => {
+    if (!ctx.user) {
       throw new Error("User not found");
     }
+
     const event = await prisma.event.update({
       where: {
-        id: inputs.id,
-        authorId: context.user.id,
+        id,
+        authorId: ctx.user.id,
       },
       data: {
-        title: inputs.data.title,
-        description: inputs.data.description || undefined,
-        categoryId: inputs.data.categoryId || undefined,
-        date: inputs.data.date,
-        start: inputs.data.start,
-        end: inputs.data.end,
-        startTime: inputs.data.startTime,
-        endTime: inputs.data.endTime,
-        color: inputs.data.color,
+        title: data.title,
+        description: data.description || undefined,
+        categoryId: data.categoryId || undefined,
+        date: data.date,
+        startTime: data.startTime,
+        endTime: data.endTime,
+        color: data.color,
       },
     });
+
     return event;
-  }
-);
-
-export const deleteEventAction = userAction(z.string(), async (id, context) => {
-  if (!context.user) {
-    throw new Error("User not found");
-  }
-  const event = await prisma.event.delete({
-    where: {
-      id,
-      authorId: context.user.id,
-    },
   });
-  return event;
-});
 
+// Suppression d'un événement
+export const deleteEventAction = authAction
+  .schema(z.string())
+  .action(async ({ parsedInput: id, ctx }) => {
+    if (!ctx.user) {
+      throw new Error("User not found");
+    }
+
+    const event = await prisma.event.delete({
+      where: {
+        id,
+        authorId: ctx.user.id,
+      },
+    });
+
+    return event;
+  });
+
+// Récupération des événements
 export const getEventAction = async (authorId: string) => {
   const events = await prisma.event.findMany({
     where: {
@@ -80,8 +86,6 @@ export const getEventAction = async (authorId: string) => {
       title: true,
       description: true,
       date: true,
-      start: true,
-      end: true,
       startTime: true,
       endTime: true,
       color: true,

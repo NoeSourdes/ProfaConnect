@@ -1,49 +1,47 @@
 "use server";
 
 import { prisma } from "@/src/lib/prisma";
-import { userAction } from "@/src/lib/safe-actions";
+import { authAction } from "@/src/lib/safe-actions";
 import { z } from "zod";
 import { createClassroomSchema } from "./classroom.schema";
 
-//                    les creations
-
-export const createClassroomAction = userAction(
-  createClassroomSchema,
-  async (inputs, context) => {
+// Création d'une classe
+export const createClassroomAction = authAction
+  .schema(createClassroomSchema)
+  .action(async ({ parsedInput: inputs, ctx }) => {
+    if (!ctx.user.id) {
+      throw new Error("Professor ID is required");
+    }
     const classroom = await prisma.classroom.create({
       data: {
         ...inputs,
-        professorId: context.user.id,
+        professorId: ctx.user.id,
       },
     });
     return classroom;
-  }
-);
+  });
 
-//                      delete
-
-// supprimer une classe
-
-export const deleteClassroomAction = userAction(
-  z.string(),
-  async (classroomId) => {
+// Suppression d'une classe
+export const deleteClassroomAction = authAction
+  .schema(z.string())
+  .action(async ({ parsedInput: classroomId }) => {
     const classroom = await prisma.classroom.delete({
       where: {
         idClassroom: classroomId,
       },
     });
     return classroom;
-  }
-);
+  });
 
-//                    les updates
-
-export const updateCLassroomAddStudent = userAction(
-  z.object({
-    idClassroom: z.string(),
-    idStudent: z.string(),
-  }),
-  async ({ idClassroom, idStudent }) => {
+// Ajouter un étudiant à une classe
+export const updateClassroomAddStudent = authAction
+  .schema(
+    z.object({
+      idClassroom: z.string(),
+      idStudent: z.string(),
+    })
+  )
+  .action(async ({ parsedInput: { idClassroom, idStudent } }) => {
     const classroom = await prisma.classroom.update({
       where: {
         idClassroom,
@@ -57,15 +55,17 @@ export const updateCLassroomAddStudent = userAction(
       },
     });
     return classroom;
-  }
-);
+  });
 
-export const updateCLassroomDeleteStudent = userAction(
-  z.object({
-    idClassroom: z.string(),
-    idStudent: z.string(),
-  }),
-  async ({ idClassroom, idStudent }) => {
+// Supprimer un étudiant d'une classe
+export const updateClassroomDeleteStudent = authAction
+  .schema(
+    z.object({
+      idClassroom: z.string(),
+      idStudent: z.string(),
+    })
+  )
+  .action(async ({ parsedInput: { idClassroom, idStudent } }) => {
     const classroom = await prisma.classroom.update({
       where: {
         idClassroom,
@@ -79,37 +79,30 @@ export const updateCLassroomDeleteStudent = userAction(
       },
     });
     return classroom;
-  }
-);
+  });
 
-//             les get
-
-// recuperer toutes les classes
-
+// Récupérer toutes les classes
 export const getAllClassroomsAction = async () => {
   const classrooms = await prisma.classroom.findMany();
   return classrooms;
 };
 
-// recuperer toutes les classes d'un professeur
-
-export const getClassroomsByProfessorIdAction = userAction(
-  z.string(),
-  async (professorId) => {
+// Récupérer toutes les classes d'un professeur
+export const getClassroomsByProfessorIdAction = authAction
+  .schema(z.string())
+  .action(async ({ parsedInput: professorId }) => {
     const classrooms = await prisma.classroom.findMany({
       where: {
         professorId,
       },
     });
     return classrooms;
-  }
-);
+  });
 
-// recuperer les students d'une classe
-
-export const getStudentsFromClassroomAction = userAction(
-  z.string(),
-  async (classroomId) => {
+// Récupérer les étudiants d'une classe
+export const getStudentsFromClassroomAction = authAction
+  .schema(z.string())
+  .action(async ({ parsedInput: classroomId }) => {
     const classroom = await prisma.classroom.findUnique({
       where: {
         idClassroom: classroomId,
@@ -119,28 +112,24 @@ export const getStudentsFromClassroomAction = userAction(
       },
     });
     return classroom?.students;
-  }
-);
+  });
 
-// recuperer le nom d'une classe par son id
-
-export const getClassroomTitleByIdAction = userAction(
-  z.string(),
-  async (classroomId) => {
+// Récupérer le titre d'une classe par son ID
+export const getClassroomTitleByIdAction = authAction
+  .schema(z.string())
+  .action(async ({ parsedInput: classroomId }) => {
     const classroom = await prisma.classroom.findUnique({
       where: {
         idClassroom: classroomId,
       },
     });
     return classroom?.title;
-  }
-);
+  });
 
-//recuperer les classes ou un eleves est inscrit
-
-export const getClassroomsByStudentIdAction = userAction(
-  z.string(),
-  async (studentId) => {
+// Récupérer les classes où un élève est inscrit
+export const getClassroomsByStudentIdAction = authAction
+  .schema(z.string())
+  .action(async ({ parsedInput: studentId }) => {
     const classrooms = await prisma.classroom.findMany({
       where: {
         students: {
@@ -151,5 +140,4 @@ export const getClassroomsByStudentIdAction = userAction(
       },
     });
     return classrooms;
-  }
-);
+  });

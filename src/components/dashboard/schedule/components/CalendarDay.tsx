@@ -34,15 +34,22 @@ export const CalendarDay = (props: CalendarDayProps) => {
 
   const queryClient = useQueryClient();
   const deleteMutation = useMutation({
-    mutationFn: (idEvent: { id: string }) => deleteEventAction(idEvent.id),
-    onSuccess: ({ data, serverError }) => {
-      if (serverError || !data) {
-        throw new Error(serverError);
+    mutationFn: async (idEvent: { id: string }) => {
+      const result = await deleteEventAction(idEvent.id);
+
+      if (!result || result.serverError || !result.data) {
+        throw new Error(
+          result?.serverError || "Une erreur inconnue est survenue"
+        );
       }
+
+      return result.data;
+    },
+    onSuccess: () => {
       toast.success("Événement supprimé avec succès");
 
       queryClient.invalidateQueries({
-        queryKey: ["events", props.events[0].authorId],
+        queryKey: ["events", props.events[0]?.authorId],
       });
     },
   });
@@ -241,8 +248,6 @@ export const CalendarDay = (props: CalendarDayProps) => {
                       ...event,
                       description: event.description ?? undefined,
                       categoryId: event.categoryId ?? undefined,
-                      start: JSON.parse(event.start),
-                      end: JSON.parse(event.end),
                     }}
                     id={event.id}
                   />

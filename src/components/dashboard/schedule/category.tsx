@@ -66,12 +66,16 @@ export const Categories = (props: categoriesProps) => {
         toast.error("Le nom de la catégorie existe déjà");
         return;
       }
-      const { data, serverError } = await createCategoryAction(values);
-      if (serverError || !data) {
-        throw new Error(serverError);
+      const result = await createCategoryAction(values);
+
+      if (!result || result.serverError || !result.data) {
+        throw new Error(
+          result?.serverError || "Une erreur inconnue est survenue"
+        );
       }
+
       toast.success("Catégorie ajoutée avec succès");
-      return data;
+      return result.data;
     },
     onSuccess: (data) => {
       if (data && session?.user) {
@@ -93,15 +97,19 @@ export const Categories = (props: categoriesProps) => {
         toast.error("Le nom de la catégorie existe déjà");
         return;
       }
-      const { data, serverError } = await updateCategoryAction({
+      const result = await updateCategoryAction({
         id: values.id,
         name: values.name,
       });
-      if (serverError || !data) {
-        throw new Error(serverError);
+
+      if (!result || result.serverError || !result.data) {
+        throw new Error(
+          result?.serverError || "Une erreur inconnue est survenue"
+        );
       }
+
       toast.success("Catégorie modifiée avec succès");
-      return data;
+      return result.data;
     },
     onSuccess: (data) => {
       if (data && session?.user) {
@@ -118,12 +126,16 @@ export const Categories = (props: categoriesProps) => {
 
   const deleteMutation = useMutation({
     mutationFn: async (id: string) => {
-      const { data, serverError } = await deleteCategoryAction(id);
-      if (serverError || !data) {
-        throw new Error(serverError);
+      const result = await deleteCategoryAction(id);
+
+      if (!result || result.serverError || !result.data) {
+        throw new Error(
+          result?.serverError || "Une erreur inconnue est survenue"
+        );
       }
+
       toast.success("Catégorie supprimée avec succès");
-      return data;
+      return result.data;
     },
     onSuccess: (data) => {
       if (data && session?.user) {

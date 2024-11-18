@@ -7,9 +7,7 @@ export const currentUser = async () => {
     return null;
   }
 
-  const user = session.user as any;
-
-  return user;
+  return session.user;
 };
 
 export const requiredCurrentUser = async () => {

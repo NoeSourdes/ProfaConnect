@@ -36,11 +36,20 @@ export const PopoverActionFolder = (props: PopoverActionFolderProps) => {
   const { setSelectedDocuments } = useSelectedDocuments();
 
   const deleteMutation = useMutation({
-    mutationFn: (idFolder: { id: string }) => deleteFolderAction(idFolder.id),
-    onSuccess: ({ data, serverError }) => {
-      if (serverError || !data) {
-        throw new Error(serverError);
+    mutationFn: async (idFolder: { id: string }) => {
+      const result = await deleteFolderAction(idFolder.id);
+
+      if (!result) {
+        throw new Error("Unexpected undefined result");
       }
+
+      if (result.serverError || !result.data) {
+        throw new Error(result.serverError || "An unknown error occurred");
+      }
+
+      return result.data;
+    },
+    onSuccess: () => {
       toast.success("Le dossier a été supprimé avec succès");
 
       queryClient.invalidateQueries({
@@ -51,12 +60,20 @@ export const PopoverActionFolder = (props: PopoverActionFolderProps) => {
   });
 
   const { mutate: mutationupdateNameFolder, isPending } = useMutation({
-    mutationFn: (data: { id: string; name: string }) =>
-      renameFolderAction({ id: data.id, name: data.name }),
-    onSuccess: ({ data, serverError }) => {
-      if (serverError || !data) {
-        throw new Error(serverError);
+    mutationFn: async (data: { id: string; name: string }) => {
+      const result = await renameFolderAction({ id: data.id, name: data.name });
+
+      if (!result) {
+        throw new Error("Unexpected undefined result");
       }
+
+      if (result.serverError || !result.data) {
+        throw new Error(result.serverError || "An unknown error occurred");
+      }
+
+      return result.data;
+    },
+    onSuccess: () => {
       toast.success("Le dossier a été renommé avec succès");
       setOpen(false);
 
@@ -65,7 +82,6 @@ export const PopoverActionFolder = (props: PopoverActionFolderProps) => {
       });
     },
   });
-
   return (
     <>
       {[

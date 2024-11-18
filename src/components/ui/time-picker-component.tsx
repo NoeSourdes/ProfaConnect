@@ -7,16 +7,30 @@ import { TimePickerInput } from "./time-picker-input";
 
 interface TimePickerComponentProps {
   date: Date | undefined;
-  setDate: (date: Date | undefined) => void;
+  setDate: (date: Date) => void;
+  onTimeChange?: (time: string) => void;
 }
 
 export function TimePickerComponent({
   date,
   setDate,
+  onTimeChange,
 }: TimePickerComponentProps) {
   const minuteRef = React.useRef<HTMLInputElement>(null);
   const hourRef = React.useRef<HTMLInputElement>(null);
   const secondRef = React.useRef<HTMLInputElement>(null);
+
+  const updateDate = (newDate: Date | undefined) => {
+    if (newDate) {
+      setDate(newDate);
+      if (onTimeChange) {
+        const formattedTime = newDate.toLocaleTimeString("fr-FR", {
+          hour12: false,
+        });
+        onTimeChange(formattedTime);
+      }
+    }
+  };
 
   return (
     <div className="flex items-end gap-2">
@@ -26,8 +40,9 @@ export function TimePickerComponent({
         </Label>
         <TimePickerInput
           picker="hours"
+          className="focus-visible:ring-0 focus-visible:ring-offset-0"
           date={date}
-          setDate={setDate}
+          setDate={(newDate) => updateDate(newDate)}
           ref={hourRef}
           onRightFocus={() => minuteRef.current?.focus()}
         />
@@ -38,8 +53,9 @@ export function TimePickerComponent({
         </Label>
         <TimePickerInput
           picker="minutes"
+          className="focus-visible:ring-0 focus-visible:ring-offset-0"
           date={date}
-          setDate={setDate}
+          setDate={(newDate) => updateDate(newDate)}
           ref={minuteRef}
           onLeftFocus={() => hourRef.current?.focus()}
           onRightFocus={() => secondRef.current?.focus()}
@@ -51,8 +67,9 @@ export function TimePickerComponent({
         </Label>
         <TimePickerInput
           picker="seconds"
+          className="focus-visible:ring-0 focus-visible:ring-offset-0"
           date={date}
-          setDate={setDate}
+          setDate={(newDate) => updateDate(newDate)}
           ref={secondRef}
           onLeftFocus={() => minuteRef.current?.focus()}
         />

@@ -9,18 +9,8 @@ export const eventSchema = z.object({
   date: z.date({
     required_error: "La date est requise",
   }),
-  start: z.any({
-    required_error: "L'heure de début est requise",
-  }),
-  end: z.any({
-    required_error: "L'heure de fin est requise",
-  }),
-  startTime: z.any({
-    required_error: "L'heure de début est requise",
-  }),
-  endTime: z.any({
-    required_error: "L'heure de fin est requise",
-  }),
+  startTime: z.string().regex(/^\d{2}:\d{2}:\d{2}$/, "Format HH:MM:SS"),
+  endTime: z.string().regex(/^\d{2}:\d{2}:\d{2}$/, "Format HH:MM:SS"),
   color: z.string({
     required_error: "La couleur est requise",
   }),

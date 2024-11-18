@@ -26,6 +26,10 @@ import {
   eventType,
 } from "../../../../../app/(dashboard)/schedule/events/event.schema";
 
+import {
+  createEventAction,
+  updateEventAction,
+} from "@/app/(dashboard)/schedule/events/event.action";
 import { Calendar } from "@/src/components/ui/calendar";
 import {
   Credenza,
@@ -69,10 +73,6 @@ import {
   colorClassesBorderClean,
   colors,
 } from "../../../../../app/(dashboard)/schedule/color";
-import {
-  createEventAction,
-  updateEventAction,
-} from "../../../../../app/(dashboard)/schedule/events/event.action";
 import { ButtonCreateCategoryPopover } from "./buttonCreateCategoryPopover";
 
 export type ModalEventFormProps = {
@@ -94,6 +94,10 @@ export const ModalEventForm = (props: ModalEventFormProps) => {
   const isCreate = !Boolean(props.defaultValues);
 
   const [date, setDate] = useState<Date>();
+  const [startDateTime, setStartDateTime] = useState<Date>(new Date());
+  const [endDateTime, setEndDateTime] = useState<Date>(new Date());
+  const formattedStartDate = format(startDateTime || new Date(), "HH:mm:ss");
+  const formattedEndDate = format(endDateTime || new Date(), "HH:mm:ss");
   const { data: session } = useSession();
   const [open, setOpen] = useState(false);
 
@@ -120,50 +124,46 @@ export const ModalEventForm = (props: ModalEventFormProps) => {
 
   const mutation = useMutation({
     mutationFn: async (values: eventType) => {
-      const startTime = `${values.start.hour}:${values.start.minute}`;
-      const endTime = `${values.end.hour}:${values.end.minute}`;
-      const start = JSON.stringify(values.start);
-      const end = JSON.stringify(values.end);
-      values = { ...values, startTime, endTime, start, end };
-      if (values.start > values.end) {
-        toast.error("L'heure de début doit être avant l'heure de fin");
+      if (values.startTime > values.endTime) {
+        throw new Error("L'heure de début doit être avant l'heure de fin");
       }
-      if (values.start === values.end) {
-        toast.error("L'heure de début ne peut pas être égale à l'heure de fin");
+
+      if (values.startTime === values.endTime) {
+        throw new Error(
+          "L'heure de début ne peut pas être égale à l'heure de fin"
+        );
       }
-      if (typeof values.start !== "string") {
-        return;
-      }
-      if (typeof values.end !== "string") {
-        return;
-      }
-      const { data, serverError } = isCreate
+
+      const result = isCreate
         ? await createEventAction(values)
         : await updateEventAction({ id: props.id as string, data: values });
-      if (serverError || !data) {
-        throw new Error(serverError);
+
+      if (!result || result.serverError || !result.data) {
+        throw new Error(
+          result?.serverError || "Une erreur inconnue est survenue"
+        );
       }
+
       toast.success(
         isCreate
           ? "Événement créé avec succès"
           : "Événement mis à jour avec succès"
       );
+
       setOpen(false);
-      return data;
+
+      return result.data;
     },
     onSuccess: (data) => {
       if (data && session?.user) {
         queryClient.setQueryData(
           ["events", session.user.id],
-          (oldData: any[]) => {
-            if (isCreate) {
-              return [...(oldData as any[]), data];
-            } else {
-              return (oldData as any[]).map((event) =>
-                event.id === data.id ? data : event
-              );
-            }
-          }
+          (oldData: any[]) =>
+            isCreate
+              ? [...(oldData || []), data]
+              : (oldData || []).map((event) =>
+                  event.id === data.id ? data : event
+                )
         );
       }
     },
@@ -179,24 +179,34 @@ export const ModalEventForm = (props: ModalEventFormProps) => {
         values.name,
         session?.user?.id as string
       );
+
       if (check) {
         toast.error("Le nom de la catégorie existe déjà");
-        return;
+        throw new Error("Category name already exists");
       }
-      const { data, serverError } = await createCategoryAction(values);
-      if (serverError || !data) {
-        throw new Error(serverError);
+
+      const result = await createCategoryAction(values);
+
+      if (!result || result.serverError || !result.data) {
+        throw new Error(
+          result?.serverError || "Error while creating the category"
+        );
       }
+
       toast.success("Catégorie ajoutée avec succès");
-      return data;
+      return result.data;
     },
     onSuccess: (data) => {
       if (data && session?.user) {
         queryClient.setQueryData(
           ["categories", session.user.id],
-          (oldData: any[]) => [...(oldData as any[]), data]
+          (oldData: any[] | undefined) =>
+            oldData ? [...oldData, data] : [data]
         );
       }
+    },
+    onError: (error: any) => {
+      toast.error("Une erreur est survenue lors de l'ajout de la catégorie");
     },
   });
 
@@ -228,7 +238,7 @@ export const ModalEventForm = (props: ModalEventFormProps) => {
           )}
         </Button>
       </CredenzaTrigger>
-      <CredenzaContent className="">
+      <CredenzaContent className="pb-0">
         <CredenzaHeader>
           <CredenzaTitle>Créer un événement</CredenzaTitle>
         </CredenzaHeader>
@@ -236,7 +246,12 @@ export const ModalEventForm = (props: ModalEventFormProps) => {
           className=" flex flex-col max-md:px-2"
           form={form}
           onSubmit={async (values) => {
-            mutation.mutate(values);
+            mutation.mutate({
+              ...values,
+              categoryId: values.categoryId || undefined,
+              startTime: formattedStartDate,
+              endTime: formattedEndDate,
+            });
           }}
         >
           <div className="flex flex-col gap-4 w-full max-h-[500px] overflow-y-auto pb-5">
@@ -251,6 +266,7 @@ export const ModalEventForm = (props: ModalEventFormProps) => {
                   </FormLabel>
                   <FormControl>
                     <Input
+                      className=" focus-visible:ring-0 focus-visible:ring-offset-0"
                       placeholder="
                   Entrez le titre de l'événement"
                       {...field}
@@ -309,7 +325,7 @@ export const ModalEventForm = (props: ModalEventFormProps) => {
             <div className="flex items-center gap-4 w-full justify-between">
               <FormField
                 control={form.control}
-                name="start"
+                name="startTime"
                 render={({ field }) => (
                   <FormItem className="w-full">
                     <FormLabel>
@@ -317,7 +333,11 @@ export const ModalEventForm = (props: ModalEventFormProps) => {
                       <span className="text-destructive">*</span>
                     </FormLabel>
                     <FormControl className="w-full">
-                      <TimePickerComponent date={date} setDate={setDate} />
+                      <TimePickerComponent
+                        date={startDateTime} // Toujours une date valide
+                        setDate={setStartDateTime}
+                        onTimeChange={(time) => field.onChange(time)}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -326,7 +346,7 @@ export const ModalEventForm = (props: ModalEventFormProps) => {
               <ArrowRight size={50} className="mt-7" />
               <FormField
                 control={form.control}
-                name="end"
+                name="endTime"
                 render={({ field }) => (
                   <FormItem className="w-full">
                     <FormLabel>
@@ -334,7 +354,11 @@ export const ModalEventForm = (props: ModalEventFormProps) => {
                       <span className="text-destructive">*</span>
                     </FormLabel>
                     <FormControl className="w-full">
-                      <TimePickerComponent date={date} setDate={setDate} />
+                      <TimePickerComponent
+                        date={endDateTime}
+                        setDate={setEndDateTime}
+                        onTimeChange={(time) => field.onChange(time)}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -386,9 +410,15 @@ export const ModalEventForm = (props: ModalEventFormProps) => {
                     <FormControl>
                       <Select onValueChange={field.onChange}>
                         <SelectTrigger>
-                          <SelectValue placeholder="Selectionner" />
+                          <SelectValue
+                            placeholder="Selectionner"
+                            className="focus-visible:ring-0 focus-visible:ring-offset-0"
+                          />
                         </SelectTrigger>
-                        <SelectContent position="popper">
+                        <SelectContent
+                          position="popper"
+                          className="z-[123456789]"
+                        >
                           <SelectGroup className="space-y-2">
                             {categories?.map((category) => (
                               <SelectItem
@@ -427,7 +457,7 @@ export const ModalEventForm = (props: ModalEventFormProps) => {
                   <FormLabel>Description de l'événement</FormLabel>
                   <FormControl>
                     <Textarea
-                      className="resize-none"
+                      className="resize-none focus-visible:ring-0 focus-visible:ring-offset-0"
                       placeholder="
                   Entrez la description de l'événement"
                       {...field}

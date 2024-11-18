@@ -50,29 +50,38 @@ export const FolderForm = (props: {
   const mutation = useMutation({
     mutationFn: async (values: CreateFolderType) => {
       const checkTitle = await checkTitleFolderAction(values.title);
+
       if (checkTitle) {
         toast.error("Le titre du dossier est déjà utilisé");
         return;
       }
-      const { data, serverError } = isCreate
+
+      const result = isCreate
         ? await createFolderAction(values)
         : await updateFolderAction({
             id: String(props.folderId),
             data: values,
           });
 
-      if (serverError || !data) {
-        throw new Error(serverError);
+      if (!result) {
+        throw new Error("Unexpected undefined result");
       }
 
-      isCreate
-        ? toast.success("Le dossier a été créé avec succès")
-        : toast.success("Le dossier a été modifié avec succès");
+      if (result.serverError || !result.data) {
+        throw new Error(result.serverError || "An unknown error occurred");
+      }
+
+      return result.data;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["folders", user?.user?.id ? user.user.id : ""],
       });
+
+      isCreate
+        ? toast.success("Le dossier a été créé avec succès")
+        : toast.success("Le dossier a été modifié avec succès");
+
       toggleShow && toggleShow(false);
     },
   });

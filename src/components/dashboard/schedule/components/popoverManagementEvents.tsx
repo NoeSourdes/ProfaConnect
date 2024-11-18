@@ -29,13 +29,19 @@ export const PopoverManagementEvents = (
 ) => {
   const queryClient = useQueryClient();
   const deleteMutation = useMutation({
-    mutationFn: (idEvent: { id: string }) => deleteEventAction(idEvent.id),
-    onSuccess: ({ data, serverError }) => {
-      if (serverError || !data) {
-        throw new Error(serverError);
-      }
-      toast.success("Événement supprimé avec succès");
+    mutationFn: async (idEvent: { id: string }) => {
+      const result = await deleteEventAction(idEvent.id);
 
+      if (!result || result.serverError || !result.data) {
+        throw new Error(
+          result?.serverError || "Une erreur inconnue est survenue"
+        );
+      }
+
+      return result.data;
+    },
+    onSuccess: () => {
+      toast.success("Événement supprimé avec succès");
       queryClient.invalidateQueries({
         queryKey: ["events", props.event.authorId],
       });
@@ -103,8 +109,6 @@ export const PopoverManagementEvents = (
               ...props.event,
               description: props.event.description ?? undefined,
               categoryId: props.event.categoryId ?? undefined,
-              start: JSON.parse(props.event.start),
-              end: JSON.parse(props.event.end),
             }}
             id={props.event.id}
           />

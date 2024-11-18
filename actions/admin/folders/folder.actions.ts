@@ -1,23 +1,24 @@
 "use server";
 
 import { prisma } from "@/src/lib/prisma";
-import { userAction } from "@/src/lib/safe-actions";
+import { authAction } from "@/src/lib/safe-actions";
 import { z } from "zod";
 import { createFolderSchema } from "./folder.schema";
 
-export const createFolderAction = userAction(
-  createFolderSchema,
-  async (inputs, context) => {
+// Création d'un dossier
+export const createFolderAction = authAction
+  .schema(createFolderSchema)
+  .action(async ({ parsedInput: inputs, ctx }) => {
     const folder = await prisma.folders.create({
       data: {
         ...inputs,
-        authorId: context.user.id,
+        authorId: ctx.user.id,
       },
     });
     return folder;
-  }
-);
+  });
 
+// Récupération des dossiers d'un utilisateur
 export const getUserFolders = async (authorId: string) => {
   const folders = await prisma.folders.findMany({
     where: {
@@ -30,6 +31,7 @@ export const getUserFolders = async (authorId: string) => {
   return folders;
 };
 
+// Récupération du nom d'un dossier
 export const getNameFolder = async (id: string) => {
   return await prisma.folders.findUnique({
     where: {
@@ -41,52 +43,58 @@ export const getNameFolder = async (id: string) => {
   });
 };
 
-export const updateFolderAction = userAction(
-  z.object({
-    id: z.string(),
-    data: createFolderSchema,
-  }),
-  async (inputs, context) => {
-    const upadteFolder = await prisma.folders.update({
+// Mise à jour d'un dossier
+export const updateFolderAction = authAction
+  .schema(
+    z.object({
+      id: z.string(),
+      data: createFolderSchema,
+    })
+  )
+  .action(async ({ parsedInput: { id, data }, ctx }) => {
+    const updatedFolder = await prisma.folders.update({
       where: {
-        id: inputs.id,
-        authorId: context.user.id,
+        id: id,
+        authorId: ctx.user.id,
       },
-      data: inputs.data,
+      data,
     });
-    return upadteFolder;
-  }
-);
+    return updatedFolder;
+  });
 
-export const deleteFolderAction = userAction(
-  z.string(),
-  async (id, context) => {
+// Suppression d'un dossier
+export const deleteFolderAction = authAction
+  .schema(z.string())
+  .action(async ({ parsedInput: id, ctx }) => {
     const folder = await prisma.folders.findUnique({
       where: {
         id: id,
-        authorId: context.user.id,
+        authorId: ctx.user.id,
       },
     });
 
     if (!folder) {
       throw new Error("Folder not found");
     }
+
+    // Suppression des fichiers associés
     await prisma.files.deleteMany({
       where: {
         folderId: id,
       },
     });
+
     const deletedFolder = await prisma.folders.delete({
       where: {
         id: id,
-        authorId: context.user.id,
+        authorId: ctx.user.id,
       },
     });
 
     return deletedFolder;
-  }
-);
+  });
 
+// Vérification de l'existence d'un titre de dossier
 export const checkTitleFolderAction = async (title: string) => {
   const folderTitle = await prisma.folders.findFirst({
     where: {
@@ -94,26 +102,26 @@ export const checkTitleFolderAction = async (title: string) => {
     },
   });
 
-  if (folderTitle) {
-    return true;
-  }
+  return !!folderTitle;
 };
 
-export const renameFolderAction = userAction(
-  z.object({
-    id: z.string(),
-    name: z.string(),
-  }),
-  async (inputs, context) => {
+// Renommage d'un dossier
+export const renameFolderAction = authAction
+  .schema(
+    z.object({
+      id: z.string(),
+      name: z.string(),
+    })
+  )
+  .action(async ({ parsedInput: { id, name }, ctx }) => {
     const folder = await prisma.folders.update({
       where: {
-        id: inputs.id,
-        authorId: context.user.id,
+        id: id,
+        authorId: ctx.user.id,
       },
       data: {
-        title: inputs.name,
+        title: name,
       },
     });
     return folder;
-  }
-);
+  });

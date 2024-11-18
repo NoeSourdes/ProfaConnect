@@ -57,13 +57,17 @@ export const Step4Teacher = (props: Step4TeacherProps) => {
 
   const mutation = useMutation({
     mutationFn: async (values: CreateClassroomType) => {
-      const { data, serverError } = await createClassroomAction(values);
+      const result = await createClassroomAction(values);
 
-      if (serverError || !data) {
-        throw new Error(serverError);
+      if (!result) {
+        throw new Error("Unexpected undefined result");
       }
 
-      return data;
+      if (result.serverError || !result.data) {
+        throw new Error(result.serverError || "An unknown error occurred");
+      }
+
+      return result.data;
     },
     onSuccess: () => {
       form.reset();
@@ -76,13 +80,17 @@ export const Step4Teacher = (props: Step4TeacherProps) => {
 
   const mutationDelete = useMutation({
     mutationFn: async (classroomId: string) => {
-      const { data, serverError } = await deleteClassroomAction(classroomId);
+      const result = await deleteClassroomAction(classroomId);
 
-      if (serverError || !data) {
-        throw new Error(serverError);
+      if (!result) {
+        throw new Error("Unexpected undefined result");
       }
 
-      return data;
+      if (result.serverError || !result.data) {
+        throw new Error(result.serverError || "An unknown error occurred");
+      }
+
+      return result.data;
     },
     onSuccess: () => {
       form.reset();

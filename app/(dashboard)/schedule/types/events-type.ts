@@ -3,8 +3,6 @@ export type EventType = {
   date: Date;
   color: string;
   description: string | null;
-  start: string;
-  end: string;
   startTime: string;
   endTime: string;
   categoryId: string | null;

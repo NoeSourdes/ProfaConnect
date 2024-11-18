@@ -54,12 +54,16 @@ export const ButtonCreateCategory = (props: ButtonCreateCategoryProps) => {
         toast.error("Le nom de la catégorie existe déjà");
         return;
       }
-      const { data, serverError } = await createCategoryAction(values);
-      if (serverError || !data) {
-        throw new Error(serverError);
+      const result = await createCategoryAction(values);
+
+      if (!result || result.serverError || !result.data) {
+        throw new Error(
+          result?.serverError || "Une erreur inconnue est survenue"
+        );
       }
+
       toast.success("Catégorie ajoutée avec succès");
-      return data;
+      return result.data;
     },
     onSuccess: (data) => {
       if (data && session?.user) {

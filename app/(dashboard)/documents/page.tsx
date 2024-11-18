@@ -48,11 +48,18 @@ export default function Documents() {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: (idFolder: { id: string }) => deleteFolderAction(idFolder.id),
-    onSuccess: ({ data, serverError }) => {
-      if (serverError || !data) {
-        throw new Error(serverError);
+    mutationFn: async (idFolder: { id: string }) => {
+      const result = await deleteFolderAction(idFolder.id);
+      if (!result) {
+        throw new Error("Action result is undefined");
       }
+      if (result.serverError || !result.data) {
+        throw new Error(result.serverError || "Unknown error occurred");
+      }
+
+      return result.data;
+    },
+    onSuccess: () => {
       toast.success("Le dossier a été supprimé avec succès");
 
       queryClient.invalidateQueries({

@@ -62,20 +62,27 @@ export const NewFileComponent = (props: NewFileComponentProps) => {
 
   const mutation = useMutation({
     mutationFn: async (values: fileType) => {
-      const { data, serverError } = isCreate
+      const result = isCreate
         ? await createFile(values)
         : await updateFile({ id: props.fileId as string, data: values });
-      if (serverError || !data) {
-        throw new Error(serverError);
+
+      if (!result) {
+        throw new Error("Unexpected undefined result");
       }
+
+      if (result.serverError || !result.data) {
+        throw new Error(result.serverError || "An unknown error occurred");
+      }
+
+      return result.data;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["getFiles", user?.user?.id ? user.user.id : ""],
       });
       isCreate
-        ? toast.success("La fichier a été créée avec succès")
-        : toast.success("La fichier a été modifiée avec succès");
+        ? toast.success("Le fichier a été créé avec succès")
+        : toast.success("Le fichier a été modifié avec succès");
       if (redirect === "documents") {
         router.push(`/documents`);
       } else {
@@ -87,20 +94,27 @@ export const NewFileComponent = (props: NewFileComponentProps) => {
 
   const mutationPDF = useMutation({
     mutationFn: async (values: fileTypePDF) => {
-      const { data, serverError } = isCreate
+      const result = isCreate
         ? await createFilePDF(values)
         : await updateFilePdf({ id: props.fileId as string, data: values });
-      if (serverError || !data) {
-        throw new Error(serverError);
+
+      if (!result) {
+        throw new Error("Unexpected undefined result");
       }
+
+      if (result.serverError || !result.data) {
+        throw new Error(result.serverError || "An unknown error occurred");
+      }
+
+      return result.data;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["getFiles", user?.user?.id ? user.user.id : ""],
       });
       isCreate
-        ? toast.success("La fichier a été créée avec succès")
-        : toast.success("La fichier a été modifiée avec succès");
+        ? toast.success("Le fichier a été créé avec succès")
+        : toast.success("Le fichier a été modifié avec succès");
       if (redirect === "documents") {
         router.push(`/documents`);
       } else {

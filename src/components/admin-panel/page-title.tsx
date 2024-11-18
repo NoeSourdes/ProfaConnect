@@ -28,7 +28,7 @@ export function PageTitle() {
 
   const titleClassName =
     pageTitle === "ProfaBot"
-      ? "font-bold bg-[linear-gradient(120deg,#6EB6F2,#6EB6F2,#a855f7,#ea580c,#eab308,#eab308)] bg-clip-text text-transparent"
+      ? "font-bold bg-[linear-gradient(120deg,#6EB6F2,#6EB6F2,#6EB6F2,#a855f7,#ea580c,#eab308,#eab308,#eab308)] bg-clip-text text-transparent"
       : "font-bold";
 
   return (

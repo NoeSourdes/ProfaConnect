@@ -18,12 +18,11 @@ export const ourFileRouter = {
       return { userId: user.id };
     })
     .onUploadComplete(async ({ metadata, file }) => {
-      console.log("metadata", file, metadata);
       const createdFile = await prisma.fileUpload.create({
         data: {
           key: file.key,
           name: file.name,
-          userId: metadata.userId,
+          userId: metadata.userId ?? "",
           url: `https://utfs.io/f/${file.key}`,
           type: file.type,
           size: file.size,

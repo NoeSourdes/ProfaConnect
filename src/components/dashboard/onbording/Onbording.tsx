@@ -4,7 +4,7 @@ import { useSession } from "next-auth/react";
 
 import {
   getClassroomTitleByIdAction,
-  updateCLassroomAddStudent,
+  updateClassroomAddStudent,
 } from "@/actions/admin/classroom/classroom.actions";
 import { updateUserAction } from "@/actions/user/user";
 import {
@@ -55,13 +55,19 @@ export const Onboarding = (props: OnboardingProps) => {
       level: string;
       gender: string;
     }) => {
-      const res = await updateUserAction(data);
-      return res;
-    },
-    onSuccess: ({ data, serverError }) => {
-      if (serverError || !data) {
-        throw new Error(serverError);
+      const result = await updateUserAction(data);
+
+      if (!result) {
+        throw new Error("Result is undefined");
       }
+
+      if (result.serverError || !result.data) {
+        throw new Error(result.serverError || "Failed to update user profile");
+      }
+
+      return result.data;
+    },
+    onSuccess: (data) => {
       toast.success("Bienvenue sur la plateforme ProfaConnect ! 🎉");
       queryClient.invalidateQueries({
         queryKey: ["userProfile", session.data?.user?.id],
@@ -123,10 +129,18 @@ export const Onboarding = (props: OnboardingProps) => {
   };
 
   const functionNewValue = async (classroomId: string) => {
-    const value = await getClassroomTitleByIdAction(classroomId);
-    setNewValue((prev) => [...prev, [value.data ?? "", classroomId]]);
-  };
+    const result = await getClassroomTitleByIdAction(classroomId);
 
+    if (!result) {
+      throw new Error("Result is undefined");
+    }
+
+    if (result.serverError || !result.data) {
+      throw new Error(result.serverError || "Failed to fetch classroom title");
+    }
+
+    setNewValue((prev) => [...prev, [result.data ?? "", classroomId]]);
+  };
   const [value, setValue] = useState<string[]>([]);
   const [newValue, setNewValue] = useState<string[][]>([]);
 
@@ -142,7 +156,7 @@ export const Onboarding = (props: OnboardingProps) => {
       return;
     }
     value.forEach((classroomId) => {
-      updateCLassroomAddStudent({
+      updateClassroomAddStudent({
         idClassroom: classroomId,
         idStudent: props.userProfile.userId,
       });
